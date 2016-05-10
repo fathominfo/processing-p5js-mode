@@ -2,8 +2,8 @@
  *	JS Mode for Processing based on Processing.js. Comes with a server as
  *	replacement for the normal runner.
  *
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
+ *	This used to be part of Processing 2.0 beta and was
+ *	moved out on 2013-02-25
  */
 
 package processing.mode.p5js;
@@ -14,21 +14,15 @@ import java.io.IOException;
 import processing.app.*;
 import processing.app.ui.*;
 import processing.mode.java.JavaMode;
-import processing.mode.java.JavaEditor;
 
-import javax.swing.*;
-import javax.swing.tree.*;
-
-public class JavaScriptMode 
-extends JavaMode
-{
-	// show that warning only once per run-cycle as we are 
+public class JavaScriptMode extends JavaMode {
+	// show that warning only once per run-cycle as we are
 	// continously exporting behind the scenes at every save
 	public boolean showSizeWarning = true;
-	
+
 	private JavaScriptEditor jsEditor;
 	private JavaMode defaultJavaMode;
-	
+
 	/**
 	 *	Constructor
 	 *
@@ -38,15 +32,15 @@ extends JavaMode
 	public JavaScriptMode ( Base base, File folder )
 	{
 		super(base, folder);
-		
+
 //		try {
 //			loadKeywords(); // in JavaMode, sets tokenMarker
-//			loadAdditionalKeywords( 
+//			loadAdditionalKeywords(
 //				new File(Platform.getContentFile("modes/java"), "keywords.txt" ),
 //				tokenMarker
 //			);
 //		}
-//		catch ( IOException e ) 
+//		catch ( IOException e )
 //		{
 //			Base.showError( "Problem loading keywords",
 //			                "Could not load keywords.txt, please re-install Processing.", e);
@@ -66,7 +60,7 @@ extends JavaMode
 	/**
 	 *	Called from Base to get the Editor for this mode.
 	 */
-	public Editor getEditor () 
+	public Editor getEditor ()
 	{
 		return jsEditor;
 	}
@@ -87,20 +81,20 @@ extends JavaMode
 	}
 
 //	/**
-//	 *	Loads default Java keywords, JS keywords 
+//	 *	Loads default Java keywords, JS keywords
 //	 *	were already loaded in constructor.
 //	 */
 //	protected void loadAdditionalKeywords ( File keywords, PdeKeywords tokenMarker ) throws IOException
 //	{
 //		if ( keywordToReference == null )
 //			keywordToReference = new HashMap<String, String>();
-//		
+//
 //		BufferedReader reader = PApplet.createReader( keywords );
 //		String line = null;
-//		while ((line = reader.readLine()) != null) 
+//		while ((line = reader.readLine()) != null)
 //		{
 //			String[] pieces = PApplet.trim(PApplet.split(line, '\t'));
-//		    if (pieces.length >= 2) 
+//		    if (pieces.length >= 2)
 //			{
 //		    	String keyword = pieces[0];
 //				String coloring = pieces[1];
@@ -116,11 +110,11 @@ extends JavaMode
 //			}
 //		}
 //	}
-//	
+//
 //	/**
 //	 * load the keywords from file, copied from JavaMode.java
 //	 */
-//	protected void loadKeywords() throws IOException 
+//	protected void loadKeywords() throws IOException
 //	{
 //	    File file = new File(folder, "keywords.txt");
 //	    BufferedReader reader = PApplet.createReader(file);
@@ -147,26 +141,26 @@ extends JavaMode
 //      		}
 //    	}
 //  	}
-	
+
   public File[] getKeywordFiles() {
-    return new File[] { 
+    return new File[] {
       Platform.getContentFile("modes/java/keywords.txt"),
       new File(folder, "keywords.txt")
     };
   }
 
-  
+
 //	/**
 //	 *	Override getTokenMarker in Mode
 //	 */
-//	public TokenMarker getTokenMarker () 
+//	public TokenMarker getTokenMarker ()
 //	{
 //		if ( tokenMarker == null )
 //			tokenMarker = new PdeKeywords();
 //		return tokenMarker;
 //	}
 
-  
+
 	/**
 	 *	Return pretty title of this mode for menu listing and such
 	 */
@@ -180,7 +174,7 @@ extends JavaMode
   // public Formatter createFormatter() { }
 
   //  public Editor createEditor(Base ibase, String path, int[] location) { }
-  
+
   // ------------------------------------------------
 
   /**
@@ -196,12 +190,12 @@ extends JavaMode
 		}
 	});
 	java.util.Arrays.sort(inclExamples);
-	
+
 	// add JavaMode examples as these are supposed to run in JSMode
 	JavaMode jMode = getDefaultMode();
 	if ( jMode == null )
 		return inclExamples; // js examples only
-	
+
 	File jExamples = jMode.getContentFile("examples");
 	File[] jModeExamples = new File[] {
       new File(jExamples, "Basics"),
@@ -209,14 +203,14 @@ extends JavaMode
       //new File(jExamples, "3D") ,
       //new File(jExamples, "Books")
     };
-	
+
 	// merge them all
 	File[] finalExamples = new File[inclExamples.length + jModeExamples.length];
 	for ( int i = 0; i < inclExamples.length; i++ )
 		finalExamples[i] = inclExamples[i];
 	for ( int i = 0; i < jModeExamples.length; i++ )
 		finalExamples[inclExamples.length+i] = jModeExamples[i];
-	
+
 	java.util.Arrays.sort(finalExamples);
 
     return finalExamples;
@@ -241,11 +235,11 @@ extends JavaMode
 
 	// 	return superTree;
 	// }
-  
+
     /**
 	 *	Return the default extension for this mode, same as Java
 	 */
-	public String getDefaultExtension() 
+	public String getDefaultExtension()
 	{
 		return "pde";
 	}
@@ -253,16 +247,16 @@ extends JavaMode
 	/**
 	 *	Return allowed extensions
 	 */
-	public String[] getExtensions () 
+	public String[] getExtensions ()
 	{
 		return new String[] { "pde", "js" };
 	}
 
 	/**
-	 *	Return list of file- / folder-names that should be ignored when 
-	 *	sketch is being copied or saved as 
+	 *	Return list of file- / folder-names that should be ignored when
+	 *	sketch is being copied or saved as
 	 */
-	public String[] getIgnorable () 
+	public String[] getIgnorable ()
 	{
 		return new String[] {
 			"applet",
@@ -276,14 +270,14 @@ extends JavaMode
   	 *
   	 *	fjenett 20121202
   	 */
-	public Library getLibrary ( String pkgName ) throws SketchException 
+	public Library getLibrary ( String pkgName ) throws SketchException
 	{
 		return super.getLibrary( pkgName );
 	}
-  
-  
+
+
   // ------------------------------------------------
-  
+
   	/**
   	 *	Build and export a sketch
   	 */

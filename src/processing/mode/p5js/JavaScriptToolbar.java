@@ -1,21 +1,12 @@
 package processing.mode.p5js;
 
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
 
-import processing.app.Base;
-import processing.app.Platform;
-import processing.app.Messages;
-import processing.app.Util;
 import processing.app.ui.Editor;
 import processing.app.ui.EditorToolbar;
 
-/**
- *  This used to be part of Processing 2.0 beta and was 
- *  moved out on 2013-02-25 
- */
 
 public class JavaScriptToolbar extends EditorToolbar {
 

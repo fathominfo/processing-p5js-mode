@@ -1,40 +1,37 @@
 package processing.mode.p5js;
 
-import processing.app.Base;
-import processing.app.Platform;
-import processing.app.Messages;
-import processing.app.Util;
-import processing.app.Mode;
-import processing.app.ui.Editor;
-import processing.app.ui.EditorState;
-import processing.app.ui.EditorException;
-import processing.app.Settings;
-
-import processing.mode.java.JavaEditor;
-import processing.mode.p5js.BasicServer;
-
 import java.io.File;
 import java.io.IOException;
+
 import javax.swing.JOptionPane;
+
+import processing.app.Base;
+import processing.app.Mode;
+import processing.app.Platform;
+import processing.app.Settings;
+import processing.app.ui.EditorException;
+import processing.app.ui.EditorState;
+
+import processing.mode.java.JavaEditor;
 
 /**
  *	This is the basis for the JavaScript mode, an editor that serves files from a
  *  given root directory.
  *
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
+ *	This used to be part of Processing 2.0 beta and was
+ *	moved out on 2013-02-25
  */
 
-public abstract class ServingEditor 
-	extends JavaEditor 
+public abstract class ServingEditor
+	extends JavaEditor
 	implements BasicServerListener
 {
 	public final static String PROP_KEY_SERVER_PORT = "basicserver.port";
-	
+
 	BasicServer server;
-	
+
 	public boolean showSizeWarning = true;
-	
+
 	/**
 	 *	Constructor
 	 *
@@ -49,7 +46,7 @@ public abstract class ServingEditor
 		throws EditorException {
 		super( base, path, state, mode );
 	}
-	
+
 	/**
 	 *	Set the server port, shows an input dialog to enter a port number
 	 */
@@ -82,12 +79,12 @@ public abstract class ServingEditor
 			statusError( "That port number is out of range" );
 			return;
 		}
-		
+
 		if ( server != null )
 		{
 			server.setPort(port);
 		}
-		
+
 		File sketchProps = getSketchPropertiesFile();
 	    if ( sketchProps.exists() ) {
 			try {
@@ -99,7 +96,7 @@ public abstract class ServingEditor
 			}
 	    }
 	}
-	
+
 	/**
 	 *	Getter, returns the server port
 	 *
@@ -110,7 +107,7 @@ public abstract class ServingEditor
 		if ( server != null ) return server.getPort();
 		return -1;
 	}
-	
+
 	/**
 	 *	Getter, returns the current server address
 	 *
@@ -121,7 +118,7 @@ public abstract class ServingEditor
 		if ( server != null && server.isRunning() ) return server.getAddress();
 		return null;
 	}
-	
+
 	/**
 	 *	Getter, returns the server
 	 *
@@ -131,7 +128,7 @@ public abstract class ServingEditor
 	{
 		return server;
 	}
-	
+
 	/**
 	 *	A toggle to start/stop the server
 	 *
@@ -148,7 +145,7 @@ public abstract class ServingEditor
 			startServer( root );
 		}
 	}
-	
+
 	/**
 	 *	Create a server to server from given root dir
 	 *
@@ -158,7 +155,7 @@ public abstract class ServingEditor
 	protected BasicServer createServer ( File root )
 	{
 		if ( server != null ) return server;
-		
+
 		if ( !root.exists() && !root.mkdir() )
 		{
 			// bad .. let server handle the complaining ..
@@ -184,7 +181,7 @@ public abstract class ServingEditor
 
 		return server;
 	}
-	
+
 	/**
 	 *	Start the internal server for this sketch.
 	 *
@@ -193,7 +190,7 @@ public abstract class ServingEditor
 	 */
 	protected boolean startServer ( File root )
 	{
-		if ( server != null && 
+		if ( server != null &&
 			 ( !server.isRunning() || !server.getRoot().equals(root) ) )
 	    {
 			// if server hung or something else went wrong .. stop it.
@@ -205,7 +202,7 @@ public abstract class ServingEditor
 		{
 			server = createServer( root );
 		}
-		
+
 		if ( !server.isRunning() )
 		{
 			server.setRoot( root );
@@ -214,16 +211,16 @@ public abstract class ServingEditor
 		}
 		else if ( server.isRunning() )
 		{
-			statusNotice( "Server running ( " + 
+			statusNotice( "Server running ( " +
 						  server.getAddress() +
 						  " ), reload your browser window." );
-						
+
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 *	Check if server is running
 	 *
@@ -233,7 +230,7 @@ public abstract class ServingEditor
 	{
 		return server != null && server.isRunning();
 	}
-	
+
 	/**
 	 *	Stop server
 	 */
@@ -241,7 +238,7 @@ public abstract class ServingEditor
 	{
 		if ( serverRunning() ) server.shutDown();
 	}
-	
+
 	/**
 	 *	Create or get the sketch's properties file
 	 *
@@ -262,7 +259,7 @@ public abstract class ServingEditor
 		}
 		return sketchPropsFile;
 	}
-	
+
 	/**
 	 *	Open a new browser window or tab with the server address
 	 */
@@ -273,11 +270,11 @@ public abstract class ServingEditor
 			Platform.openURL( server.getAddress() );
 		}
 	}
-	
+
 	// ------------------------------------------
 	//  interface BasicServerListener
 	// ------------------------------------------
-	
+
 	/**
 	 *	interface BasicServerListener
 	 *	Called after the server was started from the server thread
@@ -288,7 +285,7 @@ public abstract class ServingEditor
 		statusNotice( "Server started: " + location );
 		openBrowserForServer();
 	}
-	
+
 	/**
 	 *	interface BasicServerListener
 	 *	Called from server thread after the server stopped

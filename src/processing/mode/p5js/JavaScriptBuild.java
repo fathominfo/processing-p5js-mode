@@ -9,10 +9,9 @@ import java.io.FileWriter;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import java.util.ArrayList;
 
-import processing.app.Base;
-import processing.app.Platform;
 import processing.app.Messages;
 import processing.app.Util;
 import processing.app.Mode;
@@ -22,16 +21,11 @@ import processing.app.SketchException;
 import processing.app.Library;
 
 import processing.core.PApplet;
-
+import processing.data.StringList;
 import processing.mode.java.preproc.PdePreprocessor;
 
-/**
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
- */
 
-public class JavaScriptBuild
-{
+public class JavaScriptBuild {
 	public final static String TEMPLATE_FOLDER_NAME = "template";
 	public final static String EXPORTED_FOLDER_NAME = "web-export";
 	public final static String TEMPLATE_FILE_NAME = "template.html";
@@ -43,12 +37,10 @@ public class JavaScriptBuild
    * Answers with the first java doc style comment in the string,
    * or an empty string if no such comment can be found.
    */
-  public static String getDocString ( String s )
-  {
+  public static String getDocString(String s) {
     String[] javadoc = PApplet.match(s, "/\\*{2,}(.*?)\\*+/");
 
-    if (javadoc != null)
-	{
+    if (javadoc != null) {
       StringBuffer dbuffer = new StringBuffer();
       String[] pieces = PApplet.split(javadoc[1], '\n');
       for (String line : pieces) {
@@ -181,23 +173,22 @@ public class JavaScriptBuild
 	// first find 'em ..
 	String[] sketchFolderFilesRaw = sketch.getFolder().list();
 	String[] sketchFolderFiles = new String[0];
-	ArrayList sffList = new ArrayList();
-	if ( sketchFolderFilesRaw != null )
-	{
-		for ( String s : sketchFolderFilesRaw )
-		{
-			if ( s.toLowerCase().startsWith(".") ) continue;
-			if ( !s.toLowerCase().endsWith(".js") ) continue;
-			sffList.add(s);
+	StringList sffList = new StringList();
+	if (sketchFolderFilesRaw != null) {
+		for (String s : sketchFolderFilesRaw) {
+			if (s.toLowerCase().startsWith(".") ) continue;
+			if (s.toLowerCase().endsWith(".js")) {
+			  sffList.append(s);
+			}
 		}
-		if ( sffList.size() > 0 )
-			sketchFolderFiles = (String[])sffList.toArray(new String[0]);
+		if (sffList.size() > 0) {
+			sketchFolderFiles = sffList.array();
+		}
 	}
-	for ( String s : sketchFolderFiles )
-	{
+	for (String s : sketchFolderFiles) {
 		try {
-			Util.copyFile( new File(sketch.getFolder(), s), new File(bin, s) );
-		} catch ( IOException ioe ) {
+			Util.copyFile(new File(sketch.getFolder(), s), new File(bin, s));
+		} catch (IOException ioe) {
 			String msg = "Unable to copy file: "+s;
 			Messages.showWarning("Problem building the sketch", msg);
 			ioe.printStackTrace();
@@ -392,8 +383,8 @@ public class JavaScriptBuild
 	for ( String defaultJSFile : defaultJSFiles )
 	{
 		File fileToCopy = new File( bin, defaultJSFile );
-		
-		if ( !fileToCopy.exists() ) 
+
+		if ( !fileToCopy.exists() )
 		{
 		    try
 			{

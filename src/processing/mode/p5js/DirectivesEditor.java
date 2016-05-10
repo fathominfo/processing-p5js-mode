@@ -1,9 +1,7 @@
 package processing.mode.p5js;
 
-import processing.app.Base;
 import processing.app.Platform;
 import processing.app.Messages;
-import processing.app.Util;
 import processing.app.Sketch;
 import processing.app.SketchCode;
 import processing.app.ui.Toolkit;
@@ -22,8 +20,8 @@ import java.util.regex.*;
 /**
  *	DirectivesEditor, is a simple frontend to Processing.js playback settings a.k.a. "directives".
  *
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
+ *	This used to be part of Processing 2.0 beta and was
+ *	moved out on 2013-02-25
  *
  *	@see <a href="http://processingjs.org/reference/pjs%20directive">Processing.js directives</a>
  */
@@ -490,27 +488,28 @@ public class DirectivesEditor
 		field.setText(finalFileList);
 	}
 
-	String[] scanDataFolderForFilesByType ( String[] extensions )
- 	{
-		ArrayList files = new ArrayList();
+
+	String[] scanDataFolderForFilesByType(String[] extensions) {
+		List<String> files = new ArrayList<>();
 		File dataFolder = editor.getSketch().getDataFolder();
 
-		if ( !dataFolder.exists() ) return null; // TODO no folder present .. warn?
-
-		for ( String ext : extensions )
-		{
-			String[] found = listFiles(dataFolder, true, ext);
-			if ( found == null || found.length == 0 ) continue;
-
-			for ( String f : found )
-			{
-				if ( files.indexOf(f) == -1 )
-					files.add(f);
-			}
+		if (!dataFolder.exists()) {
+		  return null; // TODO no folder present .. warn?
 		}
 
-		return (String[])files.toArray(new String[0]);
+		for (String ext : extensions) {
+		  String[] found = listFiles(dataFolder, true, ext);
+		  if (found != null && found.length != 0) {
+		    for (String f : found) {
+		      if (files.indexOf(f) == -1) {
+		        files.add(f);
+		      }
+		    }
+			}
+		}
+		return files.toArray(new String[0]);
 	}
+
 
 	// #718
 	// http://code.google.com/p/processing/issues/detail?id=718

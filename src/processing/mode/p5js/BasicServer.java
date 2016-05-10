@@ -9,48 +9,47 @@ import java.util.*;
  *	Based on a Sun tutorial at: http://bit.ly/fpoHAF
  *	Changed to accept a document root.
  *
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
+ *	This used to be part of Processing 2.0 beta and was
+ *	moved out on 2013-02-25
  */
-class BasicServer implements HttpConstants, Runnable
-{
-	ArrayList<BasicServerListener> listeners;
-	
+class BasicServer implements HttpConstants, Runnable {
+	List<BasicServerListener> listeners;
+
 	// TODO how to handle too many servers?
 	// TODO read settings from sketch.properties
 	// NOTE 0.0.0.0 does not work on XP
 	public static final String localDomain = "http://127.0.0.1";
-	
+
 	final static int MIN_PORT = 0;
 	final static int MAX_PORT = 49151;
 
 	Thread thread = null;
 	ServerSocket server = null;
-	
+
 	//private ArrayList<Worker> threads = new ArrayList<Worker>();
 	//private int workers = 5;
 
 	private File virtualRoot;
 	private int timeout = 5000;
 	private int port = -1;
-	
+
 	private boolean running = false, inited = false;
 //	private boolean stopping = false;
-	
+
 	private ArrayList<String> addresses;
-	
+
 	/**
 	 *	Constructor
 	 *
 	 *	@param root the root folder to serve from
 	 */
-	BasicServer ( File root ) 
+	BasicServer ( File root )
 	{
 		setRoot( root );
-		
+
 		findPort();
 	}
-	
+
 	/**
 	 *	Getter, return the server root folder
 	 *
@@ -60,15 +59,15 @@ class BasicServer implements HttpConstants, Runnable
 	{
 		return virtualRoot;
 	}
-	
+
 	/**
 	 *	Set the root folder to a new dir
 	 *
-	 *	@param root the new folder to server form 
+	 *	@param root the new folder to server form
 	 */
 	public void setRoot ( File root )
 	{
-		if ( root.exists() && root.isDirectory() && root.canRead() ) 
+		if ( root.exists() && root.isDirectory() && root.canRead() )
 		{
 			virtualRoot = root;
 		}
@@ -77,7 +76,7 @@ class BasicServer implements HttpConstants, Runnable
 			System.err.println( "BasicServer: error setting <root>" );
 		}
 	}
-	
+
 	/**
 	 *	Add a listener to this server for start/stop callbacks
 	 *
@@ -90,7 +89,7 @@ class BasicServer implements HttpConstants, Runnable
 			listeners.add( listener );
 		}
 	}
-	
+
 	/**
 	 *	Get the timeout, the time span after which requests are discarded
 	 *
@@ -100,7 +99,7 @@ class BasicServer implements HttpConstants, Runnable
 	{
 		return timeout;
 	}
-	
+
 	/**
 	 *	Getter, returns the server address with port as URL string
 	 *
@@ -110,7 +109,7 @@ class BasicServer implements HttpConstants, Runnable
 	{
 		return localDomain + ":" + getPort() + "/";
 	}
-	
+
 	/**
 	 *	Build a list of addresses that this machine is available under
 	 *
@@ -119,19 +118,19 @@ class BasicServer implements HttpConstants, Runnable
 	public ArrayList<String> getInetAddresses ()
 	{
 		addresses = new ArrayList<String>();
-		
+
 		try {
 		    NetworkInterface ni = NetworkInterface.getByInetAddress( InetAddress.getLocalHost() );
 		    Enumeration<InetAddress> ia = ni.getInetAddresses();
-		    while ( ia.hasMoreElements () ) 
+		    while ( ia.hasMoreElements () )
 			{
 		        InetAddress elem = ia.nextElement();
-		        if ( elem instanceof Inet6Address ) 
+		        if ( elem instanceof Inet6Address )
 				{
 		            // ?
 					continue;
-		        } 
-		        else 
+		        }
+		        else
 				{
 					addresses.add( elem.getHostAddress() );
 		        }
@@ -139,10 +138,10 @@ class BasicServer implements HttpConstants, Runnable
 		}  catch ( Exception e ) {
 			// ignore?
 		}
-		
+
 		return addresses;
 	}
-	
+
 	/**
 	 *	Look for and set to an available port
 	 */
@@ -150,19 +149,19 @@ class BasicServer implements HttpConstants, Runnable
 	{
 		ServerSocket ss = null;
 		try {
-			
+
 			ss = new ServerSocket( 0 );
 			ss.setReuseAddress(true);
 			port = ss.getLocalPort();
 			ss.close();
-			
+
 		} catch ( IOException ioe ) {
 			System.err.println(ioe);
 		} catch ( SecurityException se ) {
 			System.err.println(se);
 		}
 	}
-	
+
 	/**
 	 *	Getter, return the current port the server is available on
 	 *
@@ -172,16 +171,16 @@ class BasicServer implements HttpConstants, Runnable
 	{
 		return port;
 	}
-	
+
 	/**
 	 *	Set the port number to a new one
-	 * 
+	 *
 	 *	@param newPort the new port number as int, should be > 1024 and < 49151
 	 */
 	public void setPort ( int newPort )
 	{
-		if ( !isRunning() ) 
-		{	
+		if ( !isRunning() )
+		{
 			// port available? see:
 			// http://stackoverflow.com/questions/434718/sockets-discover-port-availability-using-java
 			// http://stackoverflow.com/questions/2675362/how-to-find-an-available-port
@@ -190,8 +189,8 @@ class BasicServer implements HttpConstants, Runnable
 			{
 				if ( !available(newPort) )
 				{
-					System.err.println( "BasicServer: " + 
-										"that port ("+newPort+") seems to be taken " + 
+					System.err.println( "BasicServer: " +
+										"that port ("+newPort+") seems to be taken " +
 										"or is out of range (<1025 or >49151)");
 					System.out.println( "... if it works anyway, ignore the warning." );
 				}
@@ -202,7 +201,7 @@ class BasicServer implements HttpConstants, Runnable
 			}
 		}
 	}
-	
+
 	/**
 	 *	Start this server, starts internal thread
 	 */
@@ -213,12 +212,12 @@ class BasicServer implements HttpConstants, Runnable
 			System.err.println( "BasicServer: virtual root is null." );
 			return;
 		}
-		
+
 		thread = null;
 		thread = new Thread( this, "Processing.BasicServer" );
 		thread.start();
 	}
-	
+
 	/**
 	 * Checks to see if a specific port is available.
 	 * http://mina.apache.org/
@@ -265,17 +264,17 @@ class BasicServer implements HttpConstants, Runnable
 
 		return false;
 	}
-	
+
 	/**
 	 *	Restart the server
 	 */
 	public void restart ()
 	{
 		if ( running ) shutDown();
-		
+
 		start();
 	}
-	
+
 	/**
 	 *	Stop the server
 	 *	With a little help from: http://bit.ly/eA8iGj
@@ -290,7 +289,7 @@ class BasicServer implements HttpConstants, Runnable
 				w.stop();
 			}
 		}*/
-		
+
 		thread = null;
 		try {
 			if ( server != null )
@@ -300,16 +299,16 @@ class BasicServer implements HttpConstants, Runnable
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 		if ( listeners != null )
 		{
-			for ( BasicServerListener l : listeners ) 
+			for ( BasicServerListener l : listeners )
 			{
 				l.serverStopped();
 			}
 		}
 	}
-	
+
 	/**
 	 *	Getter, return if server is running
 	 *
@@ -323,15 +322,15 @@ class BasicServer implements HttpConstants, Runnable
 	/**
 	 *	interface Runnable
 	 *	Called on a new thread to do handle the requests coming in
-	 * 
+	 *
 	 *	@see <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Runnable.html">java.lang.Runnable</a>
-	 */	
+	 */
 	public void run ()
-	{	
+	{
 		try
 		{
 			running = true;
-	
+
 			if ( port < 0 )
 			{
 				server = new ServerSocket( 0 );
@@ -342,28 +341,28 @@ class BasicServer implements HttpConstants, Runnable
 			{
 				server = new ServerSocket( port );
 			}
-			
+
 		} catch ( IOException ioe ) {
 			// problem starting server!
 			System.err.println(ioe);
 		} catch ( SecurityException se ) {
 			System.err.println(se);
 		}
-		
-		try 
-		{	
+
+		try
+		{
 			if ( server != null )
 			{
 				inited = true;
-				
+
 				if ( listeners != null )
 				{
-					for ( BasicServerListener l : listeners ) 
+					for ( BasicServerListener l : listeners )
 					{
 						l.serverStarted();
 					}
 				}
-				
+
 				while ( thread != null )
 				{
 					Socket s = server.accept();
@@ -382,7 +381,7 @@ class BasicServer implements HttpConstants, Runnable
 			// happens on shutDown(), ignore ..
 			//System.err.println( ioe );
 		}
-		
+
 		running = false;
 	}
 }
@@ -390,7 +389,7 @@ class BasicServer implements HttpConstants, Runnable
 /**
  *	Worker class, handles the actual serving of files
  */
-class Worker extends BasicServer 
+class Worker extends BasicServer
 implements HttpConstants, Runnable
 {
 	final static int BUF_SIZE = 2048;
@@ -403,35 +402,35 @@ implements HttpConstants, Runnable
 	private Socket socket;
 
 	private boolean stopping = false;
-	
+
 	/* mapping of file extensions to content-types */
-	static java.util.Hashtable map = new java.util.Hashtable();
+	static HashMap<String, String> map = new HashMap<>();
 
 	static {
 		fillMap();
 	}
-	
+
 	/**
 	 *	Constructor
 	 *
 	 *	@param root the root folder to serve from
 	 */
-	Worker ( File root ) 
+	Worker ( File root )
 	{
 		super( root );
 		buf = new byte[BUF_SIZE];
 		socket = null;
 	}
-	
+
 	/**
 	 *	Set socket, this is the actual request
 	 */
-	synchronized void setSocket( Socket s ) 
+	synchronized void setSocket( Socket s )
 	{
 		socket = s;
 		notify();
 	}
-	
+
 	/**
 	 *	Try to stop it
 	 */
@@ -440,7 +439,7 @@ implements HttpConstants, Runnable
 		stopping = true;
 		notify();
 	}
-	
+
 	/**
 	 *	interface Runnable
 	 *	Called to do the heavy lifting
@@ -451,7 +450,7 @@ implements HttpConstants, Runnable
 	{
 		while ( true && !stopping )
 		{
-			if ( socket == null ) 
+			if ( socket == null )
 			{
 				/* nothing to do */
 				try {
@@ -466,7 +465,7 @@ implements HttpConstants, Runnable
 				try {
 					handleClient();
 				} catch (Exception e) {
-					// TODO check why this is raised instead of 
+					// TODO check why this is raised instead of
 					// sending 404 for favicon.ico, etc. ..
 					//e.printStackTrace();
 				}
@@ -479,18 +478,18 @@ implements HttpConstants, Runnable
 	/**
 	 *	Handle a request from a client
 	 */
-	void handleClient() throws IOException 
+	void handleClient() throws IOException
 	{
 		InputStream is = new BufferedInputStream( socket.getInputStream() );
 		PrintStream ps = new PrintStream( socket.getOutputStream() );
-		
+
 		/* we will only block in read for this many milliseconds
 		 * before we fail with java.io.InterruptedIOException,
 		 * at which point we will abandon the connection.
 		 */
 		socket.setSoTimeout( getTimeout() );
 		socket.setTcpNoDelay(true);
-		
+
 		/* zero out the buffer from last time */
 		for (int i = 0; i < BUF_SIZE; i++) {
 			buf[i] = 0;
@@ -504,7 +503,7 @@ implements HttpConstants, Runnable
 			int nread = 0, r = 0;
 
 outerloop:
-			while (nread < BUF_SIZE) 
+			while (nread < BUF_SIZE)
 			{
 				r = is.read(buf, nread, BUF_SIZE - nread);
 				if (r == -1) {
@@ -562,25 +561,25 @@ outerloop:
 
 			String fname = (new String(buf, index, i-index)).
 									replace('/', File.separatorChar);
-			if (fname.startsWith(File.separator)) 
+			if (fname.startsWith(File.separator))
 			{
 				fname = fname.substring(1);
 			}
 
 			fname = java.net.URLDecoder.decode(fname, "UTF-8");
-			
+
 			// TODO
 			//implement a logger service that will receive messages from p.js?
 			//processing-1.2.1-examples/examples/seneca/log/customLogger.html
 			if ( fname.startsWith("logger?") )
 			{
-				System.out.println(fname.substring(7));  
+				System.out.println(fname.substring(7));
 				// TODO somewhere on the way the encoding gets screw'd
 			}
 			else
-			{		
+			{
 				File targ = new File( getRoot(), fname );
-				if (targ.isDirectory()) 
+				if (targ.isDirectory())
 				{
 					File ind = new File(targ, "index.html");
 					if (ind.exists()) {
@@ -589,7 +588,7 @@ outerloop:
 				}
 
 				boolean OK = printHeaders(targ, ps);
-				if (doingGet) 
+				if (doingGet)
 				{
 					if (OK) {
 						sendFile(targ, ps);
@@ -606,11 +605,11 @@ outerloop:
 	/**
 	 *	Send the default headers to client
 	 */
-	boolean printHeaders ( File targ, PrintStream ps ) throws IOException 
+	boolean printHeaders ( File targ, PrintStream ps ) throws IOException
 	{
 		boolean ret = false;
 
-		if (!targ.exists()) 
+		if (!targ.exists())
 		{
 			ps.print("HTTP/1.0 " + HTTP_NOT_FOUND + " not found");
 			ps.write(EOL);
@@ -626,20 +625,20 @@ outerloop:
 		// 	targ.getAbsolutePath(),
 		// 	(ret ? "200" : "404")
 		// ));
-		
+
 		ps.print("Server: Processing/2.0");
 		ps.write(EOL);
 		ps.print("Date: " + (new Date()));
 		ps.write(EOL);
-		
+
 		// ps.print("Access-Control-Allow-Origin: *");
 		// ps.write(EOL);
 		// ps.print("Access-Control-Request-Method: *");
 		// ps.write(EOL);
-		
-		if (ret) 
+
+		if (ret)
 		{
-			if (!targ.isDirectory()) 
+			if (!targ.isDirectory())
 			{
 				ps.print("Content-length: "+targ.length());
 				ps.write(EOL);
@@ -649,11 +648,11 @@ outerloop:
 				String name = targ.getName();
 				int ind = name.lastIndexOf('.');
 				String ct = null;
-				if (ind > 0) 
+				if (ind > 0)
 				{
-					ct = (String) map.get(name.substring(ind));
+					ct = map.get(name.substring(ind));
 				}
-				if (ct == null) 
+				if (ct == null)
 				{
 					ct = "unknown/unknown";
 				}
@@ -666,19 +665,19 @@ outerloop:
 		}
 		return ret;
 	}
-	
+
 	/**
 	 *	Send 404 content to client
 	 */
-	void send404(File targ, PrintStream ps) throws IOException 
+	void send404(File targ, PrintStream ps) throws IOException
 	{
 		ps.write(EOL);
 		ps.write(EOL);
 		ps.println("Not Found\n\n"+
 				   "The requested resource was not found.\n");
 	}
-	
-	
+
+
 	/**
 	 *	Build list of contents and send it to client
 	 */
@@ -697,21 +696,21 @@ outerloop:
 		}
 		ps.println("<P><HR><BR><I>" + (new Date()) + "</I>");
 	}
-	
+
 	/**
-	 *	
+	 *
 	 */
-	void logAndSendNop (PrintStream ps) throws IOException 
+	void logAndSendNop (PrintStream ps) throws IOException
 	{
 		ps.write(EOL);
 		ps.write(EOL);
 		ps.println("\n");
 	}
-	
+
 	/**
 	 *	Send contents of a file to client
 	 */
-	void sendFile(File targ, PrintStream ps) throws IOException 
+	void sendFile(File targ, PrintStream ps) throws IOException
 	{
 		InputStream is = null;
 		ps.write(EOL);
@@ -731,15 +730,15 @@ outerloop:
 			is.close();
 		}
 	}
-	
+
 	/**
 	 *	Add a mapping of file extension to mime-type / content-type
 	 */
-	static void setSuffix ( String k, String v ) 
+	static void setSuffix ( String k, String v )
 	{
 		map.put(k, v);
 	}
-	
+
 	/**
 	 *	Add some default mappings
 	 */
@@ -747,8 +746,8 @@ outerloop:
 	{
 		// this probably can be shortened a lot since this is not a normal server ..
 		setSuffix("",		   "content/unknown");
-		setSuffix(".3dm",	  "x-world/x-3dmf"); 
-		setSuffix(".3dmf",	  "x-world/x-3dmf"); 
+		setSuffix(".3dm",	  "x-world/x-3dmf");
+		setSuffix(".3dmf",	  "x-world/x-3dmf");
 		setSuffix(".ai",	  "application/pdf");
 		setSuffix(".aif",	  "audio/x-aiff");
 		setSuffix(".aifc",	  "audio/x-aiff");
@@ -774,7 +773,7 @@ outerloop:
 		setSuffix(".class",	  "application/octet-stream");
 		setSuffix(".cod",	  "image/cis-cod");
 		setSuffix(".coffee",  "text/coffeescript");
-		setSuffix(".com",	  "application/octet-stream"); 
+		setSuffix(".com",	  "application/octet-stream");
 		setSuffix(".cpio",	  "application/x-cpio");
 		setSuffix(".cpt",	   "application/mac-compactpro");
 		setSuffix(".csh",	  "application/x-csh");
@@ -785,7 +784,7 @@ outerloop:
 		setSuffix(".dir",	   "application/x-director");
 		setSuffix(".djv",	   "image/vnd.djvu");
 		setSuffix(".djvu",	   "image/vnd.djvu");
-		setSuffix(".dll",	  "application/octet-stream"); 
+		setSuffix(".dll",	  "application/octet-stream");
 		setSuffix(".dmg",	   "application/octet-stream");
 		setSuffix(".dms",	   "application/octet-stream");
 		setSuffix(".doc",	  "application/msword");
@@ -805,8 +804,8 @@ outerloop:
 		setSuffix(".evy",	  "application/x-envoy");
 		setSuffix(".exe",	  "application/octet-stream");
 		setSuffix(".ez",	   "application/andrew-inset");
-		setSuffix(".fh4",	  "image/x-freehand"); 
-		setSuffix(".fh5",	  "image/x-freehand"); 
+		setSuffix(".fh4",	  "image/x-freehand");
+		setSuffix(".fh5",	  "image/x-freehand");
 		setSuffix(".fhc",	  "image/x-freehand");
 		setSuffix(".fif",	  "image/fif");
 		setSuffix(".gif",	  "image/gif");
@@ -817,7 +816,7 @@ outerloop:
 		setSuffix(".gz",	  "application/gzip");
 		setSuffix(".h",	   "text/plain");
 		setSuffix(".hdf",	  "application/x-hdf");
-		setSuffix(".hlp",	  "application/mshelp"); 
+		setSuffix(".hlp",	  "application/mshelp");
 		setSuffix(".hqx",	  "application/mac-binhex40");
 		setSuffix(".htm",	  "text/html");
 		setSuffix(".html",	  "text/html");
@@ -851,7 +850,7 @@ outerloop:
 		setSuffix(".mathml",  "application/mathml+xml");
 		setSuffix(".mbd",	  "application/mbedlet");
 		setSuffix(".mcf",	  "image/vasa");
-		setSuffix(".me",	  "application/x-troff-me"); 
+		setSuffix(".me",	  "application/x-troff-me");
 		setSuffix(".mesh",	   "model/mesh");
 		setSuffix(".mid",	   "audio/midi");
 		setSuffix(".midi",	   "audio/midi");
@@ -892,20 +891,20 @@ outerloop:
 		setSuffix(".pntg",	   "image/x-macpaint");
 		setSuffix(".pot",	  "application/mspowerpoint");
 		setSuffix(".ppm",	  "image/x-portable-pixmap");
-		setSuffix(".pps",	  "application/mspowerpoint"); 
+		setSuffix(".pps",	  "application/mspowerpoint");
 		setSuffix(".ppt",	  "application/mspowerpoint");
-		setSuffix(".ppz",	  "application/mspowerpoint"); 
+		setSuffix(".ppz",	  "application/mspowerpoint");
 		setSuffix(".ps",	  "application/postscript");
 		setSuffix(".ps",	   "application/postscript");
 		setSuffix(".ptlk",	  "application/listenup");
 		setSuffix(".qd3",	  "x-world/x-3dmf");
-		setSuffix(".qd3d",	  "x-world/x-3dmf"); 
+		setSuffix(".qd3d",	  "x-world/x-3dmf");
 		setSuffix(".qt",	  "video/quicktime");
 		setSuffix(".qti",	   "image/x-quicktime");
 		setSuffix(".qtif",	   "image/x-quicktime");
 		setSuffix(".ra",	  "audio/x-pn-realaudio");
 		setSuffix(".ra",	   "audio/x-pn-realaudio");
-		setSuffix(".ram",	  "audio/x-mpeg"); 
+		setSuffix(".ram",	  "audio/x-mpeg");
 		setSuffix(".ras",	  "image/cmu-raster");
 		setSuffix(".rdf",	   "application/rdf+xml");
 		setSuffix(".rgb",	  "image/x-rgb");
@@ -934,26 +933,26 @@ outerloop:
 		setSuffix(".so",	   "application/octet-stream");
 		setSuffix(".spc",	  "text/x-speech");
 		setSuffix(".spl",	  "application/futuresplash");
-		setSuffix(".spr",	  "application/x-sprite"); 
+		setSuffix(".spr",	  "application/x-sprite");
 		setSuffix(".sprite",  "application/x-sprite");
 		setSuffix(".src",	  "application/x-wais-source");
 		setSuffix(".stream",  "audio/x-qt-stream");
 		setSuffix(".sv4cpio", "application/x-sv4cpio");
 		setSuffix(".sv4crc",  "application/x-sv4crc");
 		setSuffix(".svg",	   "image/svg+xml");
-		setSuffix(".swf",	  "application/x-shockwave-flash"); 
+		setSuffix(".swf",	  "application/x-shockwave-flash");
 		setSuffix(".t",	   "application/x-troff");
-		setSuffix(".talk",	  "text/x-speech"); 
+		setSuffix(".talk",	  "text/x-speech");
 		setSuffix(".tar",	  "application/x-tar");
 		setSuffix(".tbk",	  "application/toolbook");
 		setSuffix(".tcl",	  "application/x-tcl");
 		setSuffix(".tex",	  "application/x-tex");
 		setSuffix(".texi",	  "application/x-texinfo");
-		setSuffix(".texinfo", "text/plain"); 
+		setSuffix(".texinfo", "text/plain");
 		setSuffix(".text",	  "text/plain");
 		setSuffix(".tif",	  "image/tiff");
 		setSuffix(".tiff",	  "image/tiff");
-		setSuffix(".tr",	  "application/x-troff"); 
+		setSuffix(".tr",	  "application/x-troff");
 		setSuffix(".troff",	  "application/x-troff-man");
 		setSuffix(".tsi",	  "audio/tsplayer");
 		setSuffix(".tsp",	  "application/dsptype");
@@ -963,13 +962,13 @@ outerloop:
 		setSuffix(".ustar",	  "application/x-ustar");
 		setSuffix(".uu",	  "application/octet-stream");
 		setSuffix(".vcd",	   "application/x-cdlink");
-		setSuffix(".viv",	  "video/vnd.vivo"); 
+		setSuffix(".viv",	  "video/vnd.vivo");
 		setSuffix(".vivo",	  "video/vnd.vivo");
 		setSuffix(".vmd",	  "application/vocaltec-media-desc");
 		setSuffix(".vmf",	  "application/vocaltec-media-file");
 		setSuffix(".vox",	  "audio/voxware");
 		setSuffix(".vrml",	   "model/vrml");
-		setSuffix(".vts",	  "workbook/formulaone"); 
+		setSuffix(".vts",	  "workbook/formulaone");
 		setSuffix(".vtts",	  "workbook/formulaone");
 		setSuffix(".vxml",	   "application/voicexml+xml");
 		setSuffix(".wav",	  "audio/x-wav");
