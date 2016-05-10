@@ -1,143 +1,80 @@
-<project name="ProcessingJavaScriptMode" default="install" basedir="./">
+<project name="p5js-mode" default="install">
 
-	<description>
-	
-		This used to be "ProcessingJS Tool", has been "JavaScript Mode" in
-		Processing 2.0 beta for a while and now lives a life of it's own
-		here ... waiting to be reincluded at some point in the future.
+  <description>
+    A hacked-up version of Florian's JavaScriptMode to work with p5.js  
+  </description>
 
-		JavaScript mode:
-		https://github.com/fjenett/javascript-mode-processing
-	
-	</description>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<!-- +
-	+
-	+	This is really all you should need to set to compile:	
-	+
-	+ -->
-	
-	<property name="processing.classes"
-			  location="/Applications/Processing-3.0/Processing.app/Contents/Java/" />
+  <property file="local.properties" />
 
-	<property name="processing.modes" 
-			  location="/Users/fjenett/Documents/Processing-3/modes"/>
-	
-	<property name="src" 		value="src" />
-	<property name="build" 		value="build" />
-	<property name="bin" 		value="bin" />
-	<property name="dist" 		value="dist" />
-	<property name="release" 	value="0.4.0" />
-	<property name="lib.name" 	value="JavaScriptMode" />
-	<property name="java.target.version" 
-								value="1.7" />
+  <condition property="props.present">
+    <available file="local.properties" />
+  </condition>
 
-	<path id="library-classpath">
-		<fileset dir="${processing.classes}" >
-			<include name="core.jar" />
-			<include name="core/library/core.jar" />
-			<include name="pde.jar" />
-			<include name="modes/java/mode/antlr.jar" />
-			<include name="modes/java/mode/JavaMode.jar" />
-		</fileset>
-		<fileset dir="lib" >
-			<!-- Rhino 1.7 -->
-			<include name="js.jar" />
-		</fileset>
-	</path>
-	
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-		HELP
-	- - - - - - - - - - - - - - - - - - - - - - - -->
-	<target name="help">
-	</target>
-	
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-		BUILD
-	- - - - - - - - - - - - - - - - - - - - - - - -->
-	<target name="build">
-		
-		<buildnumber file="lib/build.number"/>
-		
-		<mkdir dir="${build}" />
-		<delete dir="${bin}" />
-		<mkdir dir="${bin}" />
-		
-		<javac srcdir="${src}" destdir="${bin}" source="${java.target.version}">
-			<classpath>
-				<path refid="library-classpath"/>
-			</classpath>
-		</javac>
-		
-	</target>
-	
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-		PACKAGE
-	- - - - - - - - - - - - - - - - - - - - - - - -->
-	<target name="package" depends="build">
-		
-		<delete dir="${dist}" />
-		<mkdir dir="${dist}" />
-		<mkdir dir="${dist}/mode" />
-		
-		<jar jarfile="${dist}/mode/${lib.name}.jar" basedir="${bin}"/>
-		<!--zip destfile="${dist}/mode/${lib.name}.jar" excludes="**/*.MF">
-		    <zipgroupfileset dir="lib" includes="*.jar" />
-		</zip-->
-		<copy todir="${dist}/mode">
-			<fileset file="lib/js.jar" />
-			<fileset file="${processing.classes}/modes/java/mode/antlr.jar" />
-			<fileset file="${processing.classes}/modes/java/mode/JavaMode.jar" />
-		</copy>
-		
-		<copy todir="${dist}">
-			<fileset dir="resources/" />
-		</copy>
-		
-		<replaceregexp file="${dist}/mode.properties" flags="g"
-  					   match="@@version@@" replace="${build.number}" />
-		<replaceregexp file="${dist}/mode.properties" flags="g"
-  					   match="@@pretty-version@@" replace="${release}" />
-		
-	</target>
-	
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-		INSTALL
-	- - - - - - - - - - - - - - - - - - - - - - - -->
-	<target name="install" depends="package" >
-		
-		<delete dir="${processing.modes}/${lib.name}" />
-		<mkdir dir="${processing.modes}/${lib.name}" />
-		
-		<copy todir="${processing.modes}/${lib.name}">
-			<fileset dir="${dist}" />
-		</copy>
-		
-		<delete dir="${lib.name}" />
-		<copy todir="${lib.name}">
-			<fileset dir="${dist}" />
-		</copy>
-		
-		<zip destfile="release/${lib.name}.zip" >
-			<zipfileset dir="${dist}" prefix="${lib.name}" excludes="**/_DS.Store" />
-		</zip>
-		<copy tofile="release/${lib.name}.txt">
-			<fileset file="${dist}/mode.properties" />
-		</copy>
+  <fail unless="props.present" 
+        message=" ${line.separator}Missing file.
+${line.separator}Create a file named local.properties inside the dist folder,
+${line.separator}and write a line that reads:
+${line.separator}processing.dir=/path/to/processing-git
+${line.separator}with the path to where you have the code for processing checked out
+${line.separator}and another line that reads:
+${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
-		<delete dir="${dist}" />
-	</target>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-		CLEAN
-	- - - - - - - - - - - - - - - - - - - - - - - -->
-	<target name="clean" >
+  <target name="build">
+    <mkdir dir="bin" />
+    <javac source="1.8"
+	   target="1.8"
+	   encoding="UTF-8"
+	   includeAntRuntime="false"
+	   debug="true"
+           srcdir="src"
+	   destdir="bin"
+	   classpath="${processing.dir}/core/bin; 
+                      ${processing.dir}/java/mode/antlr.jar; 
+                      lib/js.jar"
+	   nowarn="true">
+    </javac>
 
-		<delete dir="${bin}" />
-		<delete dir="${build}" />
-		<delete dir="${lib.name}" />
+    <!-- make sure this exists -->
+    <mkdir dir="mode" />
 
-	</target>
+    <!-- build a double-clickable JAR -->
+    <jar destfile="mode/p5jsMode.jar">
+      <fileset dir="bin" />
+    </jar>
+
+    <copy todir="mode">
+      <fileset file="lib/js.jar" />
+      <fileset file="${processing.dir}/java/mode/antlr.jar" />
+    </copy>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <target name="dist" depends="build">
+    <!-- make a zip file for distribution -->
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <target name="install" depends="build">
+    <property name="install.dir" value="${sketchbook.dir}/modes/p5jsMode" />
+    <!--
+    <delete dir="{install.dir}" />
+    <mkdir dir="{install.dir}/mode" />
+
+    <copy todir="{install.dir}/mode">
+    </copy>
+    <fileset file="lib/js.jar" />
+    <fileset file="${processing.dir}/java/mode/antlr.jar" />    
+    -->
+    <copy todir="${install.dir}/mode">
+      <fileset dir="mode" />
+    </copy>
+  </target>
 
 </project>
 
