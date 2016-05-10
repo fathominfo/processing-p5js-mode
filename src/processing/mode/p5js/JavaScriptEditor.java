@@ -25,7 +25,7 @@ public class JavaScriptEditor extends ServingEditor
 	final static String PROP_KEY_MODE = "mode";
 	final static String PROP_VAL_MODE = "JavaScript";
 
-  private JavaScriptMode jsMode;
+  private p5jsMode jsMode;
 
   private DirectivesEditor directivesEditor;
 
@@ -42,7 +42,7 @@ public class JavaScriptEditor extends ServingEditor
     
     super(base, path, state, mode);
 
-    jsMode = (JavaScriptMode) mode;
+    jsMode = (p5jsMode) mode;
   }
 
 	// ----------------------------------------

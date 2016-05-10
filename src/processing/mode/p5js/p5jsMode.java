@@ -15,7 +15,7 @@ import processing.app.*;
 import processing.app.ui.*;
 import processing.mode.java.JavaMode;
 
-public class JavaScriptMode extends Mode {
+public class p5jsMode extends Mode {
 	// show that warning only once per run-cycle as we are
 	// continously exporting behind the scenes at every save
 	public boolean showSizeWarning = true;
@@ -24,7 +24,7 @@ public class JavaScriptMode extends Mode {
 	private JavaMode defaultJavaMode;
 
 
-	public JavaScriptMode (Base base, File folder) {
+	public p5jsMode (Base base, File folder) {
 		super(base, folder);
 	}
 

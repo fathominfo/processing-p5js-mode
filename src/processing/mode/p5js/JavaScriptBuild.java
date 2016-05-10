@@ -216,7 +216,7 @@ public class JavaScriptBuild {
         // renderer
 
       } catch (NumberFormatException e) {
-		if ( ((JavaScriptMode)mode).showSizeWarning ) {
+		if ( ((p5jsMode)mode).showSizeWarning ) {
    	    	// found a reference to size, but it didn't seem to contain numbers
 	        final String message =
 	          "The size of this applet could not automatically be\n" +
@@ -226,7 +226,7 @@ public class JavaScriptBuild {
 	          "command. See the size() reference for an explanation.";
 	        Messages.showWarning("Could not find applet size", message);
 			// warn only once ..
-			((JavaScriptMode)mode).showSizeWarning = false;
+			((p5jsMode)mode).showSizeWarning = false;
 		}
       }
     }  // else no size() command found, defaults will be used
