@@ -1,6 +1,4 @@
-package de.bezier.mode.javascript;
-
-import de.bezier.mode.javascript.BasicServer;
+package processing.mode.p5js;
 
 import processing.app.Base;
 import processing.app.Platform;
@@ -13,6 +11,7 @@ import processing.app.ui.EditorException;
 import processing.app.Settings;
 
 import processing.mode.java.JavaEditor;
+import processing.mode.p5js.BasicServer;
 
 import java.io.File;
 import java.io.IOException;

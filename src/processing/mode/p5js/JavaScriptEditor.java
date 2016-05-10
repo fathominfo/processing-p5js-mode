@@ -3,9 +3,7 @@
  *	moved out on 2013-02-25 
  */
 
-package de.bezier.mode.javascript;
-
-import de.bezier.mode.javascript.ServingEditor;
+package processing.mode.p5js;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +16,7 @@ import javax.swing.JMenuItem;
 import processing.app.*;
 import processing.app.ui.*;
 import processing.mode.java.AutoFormat;
+import processing.mode.p5js.ServingEditor;
 
 import javax.swing.*;
 
@@ -36,7 +35,7 @@ public class JavaScriptEditor extends ServingEditor
 	/**
 	 *	Constructor, overrides ServingEditor( .. )
 	 *
-	 *	@see de.bezier.mode.javascript.ServingEditor
+	 *	@see processing.mode.p5js.ServingEditor
 	 */
   protected JavaScriptEditor ( Base base, String path, EditorState state, Mode mode )
   	throws EditorException {
@@ -57,7 +56,7 @@ public class JavaScriptEditor extends ServingEditor
 	 *	called in Editor constructor to add the toolbar to the window.
 	 *
 	 *	@return an EditorToolbar, in our case a JavaScriptToolbar
-	 *	@see de.bezier.mode.javascript.JavaScriptToolbar
+	 *	@see processing.mode.p5js.JavaScriptToolbar
 	 */
   public EditorToolbar createToolbar ()
   {

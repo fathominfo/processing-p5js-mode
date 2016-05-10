@@ -1,4 +1,4 @@
-package de.bezier.mode.javascript;
+package processing.mode.p5js;
 
 import java.io.BufferedReader;
 import java.io.File;

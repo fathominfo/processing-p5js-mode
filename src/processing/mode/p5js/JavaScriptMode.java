@@ -6,7 +6,7 @@
  *	moved out on 2013-02-25 
  */
 
-package de.bezier.mode.javascript;
+package processing.mode.p5js;
 
 import java.io.File;
 import java.io.IOException;
