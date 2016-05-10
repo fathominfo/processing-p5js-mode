@@ -74,6 +74,9 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <copy todir="${install.dir}/mode">
       <fileset dir="mode" />
     </copy>
+    <copy todir="${install.dir}">
+      <fileset file="mode.properties" />
+    </copy>
   </target>
 
 </project>
