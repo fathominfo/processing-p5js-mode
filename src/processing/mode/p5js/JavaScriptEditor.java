@@ -447,7 +447,7 @@ public class JavaScriptEditor extends ServingEditor
 	// TODO: catch handleFindReference directly
 	//handleFindReferenceImpl();
 
-    File file = new File( jsMode.getDefaultMode().getReferenceFolder(), filename );
+    File file = new File( jsMode.getJavaMode().getReferenceFolder(), filename );
     // Prepend with file:// and also encode spaces & other characters
     Platform.openURL( file.toURI().toString() );
   }
