@@ -27,7 +27,7 @@ import java.util.regex.*;
  */
 public class DirectivesEditor
 {
-	JavaScriptEditor editor;
+	p5jsEditor editor;
 
     JFrame frame;
 	JCheckBox 	crispBox;
@@ -55,7 +55,7 @@ public class DirectivesEditor
 
 	private Pattern pjsPattern;
 
-	public DirectivesEditor ( JavaScriptEditor e )
+	public DirectivesEditor ( p5jsEditor e )
 	{
 		editor = e;
 

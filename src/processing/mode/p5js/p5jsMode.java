@@ -21,7 +21,7 @@ public class p5jsMode extends Mode {
 	// continously exporting behind the scenes at every save
 	public boolean showSizeWarning = true;
 
-	private JavaScriptEditor jsEditor;
+	private p5jsEditor jsEditor;
 //	private JavaMode defaultJavaMode;
 
 
@@ -36,7 +36,7 @@ public class p5jsMode extends Mode {
 	public Editor createEditor (Base base, String path, EditorState state)
 		throws EditorException {
 
-		jsEditor = new JavaScriptEditor( base, path, state, this );
+		jsEditor = new p5jsEditor( base, path, state, this );
 		return jsEditor;
 	}
 
@@ -155,7 +155,7 @@ public class p5jsMode extends Mode {
 		return new String[] {
 			"applet",
 			"applet_js",
-			JavaScriptBuild.EXPORTED_FOLDER_NAME
+			p5jsBuild.EXPORTED_FOLDER_NAME
 		};
 	}
 
@@ -173,7 +173,7 @@ public class p5jsMode extends Mode {
 	 *	Build and export a sketch
 	 */
 	public boolean handleExport(Sketch sketch) throws IOException, SketchException {
-		return new JavaScriptBuild(sketch).export();
+		return new p5jsBuild(sketch).export();
 	}
 
 

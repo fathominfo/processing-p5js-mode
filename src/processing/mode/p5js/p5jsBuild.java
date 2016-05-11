@@ -25,19 +25,19 @@ import processing.data.StringList;
 import processing.mode.java.preproc.PdePreprocessor;
 
 
-public class JavaScriptBuild {
-	public final static String TEMPLATE_FOLDER_NAME = "template";
-	public final static String EXPORTED_FOLDER_NAME = "web-export";
-	public final static String TEMPLATE_FILE_NAME = "template.html";
+public class p5jsBuild {
+	static final String TEMPLATE_FOLDER_NAME = "template";
+	static final String EXPORTED_FOLDER_NAME = "web";
+	static final String TEMPLATE_FILE_NAME = "index.html";
 
-	public final static String IMPORT_REGEX =
-								"^[\\s]*import[\\s]+([^\\s]+)[\\s]*";
+	static final String IMPORT_REGEX = "^[\\s]*import[\\s]+([^\\s]+)[\\s]*";
+
 
   /**
    * Answers with the first java doc style comment in the string,
    * or an empty string if no such comment can be found.
    */
-  public static String getDocString(String s) {
+  static private String getDocString(String s) {
     String[] javadoc = PApplet.match(s, "/\\*{2,}(.*?)\\*+/");
 
     if (javadoc != null) {
@@ -68,9 +68,8 @@ public class JavaScriptBuild {
    * @param args template keys, data values to replace them
    * @throws IOException when there are problems writing to or from the files
    */
-  public static void writeTemplate ( File template, File output, Map<String, String> fields )
-  throws IOException
-  {
+  static void writeTemplate(File template, File output,
+                            Map<String, String> fields) throws IOException {
     BufferedReader reader = PApplet.createReader(template);
     PrintWriter writer = PApplet.createWriter(output);
 
@@ -85,8 +84,8 @@ public class JavaScriptBuild {
             sb.replace(start, end+2, value == null ? "" : value );
           } else {
             Messages.showWarning("Problem replacing field in template",
-                             "The template appears to have an unterminated " +
-                             "field. The output may look a little funny.");
+                                 "The template appears to have an unterminated " +
+                                 "field. The output may look a little funny.");
           }
         }
         line = sb.toString();
@@ -95,8 +94,6 @@ public class JavaScriptBuild {
     }
     writer.close();
   }
-
-  // -----------------------------------------------------
 
 
   /**
@@ -111,7 +108,7 @@ public class JavaScriptBuild {
 
   protected File binFolder;
 
-  public JavaScriptBuild ( Sketch sketch )
+  public p5jsBuild ( Sketch sketch )
   {
     this.sketch = sketch;
     this.mode = sketch.getMode();
@@ -244,7 +241,7 @@ public class JavaScriptBuild {
 			String[] iStatements = l.split(";");
 			for ( String iExpression : iStatements )
 			{
-				matches = PApplet.match( iExpression, JavaScriptBuild.IMPORT_REGEX );
+				matches = PApplet.match( iExpression, p5jsBuild.IMPORT_REGEX );
 				if ( matches != null && matches.length >= 2 && matches[1] != null )
 				{
 					String iPackage = matches[1];

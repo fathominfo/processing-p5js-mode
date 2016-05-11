@@ -8,7 +8,7 @@ import processing.app.ui.Editor;
 import processing.app.ui.EditorToolbar;
 
 
-public class JavaScriptToolbar extends EditorToolbar {
+public class p5jsToolbar extends EditorToolbar {
 
   static protected final int RUN    = 0;
   static protected final int STOP   = 1;
@@ -34,7 +34,7 @@ public class JavaScriptToolbar extends EditorToolbar {
   }
 
 
-  public JavaScriptToolbar ( Editor editor )
+  public p5jsToolbar ( Editor editor )
   {
     super(editor);
   }
@@ -51,20 +51,20 @@ public class JavaScriptToolbar extends EditorToolbar {
 
   public void handleRun ( int modifiers )
   {
-    JavaScriptEditor jsEditor = (JavaScriptEditor) editor;
+    p5jsEditor jsEditor = (p5jsEditor) editor;
     jsEditor.handleStartServer();
   }
 
   public void handleStop ()
   {
-    JavaScriptEditor jsEditor = (JavaScriptEditor) editor;
+    p5jsEditor jsEditor = (p5jsEditor) editor;
     jsEditor.handleStopServer();
   }
 
   public void handlePressed ( MouseEvent e, int index )
   {
 //    boolean shift = e.isShiftDown();
-    JavaScriptEditor jsEditor = (JavaScriptEditor) editor;
+    p5jsEditor jsEditor = (p5jsEditor) editor;
 
     switch (index) {
 

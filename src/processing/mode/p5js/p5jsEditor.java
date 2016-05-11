@@ -20,8 +20,7 @@ import processing.mode.p5js.ServingEditor;
 
 import javax.swing.*;
 
-public class JavaScriptEditor extends ServingEditor
-{
+public class p5jsEditor extends ServingEditor {
 	final static String PROP_KEY_MODE = "mode";
 	final static String PROP_VAL_MODE = "JavaScript";
 
@@ -37,7 +36,7 @@ public class JavaScriptEditor extends ServingEditor
 	 *
 	 *	@see processing.mode.p5js.ServingEditor
 	 */
-  protected JavaScriptEditor ( Base base, String path, EditorState state, Mode mode )
+  protected p5jsEditor ( Base base, String path, EditorState state, Mode mode )
   	throws EditorException {
 
     super(base, path, state, mode);
@@ -56,11 +55,11 @@ public class JavaScriptEditor extends ServingEditor
 	 *	called in Editor constructor to add the toolbar to the window.
 	 *
 	 *	@return an EditorToolbar, in our case a JavaScriptToolbar
-	 *	@see processing.mode.p5js.JavaScriptToolbar
+	 *	@see processing.mode.p5js.p5jsToolbar
 	 */
   public EditorToolbar createToolbar ()
   {
-    return new JavaScriptToolbar(this);
+    return new p5jsToolbar(this);
   }
 
 	/**
@@ -345,7 +344,7 @@ public class JavaScriptEditor extends ServingEditor
   {
 	statusEmpty();
 
-	boolean wasRunning = serverRunning();
+	boolean wasRunning = isServerRunning();
 	if ( wasRunning )
 	{
 		statusNotice("Server was running, changing the port requires a restart.");
@@ -368,7 +367,7 @@ public class JavaScriptEditor extends ServingEditor
 	Sketch sketch = getSketch();
 
 	File ajs = sketch.getMode().
-				getContentFile( JavaScriptBuild.TEMPLATE_FOLDER_NAME );
+				getContentFile( p5jsBuild.TEMPLATE_FOLDER_NAME );
 
 	File tjs = getCustomTemplateFolder();
 
@@ -385,7 +384,7 @@ public class JavaScriptEditor extends ServingEditor
 	}
 	else
 		statusError( "You need to remove the current "+
-				     "\""+JavaScriptBuild.TEMPLATE_FOLDER_NAME+"\" "+
+				     "\""+p5jsBuild.TEMPLATE_FOLDER_NAME+"\" "+
 					 "folder from the sketch." );
   }
 
@@ -523,7 +522,7 @@ public class JavaScriptEditor extends ServingEditor
         if ( success && openFolder )
 		{
           File exportFolder = new File( sketch.getFolder(),
- 										  JavaScriptBuild.EXPORTED_FOLDER_NAME );
+ 										  p5jsBuild.EXPORTED_FOLDER_NAME );
           Platform.openFolder( exportFolder );
 
           statusNotice("Finished exporting.");
@@ -561,7 +560,7 @@ public class JavaScriptEditor extends ServingEditor
 	{
       handleSave();
 	  statusEmpty();
-		if ( serverRunning() ) handleStartServer();
+		if ( isServerRunning() ) handleStartServer();
     }
 	else
 	{
@@ -571,7 +570,7 @@ public class JavaScriptEditor extends ServingEditor
 			{
             	handleSave();
 				statusEmpty();
-				if ( serverRunning() ) handleStartServer();
+				if ( isServerRunning() ) handleStartServer();
 			}
         });
     }
@@ -699,7 +698,7 @@ public class JavaScriptEditor extends ServingEditor
   private File getExportFolder ()
   {
   	return new File( getSketch().getFolder(),
-	 				 JavaScriptBuild.EXPORTED_FOLDER_NAME );
+	 				 p5jsBuild.EXPORTED_FOLDER_NAME );
   }
 
 	/**
@@ -710,7 +709,7 @@ public class JavaScriptEditor extends ServingEditor
   private File getCustomTemplateFolder ()
   {
 	return new File( getSketch().getFolder(),
-					 JavaScriptBuild.TEMPLATE_FOLDER_NAME );
+					 p5jsBuild.TEMPLATE_FOLDER_NAME );
   }
 
 	/**
