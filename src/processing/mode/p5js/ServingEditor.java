@@ -9,49 +9,28 @@ import processing.app.Base;
 import processing.app.Mode;
 import processing.app.Platform;
 import processing.app.Settings;
+import processing.app.ui.Editor;
 import processing.app.ui.EditorException;
 import processing.app.ui.EditorState;
 
-import processing.mode.java.JavaEditor;
 
-/**
- *	This is the basis for the JavaScript mode, an editor that serves files from a
- *  given root directory.
- *
- *	This used to be part of Processing 2.0 beta and was
- *	moved out on 2013-02-25
- */
+public abstract class ServingEditor extends Editor implements WebServerListener {
+	static final String PROP_KEY_SERVER_PORT = "basicserver.port";
 
-public abstract class ServingEditor
-	extends JavaEditor
-	implements BasicServerListener
-{
-	public final static String PROP_KEY_SERVER_PORT = "basicserver.port";
+	WebServer server;
+	boolean showSizeWarning = true;
 
-	BasicServer server;
 
-	public boolean showSizeWarning = true;
-
-	/**
-	 *	Constructor
-	 *
-	 *	@param base the Processing Base this runs of
-	 *	@param path the path to a sketch to open
-	 *	@param editor state
-	 *	@param the mode to open in
-	 *	@see processing.app.Editor
-	 *	@see processing.app.Base
-	 */
-	protected ServingEditor ( Base base, String path, EditorState state, Mode mode )
+	protected ServingEditor(Base base, String path, EditorState state, Mode mode)
 		throws EditorException {
 		super( base, path, state, mode );
 	}
 
+
 	/**
 	 *	Set the server port, shows an input dialog to enter a port number
 	 */
-	protected void setServerPort ()
-	{
+	protected void setServerPort() {
 		String pString = null;
 		String msg = "Set the server port (1024 < port < 65535)";
 		int currentPort = -1;
@@ -74,7 +53,7 @@ public abstract class ServingEditor
 			return;
 		}
 
-		if ( port < BasicServer.MIN_PORT || port > BasicServer.MAX_PORT )
+		if ( port < WebServer.MIN_PORT || port > WebServer.MAX_PORT )
 		{
 			statusError( "That port number is out of range" );
 			return;
@@ -124,7 +103,7 @@ public abstract class ServingEditor
 	 *
 	 *	@return the BasicServer of this editor
 	 */
-	public BasicServer getServer ()
+	public WebServer getServer ()
 	{
 		return server;
 	}
@@ -152,7 +131,7 @@ public abstract class ServingEditor
 	 *	@param root the root folder to server from
 	 *	@return the BasicServer instance running or created
 	 */
-	protected BasicServer createServer ( File root )
+	protected WebServer createServer ( File root )
 	{
 		if ( server != null ) return server;
 
@@ -161,7 +140,7 @@ public abstract class ServingEditor
 			// bad .. let server handle the complaining ..
 		}
 
-		server = new BasicServer( root );
+		server = new WebServer( root );
 		server.addListener( this );
 
 	    File sketchProps = getSketchPropertiesFile();

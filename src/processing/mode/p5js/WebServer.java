@@ -8,12 +8,9 @@ import java.util.*;
  *	BasicServer, the server underneath JavaScript mode.
  *	Based on a Sun tutorial at: http://bit.ly/fpoHAF
  *	Changed to accept a document root.
- *
- *	This used to be part of Processing 2.0 beta and was
- *	moved out on 2013-02-25
  */
-class BasicServer implements HttpConstants, Runnable {
-	List<BasicServerListener> listeners;
+class WebServer implements HttpConstants, Runnable {
+	List<WebServerListener> listeners;
 
 	// TODO how to handle too many servers?
 	// TODO read settings from sketch.properties
@@ -43,7 +40,7 @@ class BasicServer implements HttpConstants, Runnable {
 	 *
 	 *	@param root the root folder to serve from
 	 */
-	BasicServer ( File root )
+	WebServer ( File root )
 	{
 		setRoot( root );
 
@@ -82,9 +79,9 @@ class BasicServer implements HttpConstants, Runnable {
 	 *
 	 *	@param listener the listener to add, needs to implement interface BasicServerListener
 	 */
-	public void addListener ( BasicServerListener listener )
+	public void addListener ( WebServerListener listener )
 	{
-		if ( listeners == null ) listeners = new ArrayList<BasicServerListener>();
+		if ( listeners == null ) listeners = new ArrayList<WebServerListener>();
 		if ( listener != null ) {
 			listeners.add( listener );
 		}
@@ -302,7 +299,7 @@ class BasicServer implements HttpConstants, Runnable {
 
 		if ( listeners != null )
 		{
-			for ( BasicServerListener l : listeners )
+			for ( WebServerListener l : listeners )
 			{
 				l.serverStopped();
 			}
@@ -357,7 +354,7 @@ class BasicServer implements HttpConstants, Runnable {
 
 				if ( listeners != null )
 				{
-					for ( BasicServerListener l : listeners )
+					for ( WebServerListener l : listeners )
 					{
 						l.serverStarted();
 					}
@@ -389,7 +386,7 @@ class BasicServer implements HttpConstants, Runnable {
 /**
  *	Worker class, handles the actual serving of files
  */
-class Worker extends BasicServer
+class Worker extends WebServer
 implements HttpConstants, Runnable
 {
 	final static int BUF_SIZE = 2048;
@@ -734,16 +731,15 @@ outerloop:
 	/**
 	 *	Add a mapping of file extension to mime-type / content-type
 	 */
-	static void setSuffix ( String k, String v )
-	{
-		map.put(k, v);
+	static void setSuffix(String k, String v) {
+	  map.put(k, v);
 	}
+
 
 	/**
 	 *	Add some default mappings
 	 */
-	static void fillMap ()
-	{
+	static void fillMap() {
 		// this probably can be shortened a lot since this is not a normal server ..
 		setSuffix("",		   "content/unknown");
 		setSuffix(".3dm",	  "x-world/x-3dmf");
@@ -998,14 +994,14 @@ outerloop:
 	}
 }
 
+
 /**
- *	Needed HTTP constants/codes
- *
- *	@see <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">Wikipedia: List of HTTP codes</a>
+ * @see <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">Wikipedia: List of HTTP codes</a>
  */
 interface HttpConstants {
-	/** 2XX: generally "OK" */
+	// 2XX: generally "OK"
 	public static final int HTTP_OK = 200;
+	/*
 	public static final int HTTP_CREATED = 201;
 	public static final int HTTP_ACCEPTED = 202;
 	public static final int HTTP_NOT_AUTHORITATIVE = 203;
@@ -1013,21 +1009,25 @@ interface HttpConstants {
 	public static final int HTTP_RESET = 205;
 	public static final int HTTP_PARTIAL = 206;
 
-	/** 3XX: relocation/redirect */
+	// 3XX: relocation/redirect
 	public static final int HTTP_MULT_CHOICE = 300;
 	public static final int HTTP_MOVED_PERM = 301;
 	public static final int HTTP_MOVED_TEMP = 302;
 	public static final int HTTP_SEE_OTHER = 303;
 	public static final int HTTP_NOT_MODIFIED = 304;
 	public static final int HTTP_USE_PROXY = 305;
+	*/
 
-	/** 4XX: client error */
+	// 4XX: client error
+	/*
 	public static final int HTTP_BAD_REQUEST = 400;
 	public static final int HTTP_UNAUTHORIZED = 401;
 	public static final int HTTP_PAYMENT_REQUIRED = 402;
 	public static final int HTTP_FORBIDDEN = 403;
+	*/
 	public static final int HTTP_NOT_FOUND = 404;
 	public static final int HTTP_BAD_METHOD = 405;
+	/*
 	public static final int HTTP_NOT_ACCEPTABLE = 406;
 	public static final int HTTP_PROXY_AUTH = 407;
 	public static final int HTTP_CLIENT_TIMEOUT = 408;
@@ -1039,20 +1039,18 @@ interface HttpConstants {
 	public static final int HTTP_REQ_TOO_LONG = 414;
 	public static final int HTTP_UNSUPPORTED_TYPE = 415;
 
-	/** 5XX: server error */
+	// 5XX: server error
 	public static final int HTTP_SERVER_ERROR = 500;
 	public static final int HTTP_INTERNAL_ERROR = 501;
 	public static final int HTTP_BAD_GATEWAY = 502;
 	public static final int HTTP_UNAVAILABLE = 503;
 	public static final int HTTP_GATEWAY_TIMEOUT = 504;
 	public static final int HTTP_VERSION = 505;
+	*/
 }
 
-/**
- *	Interface BasicServerListener
- */
-interface BasicServerListener
-{
+
+interface WebServerListener {
 	public abstract void serverStarted();
 	public abstract void serverStopped();
 }

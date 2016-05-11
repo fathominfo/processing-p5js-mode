@@ -1,6 +1,6 @@
 /**
- *	This used to be part of Processing 2.0 beta and was 
- *	moved out on 2013-02-25 
+ *	This used to be part of Processing 2.0 beta and was
+ *	moved out on 2013-02-25
  */
 
 package processing.mode.p5js;
@@ -39,7 +39,7 @@ public class JavaScriptEditor extends ServingEditor
 	 */
   protected JavaScriptEditor ( Base base, String path, EditorState state, Mode mode )
   	throws EditorException {
-    
+
     super(base, path, state, mode);
 
     jsMode = (p5jsMode) mode;
@@ -436,21 +436,22 @@ public class JavaScriptEditor extends ServingEditor
 	directivesEditor.show();
   }
 
-	/**
-	 *	Catches textarea right-click events,
-	 *	overrides Editor.showReference()
-	 *
-	 *	@param filename the reference filename to open, provided by keywords.txt
-	 */
-  public void showReference ( String filename )
-  {
-	// TODO: catch handleFindReference directly
-	//handleFindReferenceImpl();
-
-    File file = new File( jsMode.getJavaMode().getReferenceFolder(), filename );
-    // Prepend with file:// and also encode spaces & other characters
-    Platform.openURL( file.toURI().toString() );
-  }
+//	/**
+//	 *	Catches textarea right-click events,
+//	 *	overrides Editor.showReference()
+//	 *
+//	 *	@param filename the reference filename to open, provided by keywords.txt
+//	 */
+//  public void showReference ( String filename )
+//  {
+//    super.showReference(filename);
+//	// TODO: catch handleFindReference directly
+//	//handleFindReferenceImpl();
+//
+//    File file = new File( jsMode.getJavaMode().getReferenceFolder(), filename );
+//    // Prepend with file:// and also encode spaces & other characters
+//    Platform.openURL( file.toURI().toString() );
+//  }
 
 	/**
 	 *	Menu item callback, handles showing a reference page.
@@ -513,9 +514,9 @@ public class JavaScriptEditor extends ServingEditor
 	}
 	else
 	{
-      
+
       //toolbar.activate(JavaScriptToolbar.EXPORT);
-      
+
       try
 	  {
         boolean success = jsMode.handleExport(sketch);
@@ -534,7 +535,7 @@ public class JavaScriptEditor extends ServingEditor
         statusError(e);
 
 	    //toolbar.deactivate(JavaScriptToolbar.EXPORT);
-		
+
 		return false;
       }
 
@@ -585,7 +586,7 @@ public class JavaScriptEditor extends ServingEditor
     // toolbar.activate(JavaScriptToolbar.SAVE);
 
     handleSaveImpl();
-    
+
     // toolbar.deactivate(JavaScriptToolbar.SAVE);
   }
 
@@ -621,11 +622,11 @@ public class JavaScriptEditor extends ServingEditor
   public boolean handleSaveAs ()
   {
     // toolbar.activate(JavaScriptToolbar.SAVE);
-    
+
     boolean result = super.handleSaveAs();
 
     // toolbar.deactivate(JavaScriptToolbar.SAVE);
-    
+
     return result;
   }
 
@@ -646,7 +647,7 @@ public class JavaScriptEditor extends ServingEditor
 
 		// import statements into the main sketch file (code[0])
 		// if the current code is a .java file, insert into current
-		if (mode.isDefaultExtension(sketch.getCurrentCode())) 
+		if (mode.isDefaultExtension(sketch.getCurrentCode()))
 		{
 			sketch.setCurrentCode(0);
 		}
@@ -656,7 +657,7 @@ public class JavaScriptEditor extends ServingEditor
 		// commented out, then this will be a problem.
 		String[] list = Util.packageListFromClassPath(jarPath).array();
 		StringBuffer buffer = new StringBuffer();
-		for ( int i = 0; i < list.length; i++ ) 
+		for ( int i = 0; i < list.length; i++ )
 		{
 			buffer.append("import ");
 			buffer.append(list[i]);
@@ -682,7 +683,7 @@ public class JavaScriptEditor extends ServingEditor
   		super.serverStarted();
 
 		if ( !handleExport( false ) ) return;
-		
+
 		toolbar.activateRun();
   }
 

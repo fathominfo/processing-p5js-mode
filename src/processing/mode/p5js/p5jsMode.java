@@ -13,15 +13,16 @@ import java.io.IOException;
 
 import processing.app.*;
 import processing.app.ui.*;
-import processing.mode.java.JavaMode;
 
-public class p5jsMode extends JavaMode {
+
+public class p5jsMode extends Mode {
+//public class p5jsMode extends JavaMode {
 	// show that warning only once per run-cycle as we are
 	// continously exporting behind the scenes at every save
 	public boolean showSizeWarning = true;
 
 	private JavaScriptEditor jsEditor;
-	private JavaMode defaultJavaMode;
+//	private JavaMode defaultJavaMode;
 
 
 	public p5jsMode (Base base, File folder) {
@@ -48,6 +49,7 @@ public class p5jsMode extends JavaMode {
 	}
 
 
+	/*
 	public JavaMode getJavaMode() {
 		if (defaultJavaMode == null) {
 			for (Mode m : base.getModeList() ) {
@@ -59,6 +61,7 @@ public class p5jsMode extends JavaMode {
 		}
 		return defaultJavaMode;
 	}
+	*/
 
 
   public File[] getKeywordFiles() {
@@ -87,11 +90,11 @@ public class p5jsMode extends JavaMode {
 
 
   /**
-   *	Fetch and return examples from JS and Java mode
+   *	Fetch and return examples
    */
 	public File[] getExampleCategoryFolders() {
 	  // find included example subdirs
-	  File[] inclExamples = examplesFolder.listFiles(new java.io.FileFilter(){
+	  File[] inclExamples = examplesFolder.listFiles(new java.io.FileFilter() {
 	    public boolean accept (File f) {
 	      // only the subfolders
 	      return f.isDirectory();
@@ -100,10 +103,11 @@ public class p5jsMode extends JavaMode {
 	  java.util.Arrays.sort(inclExamples);
 
 	  // add JavaMode examples as these are supposed to run in JSMode
-	  JavaMode jMode = getJavaMode();
-	  if ( jMode == null )
+//	  JavaMode jMode = getJavaMode();
+//	  if ( jMode == null )
 	    return inclExamples; // js examples only
 
+	    /*
 	  File jExamples = jMode.getContentFile("examples");
 	  File[] jModeExamples = new File[] {
 	    new File(jExamples, "Basics"),
@@ -122,6 +126,7 @@ public class p5jsMode extends JavaMode {
 	  java.util.Arrays.sort(finalExamples);
 
 	  return finalExamples;
+	  */
 	}
 
 
