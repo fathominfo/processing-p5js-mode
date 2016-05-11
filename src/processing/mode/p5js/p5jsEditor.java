@@ -26,7 +26,7 @@ public class p5jsEditor extends ServingEditor {
 
   private p5jsMode jsMode;
 
-  private DirectivesEditor directivesEditor;
+//  private DirectivesEditor directivesEditor;
 
   // tapping into Java mode might not be wanted?
   // processing.mode.java.PdeKeyListener listener;
@@ -136,11 +136,11 @@ public class p5jsEditor extends ServingEditor {
 	 *
 	 *	@return JMenu containing the menu items for "JavaScript" menu
 	 */
-  public JMenu buildModeMenu()
-  {
+  public JMenu buildModeMenu() {
     JMenu menu = new JMenu("JavaScript");
     JMenuItem item;
 
+    /*
 	item = new JMenuItem("Playback Settings (Directives)");
 	item.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
@@ -148,6 +148,7 @@ public class p5jsEditor extends ServingEditor {
 		}
 	});
 	menu.add(item);
+	*/
 
 	JMenuItem copyServerAddressItem = new JMenuItem("Copy Server Address");
 	copyServerAddressItem.addActionListener(new ActionListener(){
@@ -193,55 +194,22 @@ public class p5jsEditor extends ServingEditor {
 	 *
 	 *	@return JMenu containing the menu items for "Help" menu
 	 */
-  public JMenu buildHelpMenu ()
-  {
+  public JMenu buildHelpMenu() {
     JMenu menu = new JMenu("Help");
     JMenuItem item;
 
-	// TODO switch to "http://js.processing.org/"?
-
-    item = new JMenuItem("QuickStart for Processing Devs");
+    item = new JMenuItem("Getting Started");
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Platform.openURL("http://processingjs.org/articles/p5QuickStart.html");
+        Platform.openURL("http://p5js.org/get-started/#your-first-sketch");
       }
     });
     menu.add(item);
-
-    item = new JMenuItem("QuickStart for JavaScript Devs");
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("http://processingjs.org/articles/jsQuickStart.html");
-      }
-    });
-    menu.add(item);
-
-    /* TODO Implement an environment page
-    item = new JMenuItem("Environment");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          showReference("environment" + File.separator + "index.html");
-        }
-      });
-    menu.add(item);
-     */
-
-    /* TODO Implement a troubleshooting page
-    item = new JMenuItem("Troubleshooting");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Platform.openURL("http://wiki.processing.org/w/Troubleshooting");
-        }
-      });
-    menu.add(item);
-     */
 
     item = new JMenuItem("Reference");
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        //TODO get offline reference archive corresponding to the release
-        // packaged with this mode see: P.js ticket 1146 "Offline Reference"
-        Platform.openURL("http://processingjs.org/reference/");
+        Platform.openURL("http://p5js.org/reference/");
       }
     });
     menu.add(item);
@@ -255,58 +223,45 @@ public class p5jsEditor extends ServingEditor {
     });
     menu.add(item);
 
-    /* TODO FAQ
-    item = new JMenuItem("Frequently Asked Questions");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Platform.openURL("http://wiki.processing.org/w/FAQ");
-        }
-      });
-    menu.add(item);
-    */
+    menu.addSeparator();
 
-    item = new JMenuItem("Visit Processingjs.org");
+    item = new JMenuItem("Visit p5js.org");
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Platform.openURL("http://processingjs.org/");
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Platform.openURL("http://p5js.org/");
+      }
+    });
     menu.add(item);
 
-    item = new JMenuItem("Report a JavaScriptMode bug");
+    item = new JMenuItem("Visit the Forum");
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Platform.openURL("https://github.com/fjenett/javascript-mode-processing/issues");
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Platform.openURL("https://forum.processing.org/");
+      }
+    });
     menu.add(item);
 
-    // // OSX has its own about menu
-    // if (!Base.isMacOS()) {
-    //   menu.addSeparator();
-    //   item = new JMenuItem("About Processing");
-    //   item.addActionListener( new ActionListener() {
-    //     public void actionPerformed(ActionEvent e) {
-    //       base.handleAbout();
-    //     }
-    //   });
-    //   menu.add(item);
-    // }
+    item = new JMenuItem("View p5js on Github");
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Platform.openURL("https://github.com/processing/p5.js");
+      }
+    });
+    menu.add(item);
 
     return menu;
   }
 
+
 	/**
-	 *	Returns the default commenting prefix for comment/uncomment command,
-	 *	implements abstract Editor.getCommentPrefix(),
-	 *	called from Editor.handleCommentUncomment()
-	 *
-	 *	@return the comment prefix as String
+	 * Returns the default commenting prefix for comment/uncomment command,
+	 * called from Editor.handleCommentUncomment()
 	 */
-  public String getCommentPrefix ()
-  {
+  @Override
+  public String getCommentPrefix() {
     return "//";
   }
+
 
 	/**
 	 *	Stop the runner, in our case this is the server,
@@ -318,11 +273,14 @@ public class p5jsEditor extends ServingEditor {
   public void internalCloseRunner ()
   {
       handleStopServer();
+
+      /*
 	  if ( directivesEditor != null )
 	  {
 		directivesEditor.hide();
 		directivesEditor = null;
 	  }
+	  */
   }
 
 	/**
@@ -425,6 +383,7 @@ public class p5jsEditor extends ServingEditor {
 	/**
 	 *	Menu item callback, open the playback settings frontend
 	 */
+  /*
   private void handleShowDirectivesEditor ()
   {
 	if ( directivesEditor == null )
@@ -434,37 +393,8 @@ public class p5jsEditor extends ServingEditor {
 
 	directivesEditor.show();
   }
+  */
 
-//	/**
-//	 *	Catches textarea right-click events,
-//	 *	overrides Editor.showReference()
-//	 *
-//	 *	@param filename the reference filename to open, provided by keywords.txt
-//	 */
-//  public void showReference ( String filename )
-//  {
-//    super.showReference(filename);
-//	// TODO: catch handleFindReference directly
-//	//handleFindReferenceImpl();
-//
-//    File file = new File( jsMode.getJavaMode().getReferenceFolder(), filename );
-//    // Prepend with file:// and also encode spaces & other characters
-//    Platform.openURL( file.toURI().toString() );
-//  }
-
-	/**
-	 *	Menu item callback, handles showing a reference page.
-	 */
-  /*private void handleFindReferenceImpl ()
-  {
-	if ( textarea.isSelectionActive() ) {
-        Platform.openURL(
-          "http://www.google.com/search?q=" +
-          textarea.getSelectedText().trim() +
-          "+site%3Ahttp%3A%2F%2Fprocessingjs.org%2Freference"
-        );
-     }
-  }*/
 
 	/**
 	 *	Menu item callback, replacement for RUN:

@@ -1,8 +1,16 @@
-Processing JavaScript Mode
-==========================
+## p5.js Mode for Processing
 
-This is the former ProcessingJS tool (for Processing 1.5) that became Processings internal JavaScript mode (until 2.0 beta 8) and has now been moved out of the Processing IDE.
+Based on the former ProcessingJS tool (for Processing 1.5) that became Processings internal JavaScript mode (until 2.0 beta 8), and later maintained as a separate project by Florian Jenett.
 
-Use *[Mode menu] --> Add Mode ...* to install into your PDE.
+### todo
 
-Tested with Processing 2.2.1 and 3.0a5
+- [ ] get templates working
+- [ ] make the server provide dummy /libraries folder
+- [ ] implement Export as separate option that creates web folder
+- [ ] make sure toolbar buttons are behaving
+- [ ] move the side panels from the editor out of Java and into Editor
+
+### lower priority
+
+- [ ] remove DirectivesEditor
+- [ ] edit .html, .txt, .json? 
