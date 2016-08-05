@@ -16,5 +16,5 @@ and was later maintained as a separate project by Florian Jenett.
 
 ### lower priority
 
-- [*] remove DirectivesEditor
+- [x] remove DirectivesEditor
 - [ ] edit .html, .txt, .json? 
