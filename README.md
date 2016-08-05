@@ -1,6 +1,10 @@
 ## p5.js Mode for Processing
 
-Based on the former ProcessingJS tool (for Processing 1.5) that became Processings internal JavaScript mode (until 2.0 beta 8), and later maintained as a separate project by Florian Jenett.
+A simple editor for p5.js code that runs inside the PDE.
+
+Based on the former ProcessingJS Tool (for Processing 1.5) 
+that became JavaScript Mode (until it was removed in 2.0 beta 8), 
+and was later maintained as a separate project by Florian Jenett.
 
 ### todo
 
@@ -12,5 +16,5 @@ Based on the former ProcessingJS tool (for Processing 1.5) that became Processin
 
 ### lower priority
 
-- [ ] remove DirectivesEditor
+- [*] remove DirectivesEditor
 - [ ] edit .html, .txt, .json? 
