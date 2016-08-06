@@ -29,12 +29,18 @@ public class GenericHandler extends Handler {
         File indexFile = new File(target, "index.html");
         if (indexFile.exists()) {
           if (!path.endsWith("/")) {
-            path += '/';
+            ps.status(HttpServer.HTTP_FOUND);
+            ps.println("Location: " + path + "/");
+            ps.println();
+
+          } else {
+            path += "index.html";
+            handle(path, ps);
           }
-          path += "index.html";
-          handle(path, ps);
         } else {
-          ps.status(HttpWorker.HTTP_UNAUTHORIZED);
+          ps.status(HttpServer.HTTP_UNAUTHORIZED);
+          ps.println("Content-type: text/html");
+          ps.println();
           ps.println("<html><body>");
           ps.println("<h1>Directory Listing Denied</h1>");
           ps.println("<pre>" + path + "</pre>");
@@ -48,12 +54,12 @@ public class GenericHandler extends Handler {
           InputStream input = new BufferedInputStream(new FileInputStream(target));
           b = PApplet.loadBytes(input);
 
-          ps.status(HttpWorker.HTTP_OK);
+          ps.status(HttpServer.HTTP_OK);
           String contentType = "content/unknown";
           int dot = localPath.lastIndexOf('.');
           if (dot != -1) {
             String extension = localPath.substring(dot);
-            String found = HttpWorker.getMimeType(extension);
+            String found = HttpServer.getMimeType(extension);
             if (found != null) {
               contentType = found;
             } else {
@@ -66,9 +72,11 @@ public class GenericHandler extends Handler {
           ps.write(b);
 
         } catch (Exception e) {
-          ps.status(HttpWorker.HTTP_SERVER_ERROR);
+          ps.status(HttpServer.HTTP_SERVER_ERROR);
+          ps.println("Content-type: text/html");
+          ps.println();
           ps.println("<html><body>");
-          ps.println("<h1>" + HttpWorker.HTTP_SERVER_ERROR + " Exception</h1>");
+          ps.println("<h1>" + HttpServer.HTTP_SERVER_ERROR + " Exception</h1>");
           ps.println("<pre>");
           e.printStackTrace(ps.ps);
           ps.println("</pre>");
@@ -76,9 +84,11 @@ public class GenericHandler extends Handler {
         }
       }
     } else {
-      ps.status(HttpWorker.HTTP_NOT_FOUND);
+      ps.status(HttpServer.HTTP_NOT_FOUND);
+      ps.println("Content-type: text/html");
+      ps.println();
       ps.println("<html><body>");
-      ps.println("<h1>" + HttpWorker.HTTP_NOT_FOUND + " Not Found</h1>");
+      ps.println("<h1>" + HttpServer.HTTP_NOT_FOUND + " Not Found</h1>");
       ps.println("<pre>" + path + "</pre>");
       ps.println("<pre>" + target.getAbsolutePath() + "</pre>");
       ps.println("</body></html>");

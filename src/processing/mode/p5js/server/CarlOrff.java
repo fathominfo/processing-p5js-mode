@@ -72,10 +72,6 @@ public class CarlOrff {
 
 
   public void status(int code) {
-    if (code == 200) {
-      ps.println("HTTP/1.1 200 OK");
-    } else {
-      ps.println("HTTP/1.1 500 status() not implemented");
-    }
+    ps.println("HTTP/1.1 " + code + " " + HttpServer.getStatusMessage(code));
   }
 }
