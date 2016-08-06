@@ -12,12 +12,16 @@ import processing.app.Base;
 import processing.app.Formatter;
 import processing.app.Mode;
 import processing.app.Platform;
+import processing.app.syntax.JEditTextArea;
+import processing.app.syntax.PdeTextArea;
+import processing.app.syntax.PdeTextAreaDefaults;
 import processing.app.ui.Editor;
 import processing.app.ui.EditorException;
 import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
 import processing.mode.java.AutoFormat;
+import processing.mode.java.JavaInputHandler;
 import processing.mode.p5js.server.HttpServer;
 
 
@@ -31,7 +35,16 @@ public class p5jsEditor extends Editor {
   protected p5jsEditor(Base base, String path,
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
+
+
 //    jsMode = (p5jsMode) mode;
+  }
+
+
+  @Override
+  protected JEditTextArea createTextArea() {
+    return new PdeTextArea(new PdeTextAreaDefaults(mode),
+                           new JavaInputHandler(this), this);
   }
 
 

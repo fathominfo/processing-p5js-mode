@@ -26,9 +26,9 @@ import processing.mode.java.preproc.PdePreprocessor;
 
 
 public class p5jsBuild {
-//	static final String TEMPLATE_FOLDER_NAME = "template";
-//	static final String EXPORT_FOLDER_NAME = "web";
-//	static final String TEMPLATE_FILE_NAME = "index.html";
+	static final String TEMPLATE_FOLDER_NAME = "template";
+	static final String EXPORT_FOLDER_NAME = "web";
+	static final String TEMPLATE_FILE_NAME = "index.html";
 
 	static final String IMPORT_REGEX = "^[\\s]*import[\\s]+([^\\s]+)[\\s]*";
 
