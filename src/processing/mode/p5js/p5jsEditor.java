@@ -36,7 +36,6 @@ public class p5jsEditor extends Editor {
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
 
-
 //    jsMode = (p5jsMode) mode;
   }
 

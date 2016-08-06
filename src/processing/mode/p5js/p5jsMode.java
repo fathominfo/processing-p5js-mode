@@ -138,17 +138,12 @@ public class p5jsMode extends Mode {
 
 
 	/**
-	 *	Return list of file- / folder-names that should be ignored when
-	 *	sketch is being copied or saved as
+	 * Return list of file and folder names that should be ignored on Save As
+	 * @return a list or a zero-length array (should not be null)
 	 */
   @Override
 	public String[] getIgnorable() {
-    return null;
-    /*
-		return new String[] {
-			p5jsBuild.EXPORT_FOLDER_NAME
-		};
-		*/
+		return new String[] { };
 	}
 
 
