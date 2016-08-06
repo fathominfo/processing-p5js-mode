@@ -19,7 +19,8 @@ public class p5jsMode extends Mode {
 	/**
 	 *	Called to create the actual editor when needed (once per Sketch)
 	 */
-	public Editor createEditor(Base base, String path,
+	@Override
+  public Editor createEditor(Base base, String path,
 	                           EditorState state) throws EditorException {
 		jsEditor = new p5jsEditor(base, path, state, this);
 		return jsEditor;
@@ -83,8 +84,8 @@ public class p5jsMode extends Mode {
 	public File[] getExampleCategoryFolders() {
 	  // find included example subdirs
 	  File[] inclExamples = examplesFolder.listFiles(new java.io.FileFilter() {
+	    @Override
 	    public boolean accept (File f) {
-	      // only the subfolders
 	      return f.isDirectory();
 	    }
 	  });

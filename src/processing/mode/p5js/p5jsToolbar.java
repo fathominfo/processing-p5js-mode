@@ -49,21 +49,22 @@ public class p5jsToolbar extends EditorToolbar {
     // }
   }
 
-  public void handleRun ( int modifiers )
-  {
+
+  @Override
+  public void handleRun(int modifiers) {
     p5jsEditor jsEditor = (p5jsEditor) editor;
     jsEditor.handleStartServer();
   }
 
-  public void handleStop ()
-  {
+
+  @Override
+  public void handleStop() {
     p5jsEditor jsEditor = (p5jsEditor) editor;
     jsEditor.handleStopServer();
   }
 
-  public void handlePressed ( MouseEvent e, int index )
-  {
-//    boolean shift = e.isShiftDown();
+
+  public void handlePressed (MouseEvent e, int index) {
     p5jsEditor jsEditor = (p5jsEditor) editor;
 
     switch (index) {
