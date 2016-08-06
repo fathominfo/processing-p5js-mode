@@ -57,6 +57,8 @@ public class HttpServer {
     handlerMap.put("status", new StatusHandler(this));
     handlerMap.put("types", new TypesHandler(this));
     */
+    handlerMap.put("libraries", new LibrariesHandler(this));
+    //handlerMap.put("libraries", new GenericHandler(this, getLibrariesFolder()));
     genericHandler = new GenericHandler(this);
 
     for (int i = 0; i < WORKERS; i++) {
@@ -137,6 +139,11 @@ public class HttpServer {
     // A sketch from a different editor will be running its own server.
     return editor.getSketch().getFolder();
     //return root;
+  }
+
+
+  File getLibrariesFolder() {
+    return new File(editor.getTemplateFolder(), "libraries");
   }
 
 

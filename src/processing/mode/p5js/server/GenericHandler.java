@@ -6,24 +6,41 @@ import processing.core.PApplet;
 
 
 public class GenericHandler extends Handler {
+//  File root;
+
 
   public GenericHandler(HttpServer server) {
     super(server);
+//    root = server.getRoot();
   }
+
+
+//  public GenericHandler(HttpServer server, File root) {
+//    super(server);
+//    this.root = root;
+//  }
+
+
+//  public void setRoot(File root) {
+//    this.root = root;
+//  }
 
 
   @Override
   public void handle(String path, CarlOrff ps) {
-    File root = server.getRoot();
 //    System.out.println("root is " + root);
 //    System.out.println("path is " + path);
     //File target = new File(root, path.substring(1));  // remove leading slash
-    File target = new File(root, path);  // leading slash already removed
+    File target = new File(server.getRoot(), path);  // leading slash already removed
 
 //    if (page == null || page.trim().length() == 0) {
 //      ps.status(404);
 //    }
+    handleFile(path, ps, target);
+  }
 
+
+  void handleFile(String path, CarlOrff ps, File target) {
     if (target.exists()) {
       if (target.isDirectory()) {
         File indexFile = new File(target, "index.html");

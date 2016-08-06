@@ -143,9 +143,12 @@ public class p5jsMode extends Mode {
 	 */
   @Override
 	public String[] getIgnorable() {
+    return null;
+    /*
 		return new String[] {
 			p5jsBuild.EXPORT_FOLDER_NAME
 		};
+		*/
 	}
 
 

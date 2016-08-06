@@ -320,6 +320,11 @@ public class p5jsEditor extends Editor {
   */
 
 
+  public File getTemplateFolder() {
+    return getMode().getContentFile("template");
+  }
+
+
   public void handleRun() {
     toolbar.activateRun();
     if (server == null || !server.isRunning()) {
