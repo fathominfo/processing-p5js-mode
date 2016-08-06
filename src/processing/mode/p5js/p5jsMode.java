@@ -16,10 +16,6 @@ import processing.app.ui.*;
 
 
 public class p5jsMode extends Mode {
-//public class p5jsMode extends JavaMode {
-	// show that warning only once per run-cycle as we are
-	// continously exporting behind the scenes at every save
-	public boolean showSizeWarning = true;
 
 	private p5jsEditor jsEditor;
 //	private JavaMode defaultJavaMode;

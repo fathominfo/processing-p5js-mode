@@ -199,6 +199,8 @@ public class p5jsBuild {
 	// Pro: being literate as we are in a script language.
     String scrubbed = PdePreprocessor.scrubComments(sketch.getCode(0).getProgram());
 
+    boolean showSizeWarning = true;
+
     // get width and height
     int wide = PApplet.DEFAULT_WIDTH;
     int high = PApplet.DEFAULT_HEIGHT;
@@ -213,7 +215,7 @@ public class p5jsBuild {
         // renderer
 
       } catch (NumberFormatException e) {
-		if ( ((p5jsMode)mode).showSizeWarning ) {
+		if (showSizeWarning) {
    	    	// found a reference to size, but it didn't seem to contain numbers
 	        final String message =
 	          "The size of this applet could not automatically be\n" +
@@ -223,7 +225,7 @@ public class p5jsBuild {
 	          "command. See the size() reference for an explanation.";
 	        Messages.showWarning("Could not find applet size", message);
 			// warn only once ..
-			((p5jsMode)mode).showSizeWarning = false;
+			showSizeWarning = false;
 		}
       }
     }  // else no size() command found, defaults will be used
