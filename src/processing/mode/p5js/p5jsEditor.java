@@ -15,6 +15,7 @@ import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
 import processing.mode.java.AutoFormat;
+import processing.mode.p5js.server.HttpServer;
 
 import javax.swing.*;
 
@@ -22,7 +23,7 @@ import javax.swing.*;
 public class p5jsEditor extends Editor implements WebServerListener {
   private p5jsMode jsMode;
 
-  WebServer server;
+  HttpServer server;
   boolean showSizeWarning = true;
 
 
@@ -571,11 +572,6 @@ public class p5jsEditor extends Editor implements WebServerListener {
   */
 
 
-  public WebServer getServer() {
-    return server;
-  }
-
-
   /**
    *  A toggle to start/stop the server
    *  @param root the root folder to start from if it needs to be started
@@ -594,6 +590,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *  @param root the root folder to server from
    *  @return the BasicServer instance running or created
    */
+  /*
   protected WebServer createServer(File root) {
     if (server != null) return server;
 
@@ -619,6 +616,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     }
     return server;
   }
+  */
 
 
   /**
@@ -635,7 +633,8 @@ public class p5jsEditor extends Editor implements WebServerListener {
     }
 
     if (server == null) {
-      server = createServer(root);
+      //server = createServer(root);
+      server = new HttpServer(this);
     }
 
     if (!server.isRunning()) {

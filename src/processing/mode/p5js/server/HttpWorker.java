@@ -8,10 +8,8 @@ import processing.core.PApplet;
 
 
 public class HttpWorker implements Runnable {
-//  static final int BUF_SIZE = 8192;
-
-  private Socket socket;
   private HttpServer server;
+  private Socket socket;
 
 
   HttpWorker(HttpServer server) {
@@ -118,149 +116,14 @@ public class HttpWorker implements Runnable {
   }
 
 
-  /*
-  boolean printHeaders(ZipEntry targ, CarlOrff writer) throws IOException {
-    boolean ret = false;
-    int rCode = 0;
-    if (targ == null) {
-      rCode = HTTP_NOT_FOUND;
-      writer.println("HTTP/1.0 " + HTTP_NOT_FOUND + " Not Found");
-      ret = false;
-    }  else {
-      rCode = HTTP_OK;
-      writer.println("HTTP/1.0 " + HTTP_OK + " OK");
-      ret = true;
-    }
-    if (targ != null) {
-      RestServer.log("From " +socket.getInetAddress().getHostAddress()+": GET " + targ.getName()+" --> "+rCode);
-    }
-    writer.println("Server: Herbert Hoover");
-    writer.println("Date: " + (new Date()));
-    if (ret) {
-      if (!targ.isDirectory()) {
-        writer.println("Content-length: " + targ.getSize());
-        writer.println("Last Modified: " + new Date(targ.getTime()));
-        String name = targ.getName();
-        int ind = name.lastIndexOf('.');
-        String ct = null;
-        if (ind > 0) {
-          ct = mimeTypes.get(name.substring(ind));
-        }
-        if (ct == null) {
-          //System.err.println("unknown content type " + name.substring(ind));
-          ct = "application/x-unknown-content-type";
-        }
-        writer.println("Content-type: " + ct);
-      } else {
-        writer.println("Content-type: text/html");
-      }
-    }
-    writer.println();  // adding another newline here [fry]
-    return ret;
-  }
-
-
-  boolean printHeaders(File targ, CarlOrff ps) throws IOException {
-    boolean ret = false;
-    int rCode = 0;
-    if (!targ.exists()) {
-      rCode = HTTP_NOT_FOUND;
-      ps.println("HTTP/1.0 " + HTTP_NOT_FOUND + " Not Found");
-      ret = false;
-    }  else {
-      rCode = HTTP_OK;
-      ps.println("HTTP/1.0 " + HTTP_OK +" OK");
-      ret = true;
-    }
-    RestServer.log("From " +socket.getInetAddress().getHostAddress()+": GET " + targ.getAbsolutePath()+"-->"+rCode);
-    ps.println("Server: Herbert Hoover");
-    ps.println("Date: " + new Date());
-    if (ret) {
-      if (!targ.isDirectory()) {
-        ps.println("Content-length: " + targ.length());
-        ps.println("Last Modified: " + new Date(targ.lastModified()));
-        String name = targ.getName();
-        int ind = name.lastIndexOf('.');
-        String ct = null;
-        if (ind > 0) {
-          ct = mimeTypes.get(name.substring(ind));
-        }
-        if (ct == null) {
-          ct = "unknown/unknown";
-        }
-        ps.println("Content-type: " + ct);
-      } else {
-        ps.println("Content-type: text/html");
-      }
-    }
-    return ret;
-  }
-
-
-  void send404(CarlOrff ps) throws IOException {
-    ps.println();
-    ps.println();
-    ps.println("<html><body><h1>404 Not Found</h1>"+
-        "The requested resource was not found.</body></html>");
-    ps.println();
-  }
-
-
-  void sendFile(File targ, CarlOrff ps) throws IOException {
-    InputStream is = null;
-//    ps.write(EOL);
-    ps.println();
-    if (targ.isDirectory()) {
-      listDirectory(targ, ps);
-      return;
-    } else {
-      is = new FileInputStream(targ.getAbsolutePath());
-    }
-    sendFile(is, ps);
-  }
-
-
-  void sendFile(InputStream is, CarlOrff ps) throws IOException {
-    try {
-      int n;
-      while ((n = is.read(buf)) > 0) {
-        ps.write(buf, 0, n);
-      }
-    } finally {
-      is.close();
-    }
-  }
-
-
-  void listDirectory(File dir, CarlOrff ps) throws IOException {
-    ps.println("<TITLE>Directory listing</TITLE><P>");
-    ps.println("<A HREF=\"..\">Parent Directory</A><BR>");
-    String[] list = dir.list();
-    for (int i = 0; list != null && i < list.length; i++) {
-      File f = new File(dir, list[i]);
-      if (f.isDirectory()) {
-        ps.println("<A HREF=\""+list[i]+"/\">"+list[i]+"/</A><BR>");
-      } else {
-        ps.println("<A HREF=\""+list[i]+"\">"+list[i]+"</A><BR");
-      }
-    }
-    ps.println("<P><HR><BR><I>" + (new Date()) + "</I>");
-  }
-  */
-
-
-  // mapping of file extensions to content-types
-  static HashMap<String, String> mimeTypes = new HashMap<>();
+  /** mapping of file extensions to content-types */
+  static Map<String, String> mimeTypes = new HashMap<>();
 
 
   static String getMimeType(String extension) {
     return mimeTypes.get(extension);
   }
 
-
-//  static void setSuffix(String k, String v) {
-//    map.put(k, v);
-//  }
 
   static {
     mimeTypes.put("", "content/unknown");

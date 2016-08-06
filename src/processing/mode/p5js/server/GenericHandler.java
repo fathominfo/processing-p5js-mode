@@ -68,7 +68,7 @@ public class GenericHandler extends Handler {
         } catch (Exception e) {
           ps.status(HttpWorker.HTTP_SERVER_ERROR);
           ps.println("<html><body>");
-          ps.println("<h1>500 Exception</h1>");
+          ps.println("<h1>" + HttpWorker.HTTP_SERVER_ERROR + " Exception</h1>");
           ps.println("<pre>");
           e.printStackTrace(ps.ps);
           ps.println("</pre>");
@@ -78,7 +78,7 @@ public class GenericHandler extends Handler {
     } else {
       ps.status(HttpWorker.HTTP_NOT_FOUND);
       ps.println("<html><body>");
-      ps.println("<h1>404 Not Found</h1>");
+      ps.println("<h1>" + HttpWorker.HTTP_NOT_FOUND + " Not Found</h1>");
       ps.println("<pre>" + path + "</pre>");
       ps.println("<pre>" + target.getAbsolutePath() + "</pre>");
       ps.println("</body></html>");

@@ -20,9 +20,6 @@ public class HttpServer {
   // Where worker threads stand idle
   static List<HttpWorker> threads = new ArrayList<>();
 
-  // the web server's virtual root
-  //static File root;
-
   // timeout on client connections
   static final int TIMEOUT = 10000;
 
@@ -33,6 +30,7 @@ public class HttpServer {
   Handler genericHandler;
 
   p5jsEditor editor;
+  int port;
 
 
   public HttpServer(p5jsEditor editor) {
@@ -42,6 +40,7 @@ public class HttpServer {
 
   public HttpServer(p5jsEditor editor, final int port) {
     this.editor = editor;
+    this.port = port;
 
     /*
     handlerMap.put("details", new DetailsHandler(this));
@@ -103,6 +102,11 @@ public class HttpServer {
         }
       }
     }).start();
+  }
+
+
+  public String getAddress() {
+    return "http://127.0.0.1:" + port + "/";
   }
 
 

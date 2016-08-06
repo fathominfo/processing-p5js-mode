@@ -276,17 +276,7 @@ class WebServer implements HttpConstants, Runnable {
 	 *	Stop the server
 	 *	With a little help from: http://bit.ly/eA8iGj
 	 */
-	public void shutDown ()
-	{
-		//System.out.println("Shutting down");
-		/*if ( threads != null )
-		{
-			for ( Worker w : threads )
-			{
-				w.stop();
-			}
-		}*/
-
+	public void shutDown() {
 		thread = null;
 		try {
 			if ( server != null )
