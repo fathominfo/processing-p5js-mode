@@ -27,7 +27,7 @@ import processing.mode.java.preproc.PdePreprocessor;
 
 public class p5jsBuild {
 	static final String TEMPLATE_FOLDER_NAME = "template";
-	static final String EXPORTED_FOLDER_NAME = "web";
+	static final String EXPORT_FOLDER_NAME = "web";
 	static final String TEMPLATE_FILE_NAME = "index.html";
 
 	static final String IMPORT_REGEX = "^[\\s]*import[\\s]+([^\\s]+)[\\s]*";
@@ -422,7 +422,7 @@ public class p5jsBuild {
 		 customTemplateFolder.isDirectory() &&
 		 customTemplateFolder.canRead() )
 	{
-		File appletJsFolder = new File( sketchFolder, EXPORTED_FOLDER_NAME );
+		File appletJsFolder = new File( sketchFolder, EXPORT_FOLDER_NAME );
 
 		try {
 			//TODO: this is potentially dangerous as it might override files in "web-export"
@@ -638,7 +638,7 @@ public class p5jsBuild {
    */
   public boolean export() throws IOException, SketchException
   {
-    File webExport = new File(sketch.getFolder(), EXPORTED_FOLDER_NAME);
+    File webExport = new File(sketch.getFolder(), EXPORT_FOLDER_NAME);
     return build( webExport );
   }
 }

@@ -322,7 +322,8 @@ class WebServer implements HttpConstants, Runnable {
 	 *
 	 *	@see <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Runnable.html">java.lang.Runnable</a>
 	 */
-	public void run ()
+	@Override
+  public void run ()
 	{
 		try
 		{
@@ -443,7 +444,8 @@ implements HttpConstants, Runnable
 	 *
 	 *	@see <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Runnable.html">java.lang.Runnable</a>
 	 */
-	public synchronized void run ()
+	@Override
+  public synchronized void run ()
 	{
 		while ( true && !stopping )
 		{

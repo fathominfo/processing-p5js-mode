@@ -223,7 +223,8 @@ public abstract class ServingEditor extends Editor implements WebServerListener 
 	/**
    * Called from server thread after the server started (WebServerListener)
 	 */
-	public void serverStarted() {
+	@Override
+  public void serverStarted() {
 		String location = server.getAddress();
 		statusNotice("Server started: " + location);
 		openBrowserForServer();
@@ -233,7 +234,8 @@ public abstract class ServingEditor extends Editor implements WebServerListener 
 	/**
 	 * Called from server thread after the server stopped (WebServerListener)
 	 */
-	public void serverStopped () {
+	@Override
+  public void serverStopped () {
 		statusNotice("Server stopped.");
 	}
 }

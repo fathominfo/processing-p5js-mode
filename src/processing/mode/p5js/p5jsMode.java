@@ -1,11 +1,3 @@
-/**
- *	JS Mode for Processing based on Processing.js. Comes with a server as
- *	replacement for the normal runner.
- *
- *	This used to be part of Processing 2.0 beta and was
- *	moved out on 2013-02-25
- */
-
 package processing.mode.p5js;
 
 import java.io.File;
@@ -16,9 +8,7 @@ import processing.app.ui.*;
 
 
 public class p5jsMode extends Mode {
-
 	private p5jsEditor jsEditor;
-//	private JavaMode defaultJavaMode;
 
 
 	public p5jsMode (Base base, File folder) {
@@ -29,10 +19,9 @@ public class p5jsMode extends Mode {
 	/**
 	 *	Called to create the actual editor when needed (once per Sketch)
 	 */
-	public Editor createEditor (Base base, String path, EditorState state)
-		throws EditorException {
-
-		jsEditor = new p5jsEditor( base, path, state, this );
+	public Editor createEditor(Base base, String path,
+	                           EditorState state) throws EditorException {
+		jsEditor = new p5jsEditor(base, path, state, this);
 		return jsEditor;
 	}
 
@@ -60,6 +49,7 @@ public class p5jsMode extends Mode {
 	*/
 
 
+	@Override
   public File[] getKeywordFiles() {
     return new File[] {
       Platform.getContentFile("modes/java/keywords.txt"),
@@ -71,6 +61,7 @@ public class p5jsMode extends Mode {
 	/**
 	 *	Return pretty title of this mode for menu listing and such
 	 */
+  @Override
 	public String getTitle() {
 		return "p5.js";
 	}
@@ -88,6 +79,7 @@ public class p5jsMode extends Mode {
   /**
    *	Fetch and return examples
    */
+  @Override
 	public File[] getExampleCategoryFolders() {
 	  // find included example subdirs
 	  File[] inclExamples = examplesFolder.listFiles(new java.io.FileFilter() {
@@ -129,8 +121,8 @@ public class p5jsMode extends Mode {
 	/**
 	 *	Return the default extension for this mode, same as Java
 	 */
+  @Override
 	public String getDefaultExtension() {
-		//return "pde";  // [fry 160510]
 	  return "js";
 	}
 
@@ -138,6 +130,7 @@ public class p5jsMode extends Mode {
 	/**
 	 *	Return allowed extensions
 	 */
+  @Override
 	public String[] getExtensions () {
 		return new String[] { "pde", "js" };
 	}
@@ -147,21 +140,11 @@ public class p5jsMode extends Mode {
 	 *	Return list of file- / folder-names that should be ignored when
 	 *	sketch is being copied or saved as
 	 */
+  @Override
 	public String[] getIgnorable() {
 		return new String[] {
-			"applet",
-			"applet_js",
-			p5jsBuild.EXPORTED_FOLDER_NAME
+			p5jsBuild.EXPORT_FOLDER_NAME
 		};
-	}
-
-
-	/**
-	 *	Override Mode.getLibrary to add our own discovery of JS-only libraries.
-	 *	fjenett 20121202
-	 */
-	public Library getLibrary(String pkgName) throws SketchException {
-		return super.getLibrary(pkgName);
 	}
 
 
