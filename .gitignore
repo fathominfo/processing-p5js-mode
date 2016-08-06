@@ -1,7 +1,7 @@
 *~
-bin
+/bin/
 .DS_Store
 thumbs.db
 local.properties
-mode
+/mode/
 16*
