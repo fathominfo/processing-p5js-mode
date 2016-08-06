@@ -1,5 +1,6 @@
 package processing.mode.p5js;
 
+import java.awt.EventQueue;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -324,13 +325,15 @@ public class p5jsEditor extends Editor implements WebServerListener {
    */
   public void handleStartServer() {
     statusEmpty();
-
+    startServer(sketch.getFolder());
+    /*
     if (!startServer(getExportFolder())) {
       if (handleExport(false)) {
         toolbar.activateRun();
       }
     }
     // waiting for server to call "serverStarted() below ..."
+    */
   }
 
 
@@ -382,7 +385,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
 
 
   /**
-   *  Menu item callback, changed from Editor.java to automaticaly
+   *  Menu item callback, changed from Editor.java to automatically
    *  export and handle the server when it's running.
    *  Normal save ops otherwise.
    *
@@ -473,9 +476,11 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *
    *  @return the export folder as File
    */
+  /*
   private File getExportFolder() {
     return new File(getSketch().getFolder(), p5jsBuild.EXPORT_FOLDER_NAME);
   }
+  */
 
 
   /**
@@ -493,6 +498,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
   /**
    *  Set the server port, shows an input dialog to enter a port number
    */
+  /*
   protected void setServerPort() {
     String pString = null;
     String msg = "Set the server port (1024 < port < 65535)";
@@ -539,25 +545,30 @@ public class p5jsEditor extends Editor implements WebServerListener {
       }
     }
   }
+  */
 
 
   /**
    *  @return the server port as int or -1
    */
+  /*
   public int getServerPort() {
     return server != null ? server.getPort() : -1;
   }
+  */
 
 
   /**
    *  @return the server address as URL string or null
    */
+  /*
   public String getServerAddress() {
     if (server != null && server.isRunning()) {
       return server.getAddress();
     }
     return null;
   }
+  */
 
 
   public WebServer getServer() {
