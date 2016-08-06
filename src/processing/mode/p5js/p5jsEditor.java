@@ -1,14 +1,17 @@
 package processing.mode.p5js;
 
-import java.awt.EventQueue;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import processing.app.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import processing.app.Base;
+import processing.app.Formatter;
+import processing.app.Mode;
+import processing.app.Platform;
 import processing.app.ui.Editor;
 import processing.app.ui.EditorException;
 import processing.app.ui.EditorState;
@@ -17,11 +20,9 @@ import processing.app.ui.Toolkit;
 import processing.mode.java.AutoFormat;
 import processing.mode.p5js.server.HttpServer;
 
-import javax.swing.*;
 
-
-public class p5jsEditor extends Editor implements WebServerListener {
-  private p5jsMode jsMode;
+public class p5jsEditor extends Editor {
+//  private p5jsMode jsMode;
 
   HttpServer server;
   boolean showSizeWarning = true;
@@ -30,7 +31,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
   protected p5jsEditor(Base base, String path,
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
-    jsMode = (p5jsMode) mode;
+//    jsMode = (p5jsMode) mode;
   }
 
 
@@ -69,7 +70,8 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *  @return JMenu containing the menu items for "File" menu
    */
   @Override
-  public JMenu buildFileMenu () {
+  public JMenu buildFileMenu() {
+    /*
     JMenuItem exportItem = Toolkit.newJMenuItem("Export", 'E');
     exportItem.addActionListener(new ActionListener() {
       @Override
@@ -78,6 +80,8 @@ public class p5jsEditor extends Editor implements WebServerListener {
       }
     });
     return buildFileMenu(new JMenuItem[] { exportItem });
+    */
+    return buildFileMenu(null);
   }
 
 
@@ -94,11 +98,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     runItem.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (server == null || !server.isRunning()) {
-          handleStartServer();
-        } else {
-          handleOpenInBrowser();
-        }
+        handleRun();
       }
     });
 
@@ -106,7 +106,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     stopItem.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        handleStopServer();
+        handleStop();
       }
     });
 
@@ -206,7 +206,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
    */
   @Override
   public void internalCloseRunner() {
-    handleStopServer();
+    handleStop();
   }
 
 
@@ -320,36 +320,20 @@ public class p5jsEditor extends Editor implements WebServerListener {
   */
 
 
-  /**
-   *  Menu item callback, replacement for RUN:
-   *  export to folder, start server, open in default browser.
-   */
-  public void handleStartServer() {
-    statusEmpty();
-    startServer(sketch.getFolder());
-    /*
-    if (!startServer(getExportFolder())) {
-      if (handleExport(false)) {
-        toolbar.activateRun();
-      }
+  public void handleRun() {
+    toolbar.activateRun();
+    if (server == null || !server.isRunning()) {
+      restartServer();
+    } else {
+      Platform.openURL(server.getAddress());
     }
-    // waiting for server to call "serverStarted() below ..."
-    */
-  }
-
-
-  /**
-   *  Menu item callback, open running server address in a browser
-   */
-  private void handleOpenInBrowser() {
-    openBrowserForServer();
   }
 
 
   /**
    *  Menu item callback, replacement for STOP: stop server.
    */
-  public void handleStopServer() {
+  public void handleStop() {
     stopServer();
     toolbar.deactivateRun();
   }
@@ -359,6 +343,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *  Menu item callback, call the export method of the sketch
    *  and handle the gui stuff
    */
+  /*
   public boolean handleExport(boolean openFolder) {
     if (!handleExportCheckModifiedMod()) {
       return false;
@@ -383,6 +368,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     }
     return true;
   }
+  */
 
 
   /**
@@ -392,6 +378,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *
    *  @param immediately set false to run in a Swing optimized manner
    */
+  /*
   @Override
   public boolean handleSave(boolean immediately) {
     if (sketch.isUntitled()) {
@@ -416,6 +403,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     }
     return true;
   }
+  */
 
 
   /**
@@ -436,6 +424,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
   /**
    *  Called from handleExport()
    */
+  /*
   private boolean handleExportCheckModifiedMod() {
     if (sketch.isModified()) {
       Object[] options = { "OK", "Cancel" };
@@ -457,11 +446,13 @@ public class p5jsEditor extends Editor implements WebServerListener {
     }
     return true;
   }
+  */
 
 
   /**
    * Called from server thread after the server started (WebServerListener)
    */
+  /*
   @Override
   public void serverStarted() {
     String location = server.getAddress();
@@ -470,6 +461,7 @@ public class p5jsEditor extends Editor implements WebServerListener {
     if (!handleExport(false)) return;
     toolbar.activateRun();
   }
+  */
 
 
   /**
@@ -576,13 +568,15 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *  A toggle to start/stop the server
    *  @param root the root folder to start from if it needs to be started
    */
+  /*
   protected void startStopServer(File root) {
     if (isServerRunning()) {
       stopServer();
     } else {
-      startServer(root);
+      restartServer();
     }
   }
+  */
 
 
   /**
@@ -624,30 +618,19 @@ public class p5jsEditor extends Editor implements WebServerListener {
    *  @param root the root folder for the server to serve from
    *  @return true if it was started anew, false if it was running
    */
-  protected boolean startServer(File root) {
-    if (server != null &&
-        (!server.isRunning() || !server.getRoot().equals(root))) {
+  protected void restartServer() {
+    if (server != null && !server.isRunning()) {
       // if server hung or something else went wrong .. stop it.
-      server.shutDown();
+      server.stop();
       server = null;
     }
 
     if (server == null) {
-      //server = createServer(root);
       server = new HttpServer(this);
     }
 
-    if (!server.isRunning()) {
-      server.setRoot(root);
-      server.start();
-      statusNotice("Waiting for server to start ...");
-
-    } else if (server.isRunning()) {
-      statusNotice("Server running (" + server.getAddress() + "), " +
-                   "reload your browser window.");
-      return false;
-    }
-    return true;
+    server.start();
+    statusNotice("Server running (" + server.getAddress() + ")");
   }
 
 
@@ -657,8 +640,8 @@ public class p5jsEditor extends Editor implements WebServerListener {
 
 
   protected void stopServer() {
-    if (isServerRunning()) {
-      server.shutDown();
+    if (server != null) {
+      server.stop();
     }
   }
 
@@ -686,20 +669,24 @@ public class p5jsEditor extends Editor implements WebServerListener {
   /**
    *  Open a new browser window or tab with the server address
    */
+  /*
   protected void openBrowserForServer() {
     if (isServerRunning()) {
       Platform.openURL(server.getAddress());
     }
   }
+  */
 
 
   /**
    * Called from server thread after the server stopped (WebServerListener)
    */
+  /*
   @Override
   public void serverStopped() {
     statusNotice("Server stopped.");
   }
+  */
 
 
   @Override

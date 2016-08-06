@@ -53,29 +53,27 @@ public class p5jsToolbar extends EditorToolbar {
   @Override
   public void handleRun(int modifiers) {
     p5jsEditor jsEditor = (p5jsEditor) editor;
-    jsEditor.handleStartServer();
+    jsEditor.handleRun();
   }
 
 
   @Override
   public void handleStop() {
     p5jsEditor jsEditor = (p5jsEditor) editor;
-    jsEditor.handleStopServer();
+    jsEditor.handleStop();
   }
 
 
-  public void handlePressed (MouseEvent e, int index) {
-    p5jsEditor jsEditor = (p5jsEditor) editor;
-
+  public void handlePressed(MouseEvent e, int index) {
     switch (index) {
 
-	case RUN:
-		jsEditor.handleStartServer();
-		break;
+    case RUN:
+      handleRun(e.getModifiers());
+      break;
 
-	case STOP:
-		jsEditor.handleStopServer();
-		break;
+    case STOP:
+      handleStop();
+      break;
 
     case OPEN:
       JPopupMenu popup = editor.getMode().getToolbarMenu().getPopupMenu();
@@ -83,20 +81,18 @@ public class p5jsToolbar extends EditorToolbar {
       break;
 
     case NEW:
-//      if (shift) {
       base.handleNew();
-//      } else {
-//        base.handleNewReplace();
-//      }
       break;
 
     case SAVE:
-      jsEditor.handleSave(false);
+      editor.handleSave(false);
       break;
 
+      /*
     case EXPORT:
       jsEditor.handleExport( true );
       break;
+      */
     }
   }
 }

@@ -29,12 +29,17 @@ public class HttpServer {
   Map<String, Handler> handlerMap = new ConcurrentHashMap<>();
   Handler genericHandler;
 
-  p5jsEditor editor;
+  Thread thread;
   int port;
+  boolean running;
+
+  p5jsEditor editor;
+  //File root;
 
 
   public HttpServer(p5jsEditor editor) {
     this(editor, (int) (8000 + Math.random() * 1000));
+    //root = editor.getSketch().getFolder();
   }
 
 
@@ -64,15 +69,19 @@ public class HttpServer {
     System.out.println(url);
     PApplet.launch(url);
     */
+  }
 
-    new Thread(new Runnable() {
+
+  public void start() {
+    thread = new Thread(new Runnable() {
       @Override
       public void run() {
-        ServerSocket ss = null;
+        running = true;
+        ServerSocket socket = null;
         try {
-          ss = new ServerSocket(port);
-          while (true) {
-            Socket s = ss.accept();
+          socket = new ServerSocket(port);
+          while (Thread.currentThread() == thread) {
+            Socket s = socket.accept();
 //            Worker w = null;
             synchronized (threads) {
               if (threads.isEmpty()) {
@@ -92,16 +101,28 @@ public class HttpServer {
           e.printStackTrace();
 
         } finally {
-          if (ss != null) {
+          if (socket != null) {
             try {
-              ss.close();
+              socket.close();
             } catch (IOException e) {
               e.printStackTrace();
             }
           }
         }
+        running = false;
       }
-    }).start();
+    });
+    thread.start();
+  }
+
+
+  public void stop() {
+    thread = null;
+  }
+
+
+  public boolean isRunning () {
+    return running;
   }
 
 
@@ -111,7 +132,10 @@ public class HttpServer {
 
 
   File getRoot() {
+    // Makes it persist properly even as the sketch is saved to new locations.
+    // A sketch from a different editor will be running its own server.
     return editor.getSketch().getFolder();
+    //return root;
   }
 
 
