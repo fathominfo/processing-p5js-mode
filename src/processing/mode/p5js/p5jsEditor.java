@@ -345,6 +345,7 @@ public class p5jsEditor extends Editor {
     if (server == null || !server.isRunning()) {
       restartServer();
     }
+    statusNotice("Server running at " + server.getAddress());
     Platform.openURL(server.getAddress());
   }
 
@@ -354,6 +355,7 @@ public class p5jsEditor extends Editor {
    */
   public void handleStop() {
     stopServer();
+    statusNotice("Server stopped.");
     toolbar.deactivateRun();
   }
 
@@ -661,7 +663,6 @@ public class p5jsEditor extends Editor {
     }
 
     server.start();
-    statusNotice("Server running at " + server.getAddress());
   }
 
 
