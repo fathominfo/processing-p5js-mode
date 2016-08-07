@@ -41,14 +41,14 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <!-- make sure this exists -->
     <mkdir dir="mode" />
 
-    <!-- build a double-clickable JAR -->
     <jar destfile="mode/p5jsMode.jar">
       <fileset dir="bin" />
     </jar>
 
     <copy todir="mode">
       <fileset file="lib/js.jar" />
-      <fileset file="${processing.dir}/java/mode/antlr.jar" />
+      <!-- hope this can be removed since Java Mode is listed as a dep -->
+      <!--<fileset file="${processing.dir}/java/mode/antlr.jar" />-->
     </copy>
   </target>
 
