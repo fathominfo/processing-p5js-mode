@@ -138,12 +138,13 @@ public class p5jsMode extends Mode {
 
 
 	/**
-	 * Return list of file and folder names that should be ignored on Save As
-	 * @return a list or a zero-length array (should not be null)
+	 * Return list of file and folder names that should be ignored on Save As.
+	 * Starting in Processing 3.2, this can return null (otherwise it should be
+	 * a zero length String array if there's nothing to ignore).
 	 */
   @Override
 	public String[] getIgnorable() {
-		return new String[] { };
+		return null;
 	}
 
 
