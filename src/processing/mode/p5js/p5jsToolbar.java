@@ -9,7 +9,6 @@ import processing.app.ui.EditorToolbar;
 
 
 public class p5jsToolbar extends EditorToolbar {
-
   static protected final int RUN    = 0;
   static protected final int STOP   = 1;
 
@@ -19,35 +18,12 @@ public class p5jsToolbar extends EditorToolbar {
   static protected final int EXPORT = 5;
 
 
-  static public String getTitle ( int index, boolean shift )
-  {
-    switch (index)
-    {
-	    case RUN:    return "Start server";
-      case STOP:   return "Stop server";
-      case NEW:    return "New";
-      case OPEN:   return "Open";
-      case SAVE:   return "Save";
-      case EXPORT: return "Export for Web";
-    }
-    return null;
-  }
-
-
-  public p5jsToolbar ( Editor editor )
-  {
+  public p5jsToolbar(Editor editor) {
     super(editor);
   }
 
 
-  public void init ()
-  {
-    // Image[][] images = loadImages();
-    // for (int i = 0; i < 6; i++)
-    // {
-    //   addButton( getTitle(i, false), getTitle(i, true), images[i], i == NEW );
-    // }
-  }
+  public void init() { }
 
 
   @Override
@@ -94,5 +70,18 @@ public class p5jsToolbar extends EditorToolbar {
       break;
       */
     }
+  }
+
+
+  static public String getTitle (int index, boolean shift) {
+    switch (index) {
+    case RUN:    return "Start server";
+    case STOP:   return "Stop server";
+    case NEW:    return "New";
+    case OPEN:   return "Open";
+    case SAVE:   return "Save";
+    case EXPORT: return "Export for Web";
+    }
+    return null;
   }
 }
