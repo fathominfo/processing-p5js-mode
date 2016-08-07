@@ -12,6 +12,7 @@ import processing.app.Base;
 import processing.app.Formatter;
 import processing.app.Mode;
 import processing.app.Platform;
+import processing.app.SketchException;
 import processing.app.syntax.JEditTextArea;
 import processing.app.syntax.PdeTextArea;
 import processing.app.syntax.PdeTextAreaDefaults;
@@ -83,7 +84,6 @@ public class p5jsEditor extends Editor {
    */
   @Override
   public JMenu buildFileMenu() {
-    /*
     JMenuItem exportItem = Toolkit.newJMenuItem("Export", 'E');
     exportItem.addActionListener(new ActionListener() {
       @Override
@@ -92,8 +92,7 @@ public class p5jsEditor extends Editor {
       }
     });
     return buildFileMenu(new JMenuItem[] { exportItem });
-    */
-    return buildFileMenu(null);
+    //return buildFileMenu(null);
   }
 
 
@@ -356,6 +355,18 @@ public class p5jsEditor extends Editor {
   public void handleStop() {
     stopServer();
     toolbar.deactivateRun();
+  }
+
+
+  public boolean handleExport(boolean openFolder) {
+    //return mode.handleExport(sketch);
+    try {
+      new p5jsBuild(sketch);
+      return true;
+    } catch (SketchException se) {
+      statusError(se);
+    }
+    return false;
   }
 
 

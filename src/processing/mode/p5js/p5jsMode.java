@@ -1,7 +1,6 @@
 package processing.mode.p5js;
 
 import java.io.File;
-import java.io.IOException;
 
 import processing.app.*;
 import processing.app.ui.*;
@@ -148,12 +147,14 @@ public class p5jsMode extends Mode {
 	}
 
 
-	/**
-	 *	Build and export a sketch
-	 */
-	public boolean handleExport(Sketch sketch) throws IOException, SketchException {
-		return new p5jsBuild(sketch).export();
-	}
+//	/**
+//	 *	Build and export a sketch
+//	 */
+//	public boolean handleExport(Sketch sketch) throws IOException, SketchException {
+//	  new p5jsBuild(sketch);
+//		//return new p5jsBuild(sketch).export();
+//	  return true;
+//	}
 
 
 	//public boolean handleExportApplet(Sketch sketch) throws SketchException, IOException { }
