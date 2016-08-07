@@ -57,7 +57,7 @@ public class HttpServer {
     handlerMap.put("status", new StatusHandler(this));
     handlerMap.put("types", new TypesHandler(this));
     */
-    handlerMap.put("libraries", new LibrariesHandler(this));
+//    handlerMap.put("libraries", new LibrariesHandler(this));
     //handlerMap.put("libraries", new GenericHandler(this, getLibrariesFolder()));
     genericHandler = new GenericHandler(this);
 
@@ -142,9 +142,11 @@ public class HttpServer {
   }
 
 
+  /*
   File getLibrariesFolder() {
     return new File(editor.getTemplateFolder(), "libraries");
   }
+  */
 
 
   Handler getHandler(String prefix) {

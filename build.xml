@@ -77,6 +77,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <copy todir="${install.dir}">
       <fileset file="mode.properties" />
       <fileset file="keywords.txt" />
+      <fileset dir="template" />
     </copy>
   </target>
 
