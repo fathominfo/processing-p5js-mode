@@ -98,10 +98,8 @@ public class p5jsEditor extends Editor {
 
 
   /**
-   *  Build the "Sketch" menu,
-   *  implements abstract Editor.buildSketchMenu(),
-   *  called by Editor.buildMenuBar() to generate the app menu for the editor window
-   *
+   *  Build the "Sketch" menu, implements abstract Editor.buildSketchMenu(),
+   *  called by Editor.buildMenuBar().
    *  @return JMenu containing the menu items for "Sketch" menu
    */
   @Override
@@ -127,10 +125,7 @@ public class p5jsEditor extends Editor {
 
 
   /**
-   *  Build the "Help" menu,
-   *  implements abstract Editor.buildHelpMenu(),
-   *  called by Editor.buildMenuBar() to generate the app menu for the editor window
-   *
+   *  Build the "Help" menu, implements abstract Editor.buildHelpMenu()
    *  @return JMenu containing the menu items for "Help" menu
    */
   @Override
@@ -226,7 +221,9 @@ public class p5jsEditor extends Editor {
    *  Implements abstract Editor.deactivateRun()
    */
   @Override
-  public void deactivateRun() { }
+  public void deactivateRun() {
+    toolbar.deactivateRun();
+  }
 
 
   /**
@@ -332,8 +329,15 @@ public class p5jsEditor extends Editor {
   */
 
 
+  /*
   public File getTemplateFolder() {
     return getMode().getContentFile("template");
+  }
+  */
+
+
+  public File getLibrariesFolder() {
+    return new File(mode.getTemplateFolder(), "libraries");
   }
 
 
