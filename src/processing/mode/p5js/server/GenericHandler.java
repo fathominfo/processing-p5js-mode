@@ -45,7 +45,7 @@ public class GenericHandler extends Handler {
       if (target.isDirectory()) {
         File indexFile = new File(target, "index.html");
         if (indexFile.exists()) {
-          if (!path.endsWith("/")) {
+          if (path.length() > 0 && !path.endsWith("/")) {
             ps.status(HttpServer.HTTP_FOUND);
             ps.println("Location: " + path + "/");
             ps.println();
