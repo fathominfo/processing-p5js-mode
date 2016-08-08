@@ -353,23 +353,12 @@ public class p5jsEditor extends Editor {
   }
 
 
-  /*
-  @Override
-  public void setProblemList(List<Problem> problems) {
-    this.problems = problems;
-    boolean hasErrors = problems.stream().anyMatch(Problem::isError);
-    updateErrorTable(problems);
-    errorColumn.updateErrorPoints(problems);
-    textarea.repaint();
-    updateErrorToggle(hasErrors);
-    updateEditorStatus();
-  }
-  */
-
-
   public void handleRun() {
     toolbar.activateRun();
-    if (!checkErrors(true)) {
+    if (checkErrors(true)) {
+      toolbar.deactivateRun();
+
+    } else {
       if (server == null || !server.isRunning()) {
         restartServer();
       }
@@ -439,8 +428,8 @@ public class p5jsEditor extends Editor {
             return se.getCodeColumn() + 10;
           }
         }));
-        return true;
       }
+      return true;
     }
 //    System.out.println("elapsed: " + (System.currentTimeMillis() - t));
     return false;
