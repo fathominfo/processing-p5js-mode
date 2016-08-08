@@ -34,10 +34,10 @@ public class p5jsBuild {
     }
 
     String[] paths = Util.listFiles(sketch.getFolder(), false, ".js");
-    PApplet.println("files:");
-    PApplet.printArray(paths);
+//    PApplet.println("files:");
+//    PApplet.printArray(paths);
     File mainFile = sketch.getMainFile();
-    System.out.println("main file is " + mainFile);
+//    System.out.println("main file is " + mainFile);
     //File[] files = new File[paths.length];
     for (int i = 0; i < paths.length; i++) {
       //files[i] = new File(paths[i]);
