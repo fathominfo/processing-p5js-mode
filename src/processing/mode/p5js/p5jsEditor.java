@@ -217,6 +217,17 @@ public class p5jsEditor extends Editor {
 
 
   /**
+   * The EditorHeader is rebuilt when tabs are renamed, added, or removed.
+   * Use this as a callback to rewrite the HTML file from the template.
+   */
+  @Override
+  public void rebuildHeader() {
+    super.rebuildHeader();
+    rebuildHtml();
+  }
+
+
+  /**
    *  Stop the runner, in our case this is the server,
    *  implements abstract Editor.internalCloseRunner(),
    *  called from Editor.prepareRun()
@@ -345,12 +356,12 @@ public class p5jsEditor extends Editor {
   public File getTemplateFolder() {
     return getMode().getContentFile("template");
   }
-  */
 
 
   public File getLibrariesFolder() {
     return new File(mode.getTemplateFolder(), "libraries");
   }
+   */
 
 
   public void handleRun() {
@@ -708,6 +719,30 @@ public class p5jsEditor extends Editor {
     return server;
   }
   */
+
+//  @Override
+//  protected void handleSaveImpl() {
+//  }
+
+
+  protected boolean rebuildHtml() {
+    try {
+      p5jsBuild.updateHtml(getMode(), sketch);
+      return true;
+    } catch (Exception e) {
+      statusError(e);
+    }
+    return false;
+  }
+
+
+  @Override
+  public boolean handleSaveAs() {
+    if (super.handleSaveAs()) {
+      return rebuildHtml();
+    }
+    return false;
+  }
 
 
   /**

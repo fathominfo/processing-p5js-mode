@@ -1,6 +1,8 @@
 package processing.mode.p5js;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 
 import jdk.nashorn.api.scripting.ScriptUtils;
 import jdk.nashorn.internal.runtime.Context;
@@ -9,24 +11,109 @@ import jdk.nashorn.internal.runtime.ErrorManager;
 import jdk.nashorn.internal.runtime.options.Options;
 
 import processing.app.Base;
+import processing.app.Mode;
 import processing.app.Sketch;
 import processing.app.SketchException;
-
+import processing.app.Util;
 import processing.core.PApplet;
+import processing.data.StringList;
 
 
 public class p5jsBuild {
+  static final String HTML_PREFIX =
+    "<!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->";
+  static final String HTML_SUFFIX =
+    "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
+
 //  ScriptEngine engine;
 //  static ScriptEngine engine =
 //    new ScriptEngineManager().getEngineByName("javascript");
 
 
   public p5jsBuild(Sketch sketch) throws SketchException {
+//    updateHTML(sketch);
     //SketchCode[] code = sketch.getCode();
     //for (int i = 0; i < code.length; i++) {
     for (int i = 0; i < sketch.getCodeCount(); i++) {
       handleFile(sketch, i);
     }
+  }
+
+
+  static void updateHtml(Mode mode,
+                         Sketch sketch) throws SketchException, IOException {
+    File sketchFolder = sketch.getFolder();
+    StringList insert = new StringList();
+
+    // load p5.js first
+    insert.append(scriptPath("libraries/p5.js"));
+
+    // then other entries from /libraries
+    File librariesFolder = new File(sketchFolder, "libraries");
+    System.out.println(librariesFolder);
+    PApplet.printArray(Util.listFiles(librariesFolder, false));
+    File[] libraryList = librariesFolder.listFiles(new FileFilter() {
+      @Override
+      public boolean accept(File file) {
+        System.out.println("checking " + file);
+        if (!file.isDirectory()) {  // not doing subdirectories
+          String name = file.getName();
+          if (!name.equals("p5.js") &&  // already loaded first
+              name.toLowerCase().endsWith(".js")) {
+            return true;
+          }
+        }
+        return false;
+      }
+    });
+    for (File file : libraryList) {
+      insert.append("libraries/" + file.getName());
+    }
+
+    // now the sketch code
+    for (int i = 1; i < sketch.getCodeCount(); i++) {
+      insert.append(sketch.getCode(i).getFileName());
+    }
+    // different ways to do this; let's not be presumptuous that it's
+    // sketchName + ".js" and leave ourselves some room for the future.
+    insert.append(sketch.getCode(0).getFileName());
+
+    File htmlFile = new File(sketchFolder, "index.html");
+
+    // if the template has been removed, rewrite it (simplest fix)
+    if (!htmlFile.exists()) {
+      // replace with a fresh copy from the template
+      File htmlTemplate = new File(mode.getTemplateFolder(), "index.html");
+      try {
+        Util.copyFile(htmlTemplate, htmlFile);
+      } catch (IOException e) {
+        throw new SketchException(e.getMessage());
+      }
+    }
+
+    // write the HTML based on the template
+    String html = PApplet.join(PApplet.loadStrings(htmlFile), "\n");
+    int start = html.indexOf(HTML_PREFIX);
+    if (start == -1) {
+      System.err.println("HTML prefix is missing in the index.html file.");
+      throw new SketchException("The index.html file is damaged, " +
+                                "please remove it and try again.", false);
+    }
+    int stop = html.indexOf(HTML_SUFFIX);
+    if (stop == -1) {
+      System.err.println("HTML suffix is missing in the index.html file.");
+      throw new SketchException("Somebody broke the index.html file, " +
+                                "please remove it and try again.", false);
+    }
+    html = html.substring(0, start) +
+      HTML_PREFIX + insert.join("\n") + HTML_SUFFIX +
+      html.substring(stop + HTML_SUFFIX.length());
+    PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
+  }
+
+
+  static String scriptPath(String path) {
+    return "  <script language=\"javascript\" type=\"text/javascript\" src=\"" + path + "\"></script>";
   }
 
 

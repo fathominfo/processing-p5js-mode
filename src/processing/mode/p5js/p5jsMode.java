@@ -147,6 +147,11 @@ public class p5jsMode extends Mode {
   }
 
 
+  public File getTemplateLibrariesFolder() {
+    return new File(getTemplateFolder(), "libraries");
+  }
+
+
 //  /**
 //   *  Build and export a sketch
 //   */
