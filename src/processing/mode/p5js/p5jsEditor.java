@@ -362,13 +362,16 @@ public class p5jsEditor extends Editor {
 
   public boolean handleExport(boolean openFolder) {
     //return mode.handleExport(sketch);
+//    long t = System.currentTimeMillis();
     try {
-      new p5jsBuild(this, sketch);
+      new p5jsBuild(sketch);
 //      new p5jsBuildFX(this, sketch);
+//      System.out.println("elapsed: " + (System.currentTimeMillis() - t));
       return true;
     } catch (SketchException se) {
       statusError(se);
     }
+//    System.out.println("elapsed: " + (System.currentTimeMillis() - t));
     return false;
   }
 
