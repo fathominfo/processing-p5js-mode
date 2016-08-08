@@ -1,5 +1,6 @@
 package processing.mode.p5js;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -739,7 +740,18 @@ public class p5jsEditor extends Editor {
   @Override
   public boolean handleSaveAs() {
     if (super.handleSaveAs()) {
-      return rebuildHtml();
+      EventQueue.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          while (sketch.isSaving()) {  // wait until Save As completes
+            try {
+              Thread.sleep(5);
+            } catch (InterruptedException e) { }
+          }
+          rebuildHtml();
+        }
+      });
+      return true;  // kind of a farce
     }
     return false;
   }

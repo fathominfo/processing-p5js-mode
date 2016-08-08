@@ -50,12 +50,13 @@ public class p5jsBuild {
 
     // then other entries from /libraries
     File librariesFolder = new File(sketchFolder, "libraries");
-    System.out.println(librariesFolder);
-    PApplet.printArray(Util.listFiles(librariesFolder, false));
+    //System.out.println(librariesFolder + " " + librariesFolder.exists());
+    //PApplet.launch(librariesFolder.getAbsolutePath());
+    //PApplet.printArray(Util.listFiles(librariesFolder, false));
     File[] libraryList = librariesFolder.listFiles(new FileFilter() {
       @Override
       public boolean accept(File file) {
-        System.out.println("checking " + file);
+        //System.out.println("checking " + file);
         if (!file.isDirectory()) {  // not doing subdirectories
           String name = file.getName();
           if (!name.equals("p5.js") &&  // already loaded first
