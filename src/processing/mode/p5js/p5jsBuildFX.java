@@ -1,7 +1,6 @@
 package processing.mode.p5js;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 
 import javax.swing.JFrame;
 
@@ -21,24 +20,26 @@ import processing.app.SketchException;
 import processing.app.ui.Editor;
 
 
+/** Off into crazy-town, running inside an embedded WebKit browser. */
 public class p5jsBuildFX {
-  static Frame frame;
+  static JFrame frame;
 
 
   public p5jsBuildFX(final Editor editor, Sketch sketch) throws SketchException {
     if (frame == null) {
       frame = new JFrame();
       final JFXPanel fxPanel = new JFXPanel();
-//      fxPanel.setSize(new Dimension(300, 300));
-      frame.add(fxPanel);
-      frame.pack();
-      frame.setResizable(true);
-      frame.setVisible(true);
+      fxPanel.setSize(new Dimension(600, 600));
+      frame.getContentPane().add(fxPanel);
 
       Platform.runLater(new Runnable() { // this will run initFX as JavaFX-Thread
         @Override
         public void run() {
           initFX(fxPanel);
+
+          frame.pack();
+          frame.setResizable(true);
+          frame.setVisible(true);
         }
       });
     }
@@ -53,7 +54,7 @@ public class p5jsBuildFX {
     WebView webView = new WebView();
 
     group.getChildren().add(webView);
-    webView.setMinSize(600, 600);
+//    webView.setMinSize(600, 600);
 //    webView.setMaxSize(300, 300);
 
     // Obtain the webEngine to navigate
