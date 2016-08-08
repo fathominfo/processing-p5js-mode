@@ -107,8 +107,8 @@ public class p5jsBuild {
     Context.setGlobal(context.createGlobal());
     String code = PApplet.join(PApplet.loadStrings(sketch.getMainFile()), "\n");
     try {
-      String json = ScriptUtils.parse(code, sketch.getName(), true);
-      System.out.println(json);
+      /*String json =*/ ScriptUtils.parse(code, sketch.getName(), true);
+      //System.out.println(json);
     } catch (ECMAException ecma) {
       //System.out.println("err: " + ecma.getEcmaError());
       String message = ecma.getMessage();
