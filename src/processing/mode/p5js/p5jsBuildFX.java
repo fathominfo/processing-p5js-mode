@@ -6,14 +6,20 @@ import java.awt.Frame;
 import javax.swing.JFrame;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import org.w3c.dom.Document;
+
 import processing.app.Sketch;
 import processing.app.SketchException;
 import processing.app.ui.Editor;
+
 
 public class p5jsBuildFX {
   static Frame frame;
@@ -23,7 +29,7 @@ public class p5jsBuildFX {
     if (frame == null) {
       frame = new JFrame();
       final JFXPanel fxPanel = new JFXPanel();
-      fxPanel.setSize(new Dimension(300, 300));
+//      fxPanel.setSize(new Dimension(300, 300));
       frame.add(fxPanel);
       frame.pack();
       frame.setResizable(true);
@@ -47,11 +53,27 @@ public class p5jsBuildFX {
     WebView webView = new WebView();
 
     group.getChildren().add(webView);
-    webView.setMinSize(300, 300);
-    webView.setMaxSize(300, 300);
+    webView.setMinSize(600, 600);
+//    webView.setMaxSize(300, 300);
 
     // Obtain the webEngine to navigate
-    WebEngine webEngine = webView.getEngine();
-    webEngine.load("http://www.google.com/");
+    final WebEngine engine = webView.getEngine();
+
+    // http://stackoverflow.com/a/18396900
+    engine.documentProperty().addListener(new ChangeListener<Document>() {
+      @Override public void changed(ObservableValue<? extends Document> prop, Document oldDoc, Document newDoc) {
+        enableFirebug(engine);
+      }
+    });
+    engine.load("http://www.google.com/");
+  }
+
+
+  /**
+   * Enables Firebug Lite for debugging a webEngine.
+   * @param engine the webEngine for which debugging is to be enabled.
+   */
+  private static void enableFirebug(final WebEngine engine) {
+    engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
   }
 }
