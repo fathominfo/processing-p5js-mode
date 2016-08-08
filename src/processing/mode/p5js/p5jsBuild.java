@@ -110,15 +110,46 @@ public class p5jsBuild {
       /*String json =*/ ScriptUtils.parse(code, sketch.getName(), true);
       //System.out.println(json);
     } catch (ECMAException ecma) {
-      //System.out.println("err: " + ecma.getEcmaError());
-      String message = ecma.getMessage();
-      String[] parts = PApplet.split(message, ':');
-      if (parts.length > 3) {
-        message = parts[3];
-        message = message.substring(message.indexOf(' '));
+      // [0] "SyntaxError: test2:6:14 Expected ; but found !"
+      // [1] "SyntaxError"
+      // [2] " test2"
+      // [3] "6"
+      // [4] "14"
+      // [5] "Expected ; but found !"
+      String[] m = PApplet.match(ecma.getMessage(),
+                                 "(.*:\\s*)(.*):(\\d+):(\\d+)\\s+([^\n]*)");
+      //PApplet.printArray(m);
+
+      if (m == null) {
+        // not sure how to parse this one, just posted it as-is
+        throw new SketchException(ecma.getMessage(), false);
+      } else {
+        // Subtract 1 from the result because the lines are 1-indexed.
+        // If the parseInt fails, won't set the line or column number,
+        // because it'll return 0 and then subtract 1, and -1 passed to
+        // SketchException for line or column is "unknown".
+        throw new SketchException(m[1] + m[5], 0,
+                                  PApplet.parseInt(m[3]) - 1,
+                                  PApplet.parseInt(m[4]) - 1,
+                                  false);
+        /*
+        //System.out.println("err: " + ecma.getEcmaError());
+        String msg = ecma.getMessage();
+        System.out.println("full message is " + msg);
+        String[] parts = PApplet.split(msg, ':');
+        if (parts.length > 3) {
+          //        char[] c = msg.toCharArray();
+          //        for (char cc : c) {
+          //          System.out.println(cc + " " + (int)cc);
+          //        }
+          msg = parts[3];
+          msg = msg.substring(msg.indexOf(' '), msg.indexOf('\n'));
+        }
+        System.out.println("line number is " + ecma.getLineNumber());
+        throw new SketchException(msg, 0, ecma.getLineNumber(),
+                                  ecma.getColumnNumber(), false);
+         */
       }
-      throw new SketchException(parts[3], 0, ecma.getLineNumber(),
-                                ecma.getColumnNumber(), false);
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println(e.getClass().getName());
