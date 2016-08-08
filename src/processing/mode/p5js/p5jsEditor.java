@@ -363,7 +363,8 @@ public class p5jsEditor extends Editor {
   public boolean handleExport(boolean openFolder) {
     //return mode.handleExport(sketch);
     try {
-      new p5jsBuild(this, sketch);
+//      new p5jsBuild(this, sketch);
+      new p5jsBuildFX(this, sketch);
       return true;
     } catch (SketchException se) {
       statusError(se);
