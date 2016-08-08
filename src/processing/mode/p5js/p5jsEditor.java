@@ -20,6 +20,7 @@ import processing.app.syntax.PdeTextArea;
 import processing.app.syntax.PdeTextAreaDefaults;
 import processing.app.ui.Editor;
 import processing.app.ui.EditorException;
+import processing.app.ui.EditorFooter;
 import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
@@ -61,6 +62,14 @@ public class p5jsEditor extends Editor {
   @Override
   public EditorToolbar createToolbar() {
     return new p5jsToolbar(this);
+  }
+
+
+  @Override
+  public EditorFooter createFooter() {
+    EditorFooter footer = super.createFooter();
+    addErrorTable(footer);
+    return footer;
   }
 
 
@@ -360,11 +369,13 @@ public class p5jsEditor extends Editor {
 
   public void handleRun() {
     toolbar.activateRun();
-    if (server == null || !server.isRunning()) {
-      restartServer();
+    if (!checkErrors(true)) {
+      if (server == null || !server.isRunning()) {
+        restartServer();
+      }
+      statusNotice("Server running at " + server.getAddress());
+      Platform.openURL(server.getAddress());
     }
-    statusNotice("Server running at " + server.getAddress());
-    Platform.openURL(server.getAddress());
   }
 
 
@@ -379,7 +390,7 @@ public class p5jsEditor extends Editor {
 
 
   //public boolean handleExport(boolean openFolder) {
-  protected void checkErrors(boolean fatal) {
+  protected boolean checkErrors(boolean fatal) {
     //return mode.handleExport(sketch);
 //    long t = System.currentTimeMillis();
     try {
@@ -428,10 +439,11 @@ public class p5jsEditor extends Editor {
             return se.getCodeColumn() + 10;
           }
         }));
+        return true;
       }
     }
 //    System.out.println("elapsed: " + (System.currentTimeMillis() - t));
-//    return false;
+    return false;
   }
 
 
