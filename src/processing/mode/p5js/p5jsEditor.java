@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -12,6 +13,7 @@ import processing.app.Base;
 import processing.app.Formatter;
 import processing.app.Mode;
 import processing.app.Platform;
+import processing.app.Problem;
 import processing.app.SketchException;
 import processing.app.syntax.JEditTextArea;
 import processing.app.syntax.PdeTextArea;
@@ -84,6 +86,7 @@ public class p5jsEditor extends Editor {
    */
   @Override
   public JMenu buildFileMenu() {
+    /*
     JMenuItem exportItem = Toolkit.newJMenuItem("Export", 'E');
     exportItem.addActionListener(new ActionListener() {
       @Override
@@ -92,7 +95,8 @@ public class p5jsEditor extends Editor {
       }
     });
     return buildFileMenu(new JMenuItem[] { exportItem });
-    //return buildFileMenu(null);
+    */
+    return buildFileMenu(null);
   }
 
 
@@ -340,6 +344,20 @@ public class p5jsEditor extends Editor {
   }
 
 
+  /*
+  @Override
+  public void setProblemList(List<Problem> problems) {
+    this.problems = problems;
+    boolean hasErrors = problems.stream().anyMatch(Problem::isError);
+    updateErrorTable(problems);
+    errorColumn.updateErrorPoints(problems);
+    textarea.repaint();
+    updateErrorToggle(hasErrors);
+    updateEditorStatus();
+  }
+  */
+
+
   public void handleRun() {
     toolbar.activateRun();
     if (server == null || !server.isRunning()) {
@@ -360,19 +378,60 @@ public class p5jsEditor extends Editor {
   }
 
 
-  public boolean handleExport(boolean openFolder) {
+  //public boolean handleExport(boolean openFolder) {
+  protected void checkErrors(boolean fatal) {
     //return mode.handleExport(sketch);
 //    long t = System.currentTimeMillis();
     try {
       new p5jsBuild(sketch);
 //      new p5jsBuildFX(this, sketch);
 //      System.out.println("elapsed: " + (System.currentTimeMillis() - t));
-      return true;
+//      return true;
     } catch (SketchException se) {
-      statusError(se);
+      if (fatal) {
+        statusError(se);
+      } else {
+        setProblemList(Arrays.asList(new Problem() {
+
+          @Override
+          public boolean isError() {
+            return true;
+          }
+
+          @Override
+          public boolean isWarning() {
+            return false;
+          }
+
+          @Override
+          public int getTabIndex() {
+            return se.getCodeIndex();
+          }
+
+          @Override
+          public int getLineNumber() {
+            return se.getCodeLine();
+          }
+
+          @Override
+          public String getMessage() {
+            return se.getMessage();
+          }
+
+          @Override
+          public int getStartOffset() {
+            return se.getCodeColumn();
+          }
+
+          @Override
+          public int getStopOffset() {
+            return se.getCodeColumn() + 10;
+          }
+        }));
+      }
     }
 //    System.out.println("elapsed: " + (System.currentTimeMillis() - t));
-    return false;
+//    return false;
   }
 
 
