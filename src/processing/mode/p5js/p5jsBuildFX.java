@@ -20,7 +20,10 @@ import processing.app.SketchException;
 import processing.app.ui.Editor;
 
 
-/** Off into crazy-town, running inside an embedded WebKit browser. */
+/**
+ * Off into crazy-town, running inside an embedded WebKit browser.
+ * This is not currently in use: just a misguided stretch of an attempt.
+ */
 public class p5jsBuildFX {
   static JFrame frame;
 

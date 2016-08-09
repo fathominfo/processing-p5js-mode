@@ -16,8 +16,8 @@ A simple editor for p5.js code that runs inside the PDE.
 
 * Like the usual Java Mode in Processing, the main code is found in a file with the same name as the sketch.
 * An `index.html` file is created in each new sketch folder. It contains a section where each .js file from the sketch is added automatically. Removing this block of code (it’s clearly marked in the file) will cause the sketch to no longer run inside the PDE.
-* Removing the `index.html` file will reset it to the version from the template.
-* Add library files or additional code to the `libraries` folder of the sketch. That code will be included in the HTML file, though they won’t be visible as tabs in the Editor.
+* If you run into trouble, remove the `index.html` file, which will reset it to the version from the template.
+* Add library files or additional code to the `libraries` subfolder of the sketch. That code will be included in the HTML file, though they won’t be visible as tabs in the Editor.
 
 
 #### todo
