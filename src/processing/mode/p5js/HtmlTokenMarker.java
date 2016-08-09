@@ -17,10 +17,8 @@ import processing.app.syntax.TokenMarker;
 
 
 /**
- * HTML token marker.
- *
- * @author Slava Pestov
- * @version $Id: HTMLTokenMarker.java,v 1.34 1999/12/13 03:40:29 sp Exp $
+ * HTML token marker by Slava Pestove from the original jEditSyntax package.
+ * Updated slightly for use with p5jsMode and without JavaScriptTokenMarker.
  */
 public class HtmlTokenMarker extends TokenMarker {
   public static final byte JAVASCRIPT = Token.INTERNAL_FIRST;
@@ -253,6 +251,7 @@ public class HtmlTokenMarker extends TokenMarker {
   }
 
 
+  // moved from SyntaxUtilities
   static boolean regionMatches(boolean ignoreCase, Segment text,
                                int offset, String match) {
     return KeywordMap.regionMatches(ignoreCase, text, offset,
