@@ -13,6 +13,7 @@ import jdk.nashorn.internal.runtime.options.Options;
 import processing.app.Base;
 import processing.app.Mode;
 import processing.app.Sketch;
+import processing.app.SketchCode;
 import processing.app.SketchException;
 import processing.app.Util;
 import processing.core.PApplet;
@@ -73,7 +74,11 @@ public class p5jsBuild {
 
     // now the sketch code
     for (int i = 1; i < sketch.getCodeCount(); i++) {
-      insert.append(scriptPath(sketch.getCode(i).getFileName()));
+      SketchCode code =  sketch.getCode(i);
+      String filename = code.getFileName();
+      if (filename.endsWith(".js")) {
+        insert.append(scriptPath(filename));
+      }
     }
     // different ways to do this; let's not be presumptuous that it's
     // sketchName + ".js" and leave ourselves some room for the future.
