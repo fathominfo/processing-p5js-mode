@@ -8,13 +8,18 @@ and was later maintained as a separate project by Florian Jenett.
 
 ### todo
 
-- [ ] get templates working
+- [ ] edit .html, .txt, .json
+- [ ] add single file library support
+
+
+### done
+
+- [x] get templates working
+- [x] make sure toolbar buttons are behaving
+- [x] move the side panels from the editor out of Java and into Editor
+- [x] remove DirectivesEditor
+
+### nope
+
 - [ ] make the server provide dummy /libraries folder
 - [ ] implement Export as separate option that creates web folder
-- [ ] make sure toolbar buttons are behaving
-- [ ] move the side panels from the editor out of Java and into Editor
-
-### lower priority
-
-- [x] remove DirectivesEditor
-- [ ] edit .html, .txt, .json? 

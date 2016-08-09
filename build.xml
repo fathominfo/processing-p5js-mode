@@ -32,9 +32,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 	   debug="true"
            srcdir="src"
 	   destdir="bin"
-	   classpath="${processing.dir}/core/bin; 
-                      ${processing.dir}/java/mode/antlr.jar; 
-                      lib/js.jar"
+	   classpath="${processing.dir}/core/bin"
 	   nowarn="true">
     </javac>
 
@@ -44,12 +42,6 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <jar destfile="mode/p5jsMode.jar">
       <fileset dir="bin" />
     </jar>
-
-    <copy todir="mode">
-      <fileset file="lib/js.jar" />
-      <!-- hope this can be removed since Java Mode is listed as a dep -->
-      <!--<fileset file="${processing.dir}/java/mode/antlr.jar" />-->
-    </copy>
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
