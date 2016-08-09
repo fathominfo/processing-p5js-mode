@@ -41,6 +41,9 @@ public class p5jsEditor extends Editor {
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
 
+    if (sketch.isUntitled()) {
+      rebuildHtml();
+    }
 //    jsMode = (p5jsMode) mode;
   }
 

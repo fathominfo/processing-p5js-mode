@@ -68,16 +68,16 @@ public class p5jsBuild {
       }
     });
     for (File file : libraryList) {
-      insert.append("libraries/" + file.getName());
+      insert.append(scriptPath("libraries/" + file.getName()));
     }
 
     // now the sketch code
     for (int i = 1; i < sketch.getCodeCount(); i++) {
-      insert.append(sketch.getCode(i).getFileName());
+      insert.append(scriptPath(sketch.getCode(i).getFileName()));
     }
     // different ways to do this; let's not be presumptuous that it's
     // sketchName + ".js" and leave ourselves some room for the future.
-    insert.append(sketch.getCode(0).getFileName());
+    insert.append(scriptPath(sketch.getCode(0).getFileName()));
 
     File htmlFile = new File(sketchFolder, "index.html");
 
@@ -107,7 +107,7 @@ public class p5jsBuild {
                                 "please remove it and try again.", false);
     }
     html = html.substring(0, start) +
-      HTML_PREFIX + insert.join("\n") + HTML_SUFFIX +
+      HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX +
       html.substring(stop + HTML_SUFFIX.length());
     PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
   }
