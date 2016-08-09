@@ -7,10 +7,14 @@
  * remains intact in all source distributions of this package.
  */
 
-package org.syntax.jedit.tokenmarker;
+package processing.mode.p5js;
 
-import org.syntax.jedit.*;
 import javax.swing.text.Segment;
+
+import processing.app.syntax.KeywordMap;
+import processing.app.syntax.Token;
+import processing.app.syntax.TokenMarker;
+
 
 /**
  * HTML token marker.
@@ -22,17 +26,35 @@ public class HtmlTokenMarker extends TokenMarker {
   public static final byte JAVASCRIPT = Token.INTERNAL_FIRST;
 
 
-  public HTMLTokenMarker() {
+  public HtmlTokenMarker() {
     this(true);
   }
 
 
-  public HTMLTokenMarker(boolean js) {
+  public HtmlTokenMarker(boolean js) {
     this.js = js;
-    keywords = JavaScriptTokenMarker.getKeywords();
+    keywords = new KeywordMap(false);
+    keywords.add("function", Token.KEYWORD3, false);
+    keywords.add("var", Token.KEYWORD3, false);
+    keywords.add("else", Token.KEYWORD1, false);
+    keywords.add("for", Token.KEYWORD1, false);
+    keywords.add("if", Token.KEYWORD1, false);
+    keywords.add("in", Token.KEYWORD1, false);
+    keywords.add("new", Token.KEYWORD1, false);
+    keywords.add("return", Token.KEYWORD1, false);
+    keywords.add("while", Token.KEYWORD1, false);
+    keywords.add("with", Token.KEYWORD1, false);
+    keywords.add("break", Token.KEYWORD1, false);
+    keywords.add("case", Token.KEYWORD1, false);
+    keywords.add("continue", Token.KEYWORD1, false);
+    keywords.add("default", Token.KEYWORD1, false);
+    keywords.add("false", Token.LABEL, false);
+    keywords.add("this", Token.LABEL, false);
+    keywords.add("true", Token.LABEL, false);
   }
 
 
+  @Override
   public byte markTokensImpl(byte token, Segment line, int lineIndex) {
     char[] array = line.array;
     int offset = line.offset;
@@ -58,10 +80,10 @@ public class HtmlTokenMarker extends TokenMarker {
         case '<':
           addToken(i - lastOffset, token);
           lastOffset = lastKeyword = i;
-          if (SyntaxUtilities.regionMatches(false, line, i1, "!--")) {
+          if (regionMatches(false, line, i1, "!--")) {
             i += 3;
             token = Token.COMMENT1;
-          } else if (js && SyntaxUtilities.regionMatches(true, line, i1, "script>")) {
+          } else if (js && regionMatches(true, line, i1, "script>")) {
             addToken(8, Token.KEYWORD1);
             lastOffset = lastKeyword = (i += 8);
             token = JAVASCRIPT;
@@ -95,7 +117,7 @@ public class HtmlTokenMarker extends TokenMarker {
         break;
       case Token.COMMENT1: // Inside a comment
         backslash = false;
-        if (SyntaxUtilities.regionMatches(false, line, i, "-->")) {
+        if (regionMatches(false, line, i, "-->")) {
           addToken((i + 3) - lastOffset, token);
           lastOffset = lastKeyword = i + 3;
           token = Token.NULL;
@@ -106,7 +128,7 @@ public class HtmlTokenMarker extends TokenMarker {
           case '<':
             backslash = false;
             doKeyword(line, i, c);
-            if (SyntaxUtilities.regionMatches(true,  line, i1, "/script>")) {
+            if (regionMatches(true,  line, i1, "/script>")) {
               addToken(i - lastOffset,  Token.NULL);
               addToken(9, Token.KEYWORD1);
               lastOffset = lastKeyword = (i += 9);
@@ -218,7 +240,7 @@ public class HtmlTokenMarker extends TokenMarker {
   private boolean doKeyword(Segment line, int i, char c) {
     int i1 = i+1;
     int len = i - lastKeyword;
-    byte id = keywords.lookup(line, lastKeyword, len);
+    byte id = keywords.lookup(line, lastKeyword, len, false);
     if (id != Token.NULL) {
       if (lastKeyword != lastOffset) {
         addToken(lastKeyword - lastOffset, Token.NULL);
@@ -228,5 +250,18 @@ public class HtmlTokenMarker extends TokenMarker {
     }
     lastKeyword = i1;
     return false;
+  }
+
+
+  static boolean regionMatches(boolean ignoreCase, Segment text,
+                               int offset, String match) {
+    return KeywordMap.regionMatches(ignoreCase, text, offset,
+                                    match.toCharArray());
+  }
+
+
+  @Override
+  public void addColoring(String keyword, String coloring) {
+    System.out.format("addColoring(%s, %s) called in HtmlTokenMarker%n");
   }
 }

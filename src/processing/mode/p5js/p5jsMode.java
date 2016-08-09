@@ -3,6 +3,7 @@ package processing.mode.p5js;
 import java.io.File;
 
 import processing.app.*;
+import processing.app.syntax.TokenMarker;
 import processing.app.ui.*;
 
 
@@ -55,6 +56,20 @@ public class p5jsMode extends Mode {
       Platform.getContentFile("modes/java/keywords.txt"),
       new File(folder, "keywords.txt")
     };
+  }
+
+
+  @Override
+  public TokenMarker getTokenMarker(SketchCode code) {
+    String ext = code.getExtension();
+
+    if (ext.equals("js") || ext.equals("json")) {
+      return tokenMarker;
+
+    } else if (code.isExtension("html")) {
+      return new HtmlTokenMarker();
+    }
+    return null;  // no styling
   }
 
 
