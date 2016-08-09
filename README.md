@@ -6,7 +6,7 @@ A simple editor for p5.js code that runs inside the PDE.
 ### Goals/Criteria
 
 * Have a simple way to get started with p5.js, while making use of the editing facilities of the PDE and its Sketchbook.
-* Provide a bridge until the official p5.js Web Editor project is complete. (With any luck, this project will have a lifespan of a few months or just this school year).
+* Provide a bridge until the official p5.js Web Editor project is complete. (With any luck, this project will have a lifespan of just a few months (or maybe the 2016-2017 school year).
 * Have a simple editor that allows offline use.
 * Make use of the PDE being installed in many schools and labs, and have a Mode that’s easy to install from inside the PDE (no download, unzip, install process).
 * We need a way to support courses we're teaching during Fall 2016.
