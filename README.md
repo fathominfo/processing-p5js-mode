@@ -23,7 +23,10 @@ A simple editor for p5.js code that runs inside the PDE.
 #### todo
 
 - [ ] add single file library support
+	- [ ] get p5.dom.js and p5.sound.js into the menu
+	- [ ] contributed libraries into the menu?
 - [ ] update libraries subfolder
+- [ ] import all the examples
 - [ ] basic syntax highlighting for .css?
 
 
