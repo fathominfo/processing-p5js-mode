@@ -267,6 +267,12 @@ public class p5jsBuild {
 
 
   static void handleFile(Sketch sketch, int codeIndex) throws SketchException {
+    File file = sketch.getCode(codeIndex).getFile();
+    if (!file.getName().endsWith(".js") &&
+        !file.getName().endsWith(".json")) {
+      return;  // nope, not this one
+    }
+
     Options options = new Options("nashorn");
     options.set("anon.functions", true);
     options.set("parse.only", true);
@@ -275,7 +281,6 @@ public class p5jsBuild {
     ErrorManager errors = new ErrorManager();
     Context context = new Context(options, errors, Base.class.getClassLoader());
     Context.setGlobal(context.createGlobal());
-    File file = sketch.getCode(codeIndex).getFile();
     String code = PApplet.join(PApplet.loadStrings(file), "\n");
     try {
       //String json = ScriptUtils.parse(code, sketch.getName(), true);
