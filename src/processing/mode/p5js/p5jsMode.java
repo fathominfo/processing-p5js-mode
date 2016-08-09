@@ -134,7 +134,7 @@ public class p5jsMode extends Mode {
 
 
   /**
-   *  Return the default extension for this mode, same as Java
+   * Return the default extension for this mode.
    */
   @Override
   public String getDefaultExtension() {
@@ -143,12 +143,11 @@ public class p5jsMode extends Mode {
 
 
   /**
-   *  Return allowed extensions
+   * The list of extensions that should show up as tabs.
    */
   @Override
   public String[] getExtensions () {
-    //return new String[] { "pde", "js" };
-    return new String[] { "js", "txt", "html" };
+    return new String[] { "js", "txt", "html", "css" };
   }
 
 
@@ -163,9 +162,11 @@ public class p5jsMode extends Mode {
   }
 
 
+  /*
   public File getTemplateLibrariesFolder() {
     return new File(getTemplateFolder(), "libraries");
   }
+  */
 
 
 //  /**

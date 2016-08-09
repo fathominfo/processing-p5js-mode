@@ -22,9 +22,9 @@ A simple editor for p5.js code that runs inside the PDE.
 
 #### todo
 
-- [ ] edit .html, .txt, .json
 - [ ] add single file library support
 - [ ] update libraries subfolder
+- [ ] basic syntax highlighting for .css?
 
 
 #### done
@@ -33,6 +33,7 @@ A simple editor for p5.js code that runs inside the PDE.
 - [x] make sure toolbar buttons are behaving
 - [x] move the side panels from the editor out of Java and into Editor
 - [x] remove DirectivesEditor
+- [x] edit .html, .txt, .json
 
 
 #### nope
