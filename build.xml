@@ -21,6 +21,16 @@ ${line.separator}with the path to where you have the code for processing checked
 ${line.separator}and another line that reads:
 ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
+  <property name="install.dir" 
+            value="${sketchbook.dir}/modes/p5jsMode" />
+
+  <property name="jar.path"
+            value="mode/p5jsMode.jar" />
+
+  <property name="dist.path"
+            value="p5jsMode.zip" />
+            
+ 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <target name="build">
@@ -39,23 +49,14 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <!-- make sure this exists -->
     <mkdir dir="mode" />
 
-    <jar destfile="mode/p5jsMode.jar">
+    <jar destfile="${jar.path}">
       <fileset dir="bin" />
     </jar>
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-  <target name="dist" depends="build">
-    <!-- make a zip file for distribution -->
-  </target>
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
   <target name="install" depends="build">
-    <property name="install.dir" 
-              value="${sketchbook.dir}/modes/p5jsMode" />
-
     <copy todir="${install.dir}/mode">
       <fileset dir="mode" />
     </copy>
@@ -72,6 +73,28 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
       <fileset file="mode.properties" />
       <fileset file="keywords.txt" />
     </copy>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <target name="clean">
+    <delete dir="${install.dir}" />
+    <delete dir="bin" />
+    <delete file="${jar.path}" />
+    <delete dir="mode" />
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <target name="dist" depends="build">
+    <zip destfile="${dist.path}">
+      <!-- This can probably be done more efficiently, no? How about a PR? -->
+      <zipfileset dir="." prefix="p5jsMode" includes="keywords.txt" />
+      <zipfileset dir="." prefix="p5jsMode" includes="libraries" />
+      <zipfileset dir="." prefix="p5jsMode" includes="mode" />
+      <zipfileset dir="." prefix="p5jsMode" includes="mode.properties" />
+      <zipfileset dir="." prefix="p5jsMode" includes="template" />
+    </zip>
   </target>
 
 </project>
