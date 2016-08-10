@@ -1,0 +1,45 @@
+0001
+X add 'dist' target to build.xml
+X add 'clean' target to build.xml
+X how do we edit html, text, css? 
+X set an auto-update block in the html to include the js files
+X   insert files into html method:
+X     first add anything from /libraries
+X     then anything from the main directory
+X     then the main sketch.js file
+
+
+_ html not reloading in editor after rebuild
+_ use temp files to run without saving
+_   how to clear these out when rewriting the html
+_   need to use some sort of weird temp name format
+_   contradiction between wanting valid files locally, always
+_   should it be writing some .tmp.html files instead?
+_     writeHtml() could be called to save those out in the interim
+
+_ import library
+X   don't include dom.js and sound.js by default
+_   allow some sort of single .js file library setup? 
+_   though this would also require a way to *remove* the libraries too
+_   get p5.dom.js and p5.sound.js into the menu
+_   get contributed libraries working?
+
+_ make it possible for the main class to be something besides the default name
+_   want to use sketch.js (this is a fine restriction)
+_   how difficult to have modes determine whether a sketch is a sketch?
+_     so that the main sketch class doesn't have to follow a naming convention
+_   Mode.rebuildSketchbookTree() handles creation of the sketchbook menu
+_   which calls Base.addSketches() to do the actual adding
+_   would need some means of specifying what the 'main' file is
+_     at least with p5js we could provisionally just use sketch.js?
+
+_ how do we bring back the auto-update block if it's broken?
+_   or if it's not present, stop updating that file?
+_ other supported types from p5js editor
+_   txt, html, css, js, json, scss, xml, csv, less
+_   include: html, css, js, json, scss, less
+_   exclude: xml, txt, csv (like to be in data folder)
+_ add basic syntax highlighting for css
+_ update p5*.js in the libraries subfolder
+- import all the examples
+_ mode option for showing html and css or not
