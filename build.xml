@@ -42,7 +42,9 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 	   debug="true"
            srcdir="src"
 	   destdir="bin"
-	   classpath="${processing.dir}/core/bin"
+	   classpath="${processing.dir}/core/bin;
+                      ${processing.dir}/app/bin;
+                      ${processing.dir}/java/bin"
 	   nowarn="true">
     </javac>
 
