@@ -177,25 +177,9 @@ public class p5jsMode extends Mode {
   }
 
 
-
   /*
   public File getTemplateLibrariesFolder() {
     return new File(getTemplateFolder(), "libraries");
   }
   */
-
-
-//  /**
-//   *  Build and export a sketch
-//   */
-//  public boolean handleExport(Sketch sketch) throws IOException, SketchException {
-//    new p5jsBuild(sketch);
-//    //return new p5jsBuild(sketch).export();
-//    return true;
-//  }
-
-
-  //public boolean handleExportApplet(Sketch sketch) throws SketchException, IOException { }
-
-  //public boolean handleExportApplication(Sketch sketch) throws SketchException, IOException { }
 }
