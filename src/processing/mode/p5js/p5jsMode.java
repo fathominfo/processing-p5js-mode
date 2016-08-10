@@ -1,10 +1,12 @@
 package processing.mode.p5js;
 
 import java.io.File;
+import java.io.IOException;
 
 import processing.app.*;
 import processing.app.syntax.TokenMarker;
 import processing.app.ui.*;
+import processing.core.PApplet;
 
 
 public class p5jsMode extends Mode {
@@ -160,6 +162,20 @@ public class p5jsMode extends Mode {
   public String[] getIgnorable() {
     return null;
   }
+
+
+  /** Override handles rewriting index.html with the sketch name. */
+  @Override
+  public File addTemplateFiles(File sketchFolder,
+                               String sketchName) throws IOException {
+    File mainFile = super.addTemplateFiles(sketchFolder, sketchName);
+    File indexFile = new File(sketchFolder, "index.html");
+    String program = PApplet.join(PApplet.loadStrings(indexFile), "\n");
+    program = program.replaceAll("@@sketch@@", sketchName + ".js");
+    PApplet.saveStrings(indexFile, PApplet.split(program, '\n'));
+    return mainFile;
+  }
+
 
 
   /*
