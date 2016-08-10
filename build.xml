@@ -1,11 +1,5 @@
 <project name="p5js-mode" default="install">
 
-  <description>
-    A hacked-up version of Florian's JavaScriptMode to work with p5.js  
-  </description>
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
   <property file="local.properties" />
 
   <condition property="props.present">
@@ -100,4 +94,3 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   </target>
 
 </project>
-

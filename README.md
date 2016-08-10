@@ -24,29 +24,6 @@ The tradeoffs here represent the best solution based on the goals and criteria a
 * An `index.html` file is created in each new sketch folder. It contains a section where each .js file from the sketch is added automatically. Removing this block of code (it’s clearly marked in the file) will cause the sketch to no longer run inside the PDE.
 * If you run into trouble, remove the `index.html` file, which will reset it to the version from the template.
 * Add library files or additional code to the `libraries` subfolder of the sketch. That code will be included in the HTML file, though they won’t be visible as tabs in the Editor.
-* Like everything else in the PDE, this uses the `data` folder (unlike many p5js examples which use an `assets` folder). I'm guessing this is ok for now because sketches must specify `assets` in the path, so it's just as easy to do that as to specify `data` instead. 
+* Like everything else in the PDE, this uses the `data` folder (unlike many p5js examples which use an `assets` folder). I'm guessing this is ok for now because sketches must specify `assets` in the path, so it's just as easy to do that as to specify `data` instead.
+* This started from Florian Jenett's JavaScript Mode that was previously included in the Processing download, but doesn't retain much code from that original source.
 
-
-#### todo
-
-- [ ] add single file library support
-	- [ ] get p5.dom.js and p5.sound.js into the menu
-	- [ ] contributed libraries into the menu?
-- [ ] update libraries subfolder
-- [ ] import all the examples
-- [ ] basic syntax highlighting for .css?
-
-
-#### done
-
-- [x] get templates working
-- [x] make sure toolbar buttons are behaving
-- [x] move the side panels from the editor out of Java and into Editor
-- [x] remove DirectivesEditor
-- [x] edit .html, .txt, .json
-
-
-#### nope
-
-- [ ] make the server provide dummy /libraries folder
-- [ ] implement Export as separate option that creates web folder
