@@ -8,9 +8,11 @@ X     first add anything from /libraries
 X     then anything from the main directory
 X     then the main sketch.js file
 X don't include dom.js and sound.js by default
+X html not reloading in editor after rebuild
 
 
-_ html not reloading in editor after rebuild
+_ need to write template correctly on first load
+_   need to call updateHtml() on init
 _ use temp files to run without saving
 _   how to clear these out when rewriting the html
 _   need to use some sort of weird temp name format

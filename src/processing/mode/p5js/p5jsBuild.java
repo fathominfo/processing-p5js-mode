@@ -43,6 +43,11 @@ public class p5jsBuild {
 
   static void updateHtml(Mode mode,
                          Sketch sketch) throws SketchException, IOException {
+    SketchCode indexCode = findIndex(sketch);
+//    if (indexCode == null) {
+//      throw new SketchException("Could not find index.html file");
+//    }
+
     File sketchFolder = sketch.getFolder();
     StringList insert = new StringList();
 
@@ -95,6 +100,11 @@ public class p5jsBuild {
       } catch (IOException e) {
         throw new SketchException(e.getMessage());
       }
+      // Can't risk breaking the user's sketch if there are edits,
+      // but with no modifications, handle the reload to bring back index.html
+      if (!sketch.isModified()) {
+        sketch.reload();
+      }
     }
 
     // write the HTML based on the template
@@ -115,6 +125,23 @@ public class p5jsBuild {
       HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX +
       html.substring(stop + HTML_SUFFIX.length());
     PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
+
+    // reload in the Editor
+    if (indexCode != null) {
+      indexCode.load();
+      // unfortunate hack that seems necessary at the moment?
+      indexCode.setDocument(null);
+    }
+  }
+
+
+  static private SketchCode findIndex(Sketch sketch) {
+    for (SketchCode code : sketch.getCode()) {
+      if (code.getFileName().equals("index.html")) {
+        return code;
+      }
+    }
+    return null;
   }
 
 
