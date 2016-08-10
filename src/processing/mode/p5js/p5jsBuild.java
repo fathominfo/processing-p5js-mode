@@ -44,6 +44,10 @@ public class p5jsBuild {
   static void updateHtml(Mode mode,
                          Sketch sketch) throws SketchException, IOException {
     SketchCode indexCode = findIndex(sketch);
+    if (indexCode != null && indexCode.isModified()) {
+      System.err.println("Could not update index.html because it has unsaved changes.");
+      return;
+    }
 //    if (indexCode == null) {
 //      throw new SketchException("Could not find index.html file");
 //    }
