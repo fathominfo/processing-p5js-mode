@@ -13,6 +13,7 @@ X need to write template correctly on first load
 o   need to call updateHtml() on init
 X   can't do that b/c the Sketch and Editor objects don't exist yet
 
+
 _ use temp files to run without saving
 _   how to clear these out when rewriting the html
 _   need to use some sort of weird temp name format
@@ -40,6 +41,9 @@ _     at least with p5js we could provisionally just use sketch.js?
 _ how do we bring back the auto-update block if it's broken?
 _   or if it's not present, stop updating that file?
 _ update p5*.js in the libraries subfolder
+
+_ implement handling for favicon.ico
+_   should be able to send the image from PApplet
 
 _ mode option for showing html and css or not
 _   is it time to add Mode preferences?
