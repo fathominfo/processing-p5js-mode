@@ -264,6 +264,13 @@ public class p5jsEditor extends Editor {
 
   public void handleRun() {
     toolbar.activateRun();
+
+    try {
+      // write the HTML here in case we need temp files
+      p5jsBuild.updateHtml(sketch);
+    } catch (Exception e) {
+      statusError(e);
+    }
     if (checkErrors(true)) {
       toolbar.deactivateRun();
 
@@ -347,7 +354,7 @@ public class p5jsEditor extends Editor {
 
   protected boolean rebuildHtml() {
     try {
-      p5jsBuild.updateHtml(getMode(), sketch);
+      p5jsBuild.updateHtml(sketch);
       return true;
     } catch (Exception e) {
       statusError(e);

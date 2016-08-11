@@ -11,7 +11,6 @@ import jdk.nashorn.internal.runtime.ErrorManager;
 import jdk.nashorn.internal.runtime.options.Options;
 
 import processing.app.Base;
-import processing.app.Mode;
 import processing.app.Platform;
 import processing.app.Sketch;
 import processing.app.SketchCode;
@@ -43,8 +42,9 @@ public class p5jsBuild {
   }
 
 
-  static void updateHtml(Mode mode,
-                         Sketch sketch) throws SketchException, IOException {
+  static void updateHtml(Sketch sketch) throws SketchException, IOException {
+//    Mode mode = sketch.getMode();
+
     SketchCode indexCode = findIndex(sketch);
     if (indexCode != null && indexCode.isModified()) {
       // TODO can we throw an exception here? how often is this happening?
@@ -125,7 +125,8 @@ public class p5jsBuild {
     // if the template has been removed, rewrite it (simplest fix)
     if (!htmlFile.exists()) {
       // replace with a fresh copy from the template
-      File htmlTemplate = new File(mode.getTemplateFolder(), "index.html");
+      File templateFolder = sketch.getMode().getTemplateFolder();
+      File htmlTemplate = new File(templateFolder, "index.html");
       try {
         Util.copyFile(htmlTemplate, htmlFile);
       } catch (IOException e) {
