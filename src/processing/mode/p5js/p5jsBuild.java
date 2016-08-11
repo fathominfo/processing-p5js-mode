@@ -58,20 +58,7 @@ public class p5jsBuild {
     File sketchFolder = sketch.getFolder();
     StringList insert = new StringList();
 
-    // remove any temp files from the last run
-    File[] tempList = sketchFolder.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return (!file.isDirectory() &&
-                file.getName().startsWith(TEMP_PREFIX));
-      }
-    });
-    // remove these files
-    if (tempList != null) {
-      for (File tempItem : tempList) {
-        Platform.deleteFile(tempItem);  // move to trash, hopefully
-      }
-    }
+    cleanTempFiles(sketch);
 
     // load p5.js first
     insert.append(scriptPath("libraries/p5.js"));
@@ -163,6 +150,24 @@ public class p5jsBuild {
       indexCode.load();
       // unfortunate hack that seems necessary at the moment?
       indexCode.setDocument(null);
+    }
+  }
+
+
+  static void cleanTempFiles(Sketch sketch) throws IOException {
+    // remove any temp files from the last run
+    File[] tempList = sketch.getFolder().listFiles(new FileFilter() {
+      @Override
+      public boolean accept(File file) {
+        return (!file.isDirectory() &&
+                file.getName().startsWith(TEMP_PREFIX));
+      }
+    });
+    // remove these files
+    if (tempList != null) {
+      for (File tempItem : tempList) {
+        Platform.deleteFile(tempItem);  // move to trash, hopefully
+      }
     }
   }
 

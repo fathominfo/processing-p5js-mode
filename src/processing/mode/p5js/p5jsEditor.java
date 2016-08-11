@@ -288,6 +288,11 @@ public class p5jsEditor extends Editor {
    *  Menu item callback, replacement for STOP: stop server.
    */
   public void handleStop() {
+    try {
+      p5jsBuild.cleanTempFiles(sketch);
+    } catch (IOException e) {
+      e.printStackTrace();  // TODO ignore?
+    }
     stopServer();
     statusNotice("Server stopped.");
     toolbar.deactivateRun();
