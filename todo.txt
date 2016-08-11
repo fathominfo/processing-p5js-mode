@@ -12,14 +12,14 @@ X html not reloading in editor after rebuild
 X need to write template correctly on first load
 o   need to call updateHtml() on init
 X   can't do that b/c the Sketch and Editor objects don't exist yet
+X use temp files to run without saving
+X   how to clear these out when rewriting the html
+X   need to use some sort of weird temp name format
+X   contradiction between wanting valid files locally, always
+o   should it be writing some .tmp.html files instead?
+o     writeHtml() could be called to save those out in the interim
+X     force save of HTML file when updating
 
-
-_ use temp files to run without saving
-_   how to clear these out when rewriting the html
-_   need to use some sort of weird temp name format
-_   contradiction between wanting valid files locally, always
-_   should it be writing some .tmp.html files instead?
-_     writeHtml() could be called to save those out in the interim
 
 _ import all the examples
 
