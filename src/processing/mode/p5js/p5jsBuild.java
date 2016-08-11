@@ -12,6 +12,7 @@ import jdk.nashorn.internal.runtime.options.Options;
 
 import processing.app.Base;
 import processing.app.Mode;
+import processing.app.Platform;
 import processing.app.Sketch;
 import processing.app.SketchCode;
 import processing.app.SketchException;
@@ -26,6 +27,7 @@ public class p5jsBuild {
   static final String HTML_SUFFIX =
     "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
 
+  static final String TEMP_PREFIX = "p5js-temp-";
 //  ScriptEngine engine;
 //  static ScriptEngine engine =
 //    new ScriptEngineManager().getEngineByName("javascript");
@@ -45,6 +47,7 @@ public class p5jsBuild {
                          Sketch sketch) throws SketchException, IOException {
     SketchCode indexCode = findIndex(sketch);
     if (indexCode != null && indexCode.isModified()) {
+      // TODO can we throw an exception here? how often is this happening?
       System.err.println("Could not update index.html because it has unsaved changes.");
       return;
     }
@@ -54,6 +57,21 @@ public class p5jsBuild {
 
     File sketchFolder = sketch.getFolder();
     StringList insert = new StringList();
+
+    // remove any temp files from the last run
+    File[] tempList = sketchFolder.listFiles(new FileFilter() {
+      @Override
+      public boolean accept(File file) {
+        return (!file.isDirectory() &&
+                file.getName().startsWith(TEMP_PREFIX));
+      }
+    });
+    // remove these files
+    if (tempList != null) {
+      for (File tempItem : tempList) {
+        Platform.deleteFile(tempItem);  // move to trash, hopefully
+      }
+    }
 
     // load p5.js first
     insert.append(scriptPath("libraries/p5.js"));
@@ -82,16 +100,25 @@ public class p5jsBuild {
     }
 
     // now the sketch code
-    for (int i = 1; i < sketch.getCodeCount(); i++) {
+    for (int ii = 0; ii < sketch.getCodeCount(); ii++) {
+      // start at [1], and write [0] (the main code) to the file last
+      int i = (ii + 1) % sketch.getCodeCount();
       SketchCode code =  sketch.getCode(i);
       String filename = code.getFileName();
       if (filename.endsWith(".js")) {
+        if (code.isModified()) {
+          // write a temporary file instead of the actual one
+          String tempPrefix = TEMP_PREFIX + code.getPrettyName();
+          File tempFile = File.createTempFile(tempPrefix, ".js", sketchFolder);
+          Util.saveFile(code.getProgram(), tempFile);
+          filename = tempFile.getName();
+        }
         insert.append(scriptPath(filename));
       }
     }
     // different ways to do this; let's not be presumptuous that it's
     // sketchName + ".js" and leave ourselves some room for the future.
-    insert.append(scriptPath(sketch.getCode(0).getFileName()));
+    //insert.append(scriptPath(sketch.getCode(0).getFileName()));
 
     File htmlFile = new File(sketchFolder, "index.html");
 
