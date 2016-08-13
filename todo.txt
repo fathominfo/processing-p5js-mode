@@ -22,11 +22,15 @@ X     force save of HTML file when updating
 X implement handling for favicon.ico
 X   should be able to send the image from PApplet
 
-
 _ import all the examples
+https://github.com/processing/p5.js-website/archive/master.zip
+https://github.com/processing/p5.js-website/tree/master/examples/examples_src
+https://github.com/processing/p5.js-website/tree/master/examples/examples/assets
+p5.js-website-master/examples/examples_src/33_Sound/00_Load_and_Play_Sound.js
 
 _ import library
-_   allow some sort of single .js file library setup? 
+_   allow some sort of single .js file library setup?
+_   it's actually 'add library' not 'import' in this case
 _   though this would also require a way to *remove* the libraries too
 _   get p5.dom.js and p5.sound.js into the menu
 _   get contributed libraries working?
