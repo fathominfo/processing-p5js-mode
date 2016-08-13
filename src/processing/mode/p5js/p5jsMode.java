@@ -94,44 +94,36 @@ public class p5jsMode extends Mode {
 
 
   /**
-   *  Fetch and return examples
+   *  Get a list of folders that contain examples, ordered by the way they
+   *  should show up in the window or menu.
    */
   @Override
   public File[] getExampleCategoryFolders() {
-    // find included example subdirs
-    File[] inclExamples = examplesFolder.listFiles(new java.io.FileFilter() {
-      @Override
-      public boolean accept (File f) {
-        return f.isDirectory();
-      }
-    });
-    java.util.Arrays.sort(inclExamples);
-
-    // add JavaMode examples as these are supposed to run in JSMode
-//    JavaMode jMode = getJavaMode();
-//    if ( jMode == null )
-      return inclExamples; // js examples only
-
-      /*
-    File jExamples = jMode.getContentFile("examples");
-    File[] jModeExamples = new File[] {
-      new File(jExamples, "Basics"),
-      //new File(jExamples, "Topics"),
-      //new File(jExamples, "3D") ,
-      //new File(jExamples, "Books")
+    final String[] titles = {
+      "Structure",
+      "Form",
+      "Data",
+      "Arrays",
+      "Control",
+      "Image",
+      "Color",
+      "Math",
+      "Simulate",
+      "Interaction",
+      "Objects",
+      "Lights",
+      "Instance Mode",
+      "DOM",
+      "3D",
+      "Sound",
+      "Mobile"
     };
 
-    // merge them all
-    File[] finalExamples = new File[inclExamples.length + jModeExamples.length];
-    for ( int i = 0; i < inclExamples.length; i++ )
-      finalExamples[i] = inclExamples[i];
-    for ( int i = 0; i < jModeExamples.length; i++ )
-      finalExamples[inclExamples.length+i] = jModeExamples[i];
-
-    java.util.Arrays.sort(finalExamples);
-
-    return finalExamples;
-    */
+    File[] outgoing = new File[titles.length];
+    for (int i = 0; i < titles.length; i++) {
+      outgoing[i] = new File(examplesFolder, titles[i]);
+    }
+    return outgoing;
   }
 
 
@@ -149,7 +141,7 @@ public class p5jsMode extends Mode {
    */
   @Override
   public String[] getExtensions () {
-    return new String[] { "js", "txt", "html", "css" };
+    return new String[] { "js", "html", "css" };
   }
 
 

@@ -21,12 +21,8 @@ o     writeHtml() could be called to save those out in the interim
 X     force save of HTML file when updating
 X implement handling for favicon.ico
 X   should be able to send the image from PApplet
-
-_ import all the examples
-https://github.com/processing/p5.js-website/archive/master.zip
-https://github.com/processing/p5.js-website/tree/master/examples/examples_src
-https://github.com/processing/p5.js-website/tree/master/examples/examples/assets
-p5.js-website-master/examples/examples_src/33_Sound/00_Load_and_Play_Sound.js
+X import all the examples
+X   also generate the ordering for the category folders
 
 _ import library
 _   allow some sort of single .js file library setup?

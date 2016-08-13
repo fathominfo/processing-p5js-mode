@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.*;
 
+import processing.app.Platform;
 import processing.core.PApplet;
 import processing.data.StringList;
 
@@ -55,15 +56,18 @@ public class ImportExamples extends PApplet {
       }
 
       File examplesFolder = sketchFile("examples");
+      Platform.deleteFile(examplesFolder);  // move to trash
+
       StringList exampleList = new StringList(exampleMap.keySet());
       StringList categories = new StringList();
 
       for (String item : exampleList) {
         println(item);
         String[] pieces = split(item, '/');
+        // keep the numbers on here so that we can get the order
         categories.appendUnique(pieces[0]);
         // remove the number prefix when writing to the folder
-        File categoryFolder = new File(examplesFolder, pieces[0].substring(3));
+        File categoryFolder = new File(examplesFolder, fixCategory(pieces[0]));
         // remove the .js from the end of the name
         String name = "ex" + pieces[1].substring(0, pieces[1].length() - 3);
         File exampleFolder = new File(categoryFolder, name);
@@ -96,6 +100,14 @@ public class ImportExamples extends PApplet {
         }
       }
 
+      println();
+      println("Example categories to be added to p5jsMode.java:");
+      categories.sort();
+      //println("\"" + categories.join("\", \"") + "\"");
+      for (String category : categories) {
+        println("\"" + fixCategory(category) + "\", ");
+      }
+
     } catch (IOException e) {
       e.printStackTrace();
 
@@ -107,8 +119,17 @@ public class ImportExamples extends PApplet {
         // or an IOException from calling close()
       }
     }
-    println("Finished.");
     exit();
+  }
+
+
+  private String fixCategory(String what) {
+    what = what.substring(3);
+    if ("Dom".equals(what)) {
+      // consistent with example title and other folder naming
+      return "DOM";
+    }
+    return what.replace('_', ' ');
   }
 
 
