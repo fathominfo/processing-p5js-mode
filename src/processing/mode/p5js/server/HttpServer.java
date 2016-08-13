@@ -59,6 +59,7 @@ public class HttpServer {
     */
 //    handlerMap.put("libraries", new LibrariesHandler(this));
     //handlerMap.put("libraries", new GenericHandler(this, getLibrariesFolder()));
+    handlerMap.put("favicon.ico", new FavIconHandler(this));
     genericHandler = new GenericHandler(this);
 
     for (int i = 0; i < WORKERS; i++) {

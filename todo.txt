@@ -19,6 +19,8 @@ X   contradiction between wanting valid files locally, always
 o   should it be writing some .tmp.html files instead?
 o     writeHtml() could be called to save those out in the interim
 X     force save of HTML file when updating
+X implement handling for favicon.ico
+X   should be able to send the image from PApplet
 
 
 _ import all the examples
@@ -29,6 +31,13 @@ _   though this would also require a way to *remove* the libraries too
 _   get p5.dom.js and p5.sound.js into the menu
 _   get contributed libraries working?
 
+. . .
+
+_ update p5*.js in the libraries subfolder
+
+_ how do we bring back the auto-update block if it's broken?
+_   or if it's not present, stop updating that file?
+
 _ make it possible for the main class to be something besides the default name
 _   want to use sketch.js (this is a fine restriction)
 _   how difficult to have modes determine whether a sketch is a sketch?
@@ -37,13 +46,6 @@ _   Mode.rebuildSketchbookTree() handles creation of the sketchbook menu
 _   which calls Base.addSketches() to do the actual adding
 _   would need some means of specifying what the 'main' file is
 _     at least with p5js we could provisionally just use sketch.js?
-
-_ how do we bring back the auto-update block if it's broken?
-_   or if it's not present, stop updating that file?
-_ update p5*.js in the libraries subfolder
-
-_ implement handling for favicon.ico
-_   should be able to send the image from PApplet
 
 _ mode option for showing html and css or not
 _   is it time to add Mode preferences?
