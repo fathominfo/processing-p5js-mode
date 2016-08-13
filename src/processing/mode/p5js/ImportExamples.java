@@ -79,27 +79,56 @@ public class ImportExamples extends PApplet {
           String[] lines =
             loadStrings(zip.getInputStream(exampleMap.get(item)));
           //for (String line : lines) {
+          StringList libraries = new StringList();
           for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
-            String[] m = match(line, "\"assets/(.*)\"");
+
+            // the sketches that need these libraries mention them in the comments
+            if (line.contains("p5.dom")) {
+              libraries.appendUnique("p5.dom.js");
+            }
+            if (line.contains("p5.sound")) {
+              libraries.appendUnique("p5.sound.js");
+            }
+
+            String[] m = match(line, "[\"']assets/(.+)[\"']");
             if (m != null) {
-              println(m[1]);
+//              println(m[1].length());
+              // Switch to using the data folder so that it
+              // plays nicely with the PDE's "Add File" command.
+              lines[i] = line.replace("assets/" + m[1], "data/" + m[1]);
+
               ZipEntry entry = assetMap.get(m[1]);
               if (entry != null) {
                 // saveStream() will create intermediate folders as necessary
                 saveStream(new File(exampleFolder, "data/" + m[1]),
                            zip.getInputStream(entry));
-                // Switch to using the data folder so that it
-                // plays nicely with the PDE's "Add File" command.
-                lines[i] = line.replace("assets/" + m[1], "data/" + m[1]);
               } else {
-                System.err.println("could not find " + m[1]);
+                boolean found = false;
+                for (String ext : new String[] { ".mp3", ".ogg" }) {
+                  entry = assetMap.get(m[1] + ext);
+                  if (entry != null) {
+                    saveStream(new File(exampleFolder, "data/" + m[1] + ext),
+                               zip.getInputStream(entry));
+                    found = true;
+                  }
+                }
+                if (!found) {
+                  System.err.println(item + " could not find " + m[1]);
+                  System.err.println("  " + line);
+                }
               }
             }
             saveStrings(exampleFile, lines);
 
             // Add index.html and the p5js library itself
             Util.copyDir(templateFolder, exampleFolder);
+            // now for some libraries
+            File librariesFolder = sketchFile("libraries");
+            for (String library : libraries) {
+              Util.copyFile(new File(librariesFolder, library),
+                            new File(exampleFolder, "libraries/" + library));
+            }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();
             p5jsMode.buildIndex(exampleFolder, name);
