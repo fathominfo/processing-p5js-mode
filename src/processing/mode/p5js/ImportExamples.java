@@ -20,7 +20,7 @@ public class ImportExamples extends PApplet {
 
   @Override
   public void setup() {
-    File masterFile = sketchFile("website-master.zip");
+    File masterFile = sketchFile("examples-master.zip");
     if (!masterFile.exists()) {
       println("Downloading " + WEB_MASTER);
       if (!saveStream(masterFile, WEB_MASTER)) {
@@ -59,22 +59,33 @@ public class ImportExamples extends PApplet {
       StringList categories = new StringList();
 
       for (String item : exampleList) {
+        println(item);
         String[] pieces = split(item, '/');
         categories.appendUnique(pieces[0]);
         // remove the number prefix when writing to the folder
         File categoryFolder = new File(examplesFolder, pieces[0].substring(3));
         // remove the .js from the end of the name
-        String name = "ex" + pieces[1].substring(pieces[1].length() - 3);
+        String name = "ex" + pieces[1].substring(0, pieces[1].length() - 3);
         File exampleFolder = new File(categoryFolder, name);
         if (exampleFolder.mkdirs()) {
           File exampleFile = new File(exampleFolder, name + ".js");
           String[] lines =
             loadStrings(zip.getInputStream(exampleMap.get(item)));
-          for (String line : lines) {
+          //for (String line : lines) {
+          for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
             String[] m = match(line, "\"assets/(.*)\"");
             if (m != null) {
               println(m[1]);
-              if (assetMap.get(m[1]) == null) {
+              ZipEntry entry = assetMap.get(m[1]);
+              if (entry != null) {
+                // saveStream() will create intermediate folders as necessary
+                saveStream(new File(exampleFolder, "data/" + m[1]),
+                           zip.getInputStream(entry));
+                // Switch to using the data folder so that it
+                // plays nicely with the PDE's "Add File" command.
+                lines[i] = line.replace("assets/" + m[1], "data/" + m[1]);
+              } else {
                 System.err.println("could not find " + m[1]);
               }
             }
@@ -96,6 +107,8 @@ public class ImportExamples extends PApplet {
         // or an IOException from calling close()
       }
     }
+    println("Finished.");
+    exit();
   }
 
 
