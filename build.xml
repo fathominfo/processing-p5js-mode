@@ -68,17 +68,21 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
-  <target name="install" depends="build">
+  <target name="install" depends="build">    
+    <copy todir="${install.dir}/examples">
+      <fileset dir="examples" />
+    </copy>
+
+    <copy todir="${install.dir}/libraries">
+      <fileset dir="libraries" />
+    </copy>
+
     <copy todir="${install.dir}/mode">
       <fileset dir="mode" />
     </copy>
 
     <copy todir="${install.dir}/template">
       <fileset dir="template" />
-    </copy>
-
-    <copy todir="${install.dir}/libraries">
-      <fileset dir="libraries" />
     </copy>
 
     <copy todir="${install.dir}">
@@ -101,6 +105,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <target name="dist" depends="build">
     <zip destfile="${dist.path}">
       <!-- This can probably be done more efficiently, no? How about a PR? -->
+      <zipfileset dir="." prefix="p5jsMode" includes="examples" />
       <zipfileset dir="." prefix="p5jsMode" includes="keywords.txt" />
       <zipfileset dir="." prefix="p5jsMode" includes="libraries" />
       <zipfileset dir="." prefix="p5jsMode" includes="mode" />
