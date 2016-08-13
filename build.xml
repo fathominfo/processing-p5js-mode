@@ -28,6 +28,19 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <target name="build">
+
+    <!-- Check for JDT compiler, since this is likely a PDE build. Using
+	 it allows us to build the PDE with only a JRE on Windows and Linux.
+	 So that the core can be built independently of the PDE, 
+	 use javac (the "modern" compiler) if ecj is not present. -->
+    <property name="jdt.jar" value="${processing.dir}/java/mode/org.eclipse.jdt.core.jar" />
+    <condition property="build.compiler" 
+	       value="org.eclipse.jdt.core.JDTCompilerAdapter"
+	       else="modern">
+      <available file="${jdt.jar}" />
+    </condition>
+    <!--<echo message="compiler is ${build.compiler}" />-->
+
     <mkdir dir="bin" />
     <javac source="1.8"
 	   target="1.8"
@@ -40,6 +53,8 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin"
 	   nowarn="true">
+      <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
+      <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
     </javac>
 
     <!-- make sure this exists -->
