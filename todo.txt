@@ -24,6 +24,9 @@ X   should be able to send the image from PApplet
 X import all the examples
 X   also generate the ordering for the category folders
 
+_ hide 'libraries' folder from Java Mode
+_ hide contrib examples and contrib libraries from Java Mode
+
 _ import library
 _   allow some sort of single .js file library setup?
 _   it's actually 'add library' not 'import' in this case
@@ -33,7 +36,8 @@ _   get contributed libraries working?
 
 . . .
 
-_ update p5*.js in the libraries subfolder
+_ option update p5*.js in the libraries subfolder
+_   automatically notify user if version in the template is updated?
 
 _ how do we bring back the auto-update block if it's broken?
 _   or if it's not present, stop updating that file?

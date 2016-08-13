@@ -156,16 +156,27 @@ public class p5jsMode extends Mode {
   }
 
 
-  /** Override handles rewriting index.html with the sketch name. */
+  /**
+   * Override handles rewriting index.html with the sketch name.
+   */
   @Override
   public File addTemplateFiles(File sketchFolder,
                                String sketchName) throws IOException {
     File mainFile = super.addTemplateFiles(sketchFolder, sketchName);
+    buildIndex(sketchFolder, sketchName);
+    return mainFile;
+  }
+
+
+  /**
+   * Write the index.html file. Broken out for ImportExamples.
+   */
+  static protected void buildIndex(File sketchFolder,
+                                   String sketchName) throws IOException {
     File indexFile = new File(sketchFolder, "index.html");
     String program = PApplet.join(PApplet.loadStrings(indexFile), "\n");
     program = program.replaceAll("@@sketch@@", sketchName + ".js");
     PApplet.saveStrings(indexFile, PApplet.split(program, '\n'));
-    return mainFile;
   }
 
 

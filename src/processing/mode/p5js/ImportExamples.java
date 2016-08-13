@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.zip.*;
 
 import processing.app.Platform;
+import processing.app.Util;
 import processing.core.PApplet;
 import processing.data.StringList;
 
@@ -61,6 +62,8 @@ public class ImportExamples extends PApplet {
       StringList exampleList = new StringList(exampleMap.keySet());
       StringList categories = new StringList();
 
+      File templateFolder = sketchFile("template");
+
       for (String item : exampleList) {
         println(item);
         String[] pieces = split(item, '/');
@@ -94,6 +97,12 @@ public class ImportExamples extends PApplet {
               }
             }
             saveStrings(exampleFile, lines);
+
+            // Add index.html and the p5js library itself
+            Util.copyDir(templateFolder, exampleFolder);
+            // won't be needing this one
+            new File(exampleFolder, "sketch.js").delete();
+            p5jsMode.buildIndex(exampleFolder, name);
           }
         } else {
           throw new RuntimeException("Couldn't make dir " + exampleFolder);
