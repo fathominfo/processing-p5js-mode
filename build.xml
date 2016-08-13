@@ -29,11 +29,12 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <target name="build">
 
-    <!-- Check for JDT compiler, since this is likely a PDE build. Using
-	 it allows us to build the PDE with only a JRE on Windows and Linux.
-	 So that the core can be built independently of the PDE, 
-	 use javac (the "modern" compiler) if ecj is not present. -->
-    <property name="jdt.jar" value="${processing.dir}/java/mode/org.eclipse.jdt.core.jar" />
+    <!-- Locate the JDT compiler, since we know processing.dir must exist and
+         using the JDT allows us to build the PDE with only a JRE on Windows
+         and Linux. If something goes wrong, javac (the "modern" compiler)
+         will be used instead. (Code taken from processing.core) -->
+    <property name="jdt.jar"
+              value="${processing.dir}/java/mode/org.eclipse.jdt.core.jar" />
     <condition property="build.compiler" 
 	       value="org.eclipse.jdt.core.JDTCompilerAdapter"
 	       else="modern">
