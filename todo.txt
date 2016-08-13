@@ -23,6 +23,7 @@ X implement handling for favicon.ico
 X   should be able to send the image from PApplet
 X import all the examples
 X   also generate the ordering for the category folders
+X   get assets to work properly
 
 _ hide 'libraries' folder from Java Mode
 _ hide contrib examples and contrib libraries from Java Mode
