@@ -2,6 +2,7 @@ package processing.mode.p5js;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import processing.app.*;
 import processing.app.syntax.TokenMarker;
@@ -124,6 +125,13 @@ public class p5jsMode extends Mode {
       outgoing[i] = new File(examplesFolder, titles[i]);
     }
     return outgoing;
+  }
+
+
+  @Override
+  public void rebuildLibraryList() {
+    coreLibraries = new ArrayList<>();
+    contribLibraries = new ArrayList<>();
   }
 
 
