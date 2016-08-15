@@ -130,8 +130,16 @@ public class p5jsMode extends Mode {
 
   @Override
   public void rebuildLibraryList() {
+    //super.rebuildLibraryList();
+
     coreLibraries = new ArrayList<>();
     contribLibraries = new ArrayList<>();
+  }
+
+
+  @Override
+  public boolean requireExampleCompatibility() {
+    return true;
   }
 
 
