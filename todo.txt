@@ -1,35 +1,5 @@
-0001 (1.0)
-X add 'dist' target to build.xml
-X add 'clean' target to build.xml
-X how do we edit html, text, css? 
-X set an auto-update block in the html to include the js files
-X   insert files into html method:
-X     first add anything from /libraries
-X     then anything from the main directory
-X     then the main sketch.js file
-X don't include dom.js and sound.js by default
-X html not reloading in editor after rebuild
-X need to write template correctly on first load
-o   need to call updateHtml() on init
-X   can't do that b/c the Sketch and Editor objects don't exist yet
-X use temp files to run without saving
-X   how to clear these out when rewriting the html
-X   need to use some sort of weird temp name format
-X   contradiction between wanting valid files locally, always
-o   should it be writing some .tmp.html files instead?
-o     writeHtml() could be called to save those out in the interim
-X     force save of HTML file when updating
-X implement handling for favicon.ico
-X   should be able to send the image from PApplet
-X import all the examples
-X   also generate the ordering for the category folders
-X   get assets to work properly
-X hide 'libraries' folder from Java Mode
-X hide contrib libraries from Java Mode
-X hide contrib examples from Java Mode (since/if not compatible)
-X import library
-X   allow some sort of single .js file library setup?
-X   get p5.dom.js and p5.sound.js into the menu
+0002
+
 
 . . .
 
