@@ -41,9 +41,12 @@ _   get contributed libraries working?
 
 _ refactor library imports in p5
 _   properly refactor rebuildLibraryList() and the isCompatible() code
-_   which is currently only found in ExampleContribution, but should be
-_   implemented in a more general way for the other contribs
-_   clean up the static stuff since it's not just Examples
+_     which is currently only found in ExampleContribution, but should be
+_     implemented in a more general way for the other contribs
+_     clean up the static stuff since it's not just Examples
+_   Library.discover(File) is static and expects .jar files
+_     even once that's fixed, need to make sure js libs don't show up w/ Java
+_     meaning that there needs to be other ironing in there
 
 _ if starting a new sketch, must reload the browser first?
 _   what's happening here? concerned about code mods not updating

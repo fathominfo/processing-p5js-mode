@@ -132,7 +132,15 @@ public class p5jsMode extends Mode {
   public void rebuildLibraryList() {
     //super.rebuildLibraryList();
 
+    Library domLibrary =
+      new p5jsLibrary(new File(getLibrariesFolder(), "p5.dom"));
+    Library soundLibrary =
+      new p5jsLibrary(new File(getLibrariesFolder(), "p5.sound"));
     coreLibraries = new ArrayList<>();
+    coreLibraries.add(domLibrary);
+    coreLibraries.add(soundLibrary);
+
+    // no contribs for now, figure this out later
     contribLibraries = new ArrayList<>();
   }
 
