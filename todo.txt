@@ -33,6 +33,9 @@ X   get p5.dom.js and p5.sound.js into the menu
 
 . . .
 
+git tag -a release-1.0 -m '1.0 final'
+git push origin --tags
+
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
 _   probably need a way to *remove* the libraries too
