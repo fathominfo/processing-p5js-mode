@@ -1,4 +1,4 @@
-0001
+0001 (1.0)
 X add 'dist' target to build.xml
 X add 'clean' target to build.xml
 X how do we edit html, text, css? 
