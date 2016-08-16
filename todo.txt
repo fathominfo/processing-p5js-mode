@@ -26,23 +26,30 @@ X   also generate the ordering for the category folders
 X   get assets to work properly
 X hide 'libraries' folder from Java Mode
 X hide contrib libraries from Java Mode
-
-_ hide contrib examples from Java Mode (since/if not compatible)
+X hide contrib examples from Java Mode (since/if not compatible)
 
 _ import library
 _   allow some sort of single .js file library setup?
-_   it's actually 'add library' not 'import' in this case
-_   though this would also require a way to *remove* the libraries too
 _   get p5.dom.js and p5.sound.js into the menu
+
+. . .
+
+_ other import library changes
+_   it's actually 'add library' not 'import' in this case
+_   probably need a way to *remove* the libraries too
 _   get contributed libraries working?
+
+_ refactor library imports in p5
+_   properly refactor rebuildLibraryList() and the isCompatible() code
+_   which is currently only found in ExampleContribution, but should be
+_   implemented in a more general way for the other contribs
+_   clean up the static stuff since it's not just Examples
 
 _ if starting a new sketch, must reload the browser first?
 _   what's happening here? concerned about code mods not updating
 _   set no cache on returned objects?
 
-. . .
-
-_ option update p5*.js in the libraries subfolder
+_ ability to update p5*.js in the libraries subfolder
 _   automatically notify user if version in the template is updated?
 
 _ how do we bring back the auto-update block if it's broken?

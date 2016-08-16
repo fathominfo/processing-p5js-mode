@@ -441,5 +441,7 @@ public class p5jsEditor extends Editor {
 
 
   @Override
-  public void handleImportLibrary(String name) { }
+  public void handleImportLibrary(String name) {
+    // unlike the other Modes, this is actually adding the library code
+  }
 }
