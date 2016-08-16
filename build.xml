@@ -15,16 +15,18 @@ ${line.separator}with the path to where you have the code for processing checked
 ${line.separator}and another line that reads:
 ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
+  <property name="me" value="p5jsMode" />
+  
   <property name="install.dir" 
-            value="${sketchbook.dir}/modes/p5jsMode" />
+            value="${sketchbook.dir}/modes/${me}" />
 
   <property name="jar.path"
-            value="mode/p5jsMode.jar" />
+            value="mode/${me}.jar" />
 
   <property name="dist.path"
-            value="p5jsMode.zip" />
-            
- 
+            value="${me}.zip" />
+
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <target name="build">
@@ -112,6 +114,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
       <zipfileset dir="." prefix="p5jsMode" includes="mode.properties" />
       <zipfileset dir="." prefix="p5jsMode" includes="template" />
     </zip>
+    <copy file="mode.properties" tofile="${me}.txt" />
   </target>
 
 </project>

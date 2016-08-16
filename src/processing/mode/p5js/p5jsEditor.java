@@ -12,10 +12,12 @@ import javax.swing.JMenuItem;
 
 import processing.app.Base;
 import processing.app.Formatter;
+import processing.app.Library;
 import processing.app.Mode;
 import processing.app.Platform;
 import processing.app.Problem;
 import processing.app.SketchException;
+import processing.app.Util;
 import processing.app.syntax.JEditTextArea;
 import processing.app.syntax.PdeTextArea;
 import processing.app.syntax.PdeTextAreaDefaults;
@@ -443,5 +445,24 @@ public class p5jsEditor extends Editor {
   @Override
   public void handleImportLibrary(String name) {
     // unlike the other Modes, this is actually adding the library code
+    //System.out.println("import library " + name);
+    Library library = mode.findLibraryByName(name);
+    File folder = new File(library.getFolder(), "library");
+    try {
+      Util.copyDir(folder, new File(sketch.getFolder(), "libraries"));
+      statusNotice("Copied " + name + " to the libraries folder of this sketch.");
+
+      /*
+      try {
+        // write the HTML here in case we need temp files
+        p5jsBuild.updateHtml(sketch);
+      } catch (Exception e) {
+        statusError(e);
+      }
+      */
+
+    } catch (IOException e) {
+      statusError(e);
+    }
   }
 }

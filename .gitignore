@@ -7,3 +7,7 @@ local.properties
 16*
 *master.zip
 /examples/
+
+# the dist files
+p5jsMode.zip
+p5jsMode.txt

@@ -27,10 +27,9 @@ X   get assets to work properly
 X hide 'libraries' folder from Java Mode
 X hide contrib libraries from Java Mode
 X hide contrib examples from Java Mode (since/if not compatible)
-
-_ import library
-_   allow some sort of single .js file library setup?
-_   get p5.dom.js and p5.sound.js into the menu
+X import library
+X   allow some sort of single .js file library setup?
+X   get p5.dom.js and p5.sound.js into the menu
 
 . . .
 
