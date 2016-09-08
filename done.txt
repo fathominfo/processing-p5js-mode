@@ -1,3 +1,11 @@
+0002 (1.0.2)
+X Save required before running
+X   https://github.com/fathominfo/processing-p5js-mode/issues/2
+X Running a sketch may simply re-launch a window with the old server
+X   https://github.com/fathominfo/processing-p5js-mode/issues/3
+X   probably there before, but exacerbated by fixing #2
+
+
 0001 (1.0)
 X add 'dist' target to build.xml
 X add 'clean' target to build.xml
