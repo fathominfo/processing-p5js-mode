@@ -8,8 +8,16 @@ X   probably there before, but exacerbated by fixing #2
 
 . . .
 
+# update the release in mode.properties
 git tag -a release-1.0 -m '1.0 final'
+git tag -a v1.0.1 -m 'version 1.0.1'
 git push origin --tags
+# replace the 'latest' tag with the current state of the repo
+git tag -f -a latest
+# try this one text time:
+git tag -f -a latest -m 'version 1.0.2'
+# actually update things
+git push -f --tags
 
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
