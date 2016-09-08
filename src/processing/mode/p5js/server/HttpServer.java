@@ -125,8 +125,15 @@ public class HttpServer {
   }
 
 
+  /*
   public boolean isRunning () {
     return running;
+  }
+  */
+
+
+  public boolean isDead() {
+    return !running || thread == null;
   }
 
 

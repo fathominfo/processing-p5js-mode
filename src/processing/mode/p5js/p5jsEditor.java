@@ -280,7 +280,7 @@ public class p5jsEditor extends Editor {
       toolbar.deactivateRun();
 
     } else {
-      if (server == null || !server.isRunning()) {
+      if (server == null || server.isDead()) {
         restartServer();
       }
       statusNotice("Server running at " + server.getAddress());
@@ -399,7 +399,7 @@ public class p5jsEditor extends Editor {
    *  @return true if it was started anew, false if it was running
    */
   protected void restartServer() {
-    if (server != null && !server.isRunning()) {
+    if (server != null && server.isDead()) {
       // if server hung or something else went wrong .. stop it.
       server.stop();
       server = null;
@@ -410,11 +410,6 @@ public class p5jsEditor extends Editor {
     }
 
     server.start();
-  }
-
-
-  protected boolean isServerRunning() {
-    return server != null && server.isRunning();
   }
 
 
