@@ -116,7 +116,7 @@ public class HttpWorker implements Runnable {
       try {
         socket.close();
       } catch (IOException e) {
-        // don't fuss about this, just doing out best
+        // don't fuss about this, just doing our best
       }
     }
   }
