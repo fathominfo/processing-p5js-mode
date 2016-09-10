@@ -27,15 +27,15 @@ public class ImportExamples {
 
 
   public ImportExamples() {
-    File masterFile = sketchFile("examples-master.zip");
+    File masterFile = adjacentFile("examples-master.zip");
     if (!masterFile.exists()) {
-      println("Downloading " + WEB_MASTER);
+      System.out.println("Downloading " + WEB_MASTER);
       if (!PApplet.saveStream(masterFile, createUrlInput(WEB_MASTER))) {
         System.err.println("Error while downloading");
         masterFile.delete();
         System.exit(0);
       }
-      println("Finished.");
+      System.out.println("Finished.");
     }
 
     Map<String, ZipEntry> assetMap = new HashMap<>();
@@ -61,7 +61,7 @@ public class ImportExamples {
         }
       }
 
-      File examplesFolder = sketchFile("examples");
+      File examplesFolder = adjacentFile("examples");
       if (examplesFolder.exists()) {
         Platform.deleteFile(examplesFolder);  // move to trash
       }
@@ -70,10 +70,10 @@ public class ImportExamples {
       exampleList.sort();
       StringList categories = new StringList();
 
-      File templateFolder = sketchFile("template");
+      File templateFolder = adjacentFile("template");
 
       for (String item : exampleList) {
-        println(item);
+        System.out.println(item);
         String[] pieces = PApplet.split(item, '/');
         // keep the numbers on here so that we can get the order
         categories.appendUnique(pieces[0]);
@@ -132,7 +132,7 @@ public class ImportExamples {
             // Add index.html and the p5js library itself
             Util.copyDir(templateFolder, exampleFolder);
             // now for some libraries
-            File librariesFolder = sketchFile("libraries");
+            File librariesFolder = adjacentFile("libraries");
             for (String library : libraries) {
               // libraries/p5.dom/library/p5.dom.js
               Util.copyFile(new File(librariesFolder, library +
@@ -149,12 +149,12 @@ public class ImportExamples {
         }
       }
 
-      println();
-      println("Example categories to be added to p5jsMode.java:");
+      System.out.println();
+      System.out.println("Example categories to be added to p5jsMode.java:");
       categories.sort();
       //println("\"" + categories.join("\", \"") + "\"");
       for (String category : categories) {
-        println("\"" + fixCategory(category) + "\", ");
+        System.out.println("\"" + fixCategory(category) + "\", ");
       }
 
     } catch (IOException e) {
@@ -184,18 +184,10 @@ public class ImportExamples {
   //
 
 
-  private File sketchFile(String what) {
+  // This was formerly sketchFile() when subclassing PApplet, but keeping it
+  // as a method in case we need to come back to it and set the working dir.
+  private File adjacentFile(String what) {
     return new File(what);
-  }
-
-
-  private void println() {
-    System.out.println();
-  }
-
-
-  private void println(String s) {
-    System.out.println(s);
   }
 
 
