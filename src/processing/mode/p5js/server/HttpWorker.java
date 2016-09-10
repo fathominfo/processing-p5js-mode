@@ -18,6 +18,10 @@ public class HttpWorker implements Runnable {
   }
 
 
+  /**
+   * Set the Socket for this worker. The Socket will be closed by this class
+   * once finished.
+   */
   synchronized void setSocket(Socket s) {
     this.socket = s;
     notify();
@@ -109,15 +113,22 @@ public class HttpWorker implements Runnable {
         }
         ps.flush();
       }
+    } catch (SocketTimeoutException ste) {
+      // Ignoring these for now... Seems to be extra sockets opened
+      // by the browser, but not quite clear yet.
+      // https://github.com/fathominfo/processing-p5js-mode/issues/5
+      System.out.println("Socket timed out.");
+
     } catch (IOException e) {
       e.printStackTrace();
-
-    } finally {
-      try {
-        socket.close();
-      } catch (IOException e) {
-        // don't fuss about this, just doing our best
-      }
     }
+
+    // clean up, but ignore any errors coming through
+    try {
+      reader.close();
+    } catch (IOException e) { }
+    try {
+      socket.close();
+    } catch (IOException e) { }
   }
 }

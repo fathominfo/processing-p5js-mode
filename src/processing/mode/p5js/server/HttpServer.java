@@ -85,6 +85,7 @@ public class HttpServer {
         try {
           socket = new ServerSocket(port);
           while (Thread.currentThread() == thread) {
+            @SuppressWarnings("resource")
             Socket s = socket.accept();
 //            Worker w = null;
             synchronized (threads) {

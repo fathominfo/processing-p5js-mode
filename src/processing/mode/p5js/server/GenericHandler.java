@@ -68,8 +68,9 @@ public class GenericHandler extends Handler {
         byte[] b = null;
         try {
           String localPath = target.getAbsolutePath();
-          InputStream input = new BufferedInputStream(new FileInputStream(target));
-          b = PApplet.loadBytes(input);
+          //InputStream input = new BufferedInputStream(new FileInputStream(target));
+          //b = PApplet.loadBytes(input);
+          b = PApplet.loadBytes(target);
 
           ps.status(HttpServer.HTTP_OK);
           String contentType = "content/unknown";
