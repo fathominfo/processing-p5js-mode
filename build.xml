@@ -70,7 +70,10 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
-  <target name="install" depends="build, examples">
+  <target name="install" depends="build">
+    <available file="examples" property="examples.exist" />
+    <fail unless="examples.exist" message="First run the 'ant examples' target to get the examples folder ready." />
+
     <copy todir="${install.dir}/examples">
       <fileset dir="examples" />
     </copy>
@@ -114,6 +117,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <delete dir="mode" />
     <delete file="${me}.zip" />
     <delete file="${me}.txt" />
+    <delete dir="examples" />
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
