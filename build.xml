@@ -70,7 +70,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
-  <target name="install" depends="build">    
+  <target name="install" depends="build, examples">
     <copy todir="${install.dir}/examples">
       <fileset dir="examples" />
     </copy>
