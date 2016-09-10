@@ -1,6 +1,11 @@
 package processing.mode.p5js.build;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 import java.util.zip.*;
 
@@ -11,7 +16,7 @@ import processing.data.StringList;
 import processing.mode.p5js.p5jsMode;
 
 
-public class ImportExamples extends PApplet {
+public class ImportExamples {
   static final String WEB_MASTER =
     "https://github.com/processing/p5.js-website/archive/master.zip";
   static final String EXAMPLE_PREFIX =
@@ -21,12 +26,11 @@ public class ImportExamples extends PApplet {
 
 
 
-  @Override
-  public void setup() {
+  public ImportExamples() {
     File masterFile = sketchFile("examples-master.zip");
     if (!masterFile.exists()) {
       println("Downloading " + WEB_MASTER);
-      if (!saveStream(masterFile, WEB_MASTER)) {
+      if (!PApplet.saveStream(masterFile, createUrlInput(WEB_MASTER))) {
         System.err.println("Error while downloading");
         masterFile.delete();
         System.exit(0);
@@ -69,7 +73,7 @@ public class ImportExamples extends PApplet {
 
       for (String item : exampleList) {
         println(item);
-        String[] pieces = split(item, '/');
+        String[] pieces = PApplet.split(item, '/');
         // keep the numbers on here so that we can get the order
         categories.appendUnique(pieces[0]);
         // remove the number prefix when writing to the folder
@@ -80,7 +84,7 @@ public class ImportExamples extends PApplet {
         if (exampleFolder.mkdirs()) {
           File exampleFile = new File(exampleFolder, name + ".js");
           String[] lines =
-            loadStrings(zip.getInputStream(exampleMap.get(item)));
+            PApplet.loadStrings(zip.getInputStream(exampleMap.get(item)));
           //for (String line : lines) {
           StringList libraries = new StringList();
           for (int i = 0; i < lines.length; i++) {
@@ -94,7 +98,7 @@ public class ImportExamples extends PApplet {
               libraries.appendUnique("p5.sound.js");
             }
 
-            String[] m = match(line, "[\"']assets/(.+)[\"']");
+            String[] m = PApplet.match(line, "[\"']assets/(.+)[\"']");
             if (m != null) {
 //              println(m[1].length());
               // Switch to using the data folder so that it
@@ -104,15 +108,15 @@ public class ImportExamples extends PApplet {
               ZipEntry entry = assetMap.get(m[1]);
               if (entry != null) {
                 // saveStream() will create intermediate folders as necessary
-                saveStream(new File(exampleFolder, "data/" + m[1]),
-                           zip.getInputStream(entry));
+                PApplet.saveStream(new File(exampleFolder, "data/" + m[1]),
+                                   zip.getInputStream(entry));
               } else {
                 boolean found = false;
                 for (String ext : new String[] { ".mp3", ".ogg" }) {
                   entry = assetMap.get(m[1] + ext);
                   if (entry != null) {
-                    saveStream(new File(exampleFolder, "data/" + m[1] + ext),
-                               zip.getInputStream(entry));
+                    PApplet.saveStream(new File(exampleFolder, "data/" + m[1] + ext),
+                                       zip.getInputStream(entry));
                     found = true;
                   }
                 }
@@ -122,7 +126,7 @@ public class ImportExamples extends PApplet {
                 }
               }
             }
-            saveStrings(exampleFile, lines);
+            PApplet.saveStrings(exampleFile, lines);
 
             // Add index.html and the p5js library itself
             Util.copyDir(templateFolder, exampleFolder);
@@ -160,7 +164,6 @@ public class ImportExamples extends PApplet {
         // or an IOException from calling close()
       }
     }
-    exit();
   }
 
 
@@ -174,7 +177,62 @@ public class ImportExamples extends PApplet {
   }
 
 
+  //
+
+
+  private File sketchFile(String what) {
+    return new File(what);
+  }
+
+
+  private void println() {
+    System.out.println();
+  }
+
+
+  private void println(String s) {
+    System.out.println(s);
+  }
+
+
+  // A subset of PApplet.createInputRaw()
+  static public InputStream createUrlInput(String path) {
+    try {
+      URL url = new URL(path);
+      URLConnection conn = url.openConnection();
+      if (conn instanceof HttpURLConnection) {
+        HttpURLConnection httpConn = (HttpURLConnection) conn;
+        // Will not handle a protocol change (see below)
+        httpConn.setInstanceFollowRedirects(true);
+        int response = httpConn.getResponseCode();
+        // Normally will not follow HTTPS redirects from HTTP due to security concerns
+        // http://stackoverflow.com/questions/1884230/java-doesnt-follow-redirect-in-urlconnection/1884427
+        if (response >= 300 && response < 400) {
+          String newLocation = httpConn.getHeaderField("Location");
+          return createUrlInput(newLocation);
+        }
+        return conn.getInputStream();
+      } else if (conn instanceof JarURLConnection) {
+        return url.openStream();
+      }
+    } catch (MalformedURLException mfue) {
+      // not a url, that's fine
+
+    } catch (FileNotFoundException fnfe) {
+      // Added in 0119 b/c Java 1.5 throws FNFE when URL not available.
+      // http://dev.processing.org/bugs/show_bug.cgi?id=403
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  //
+
+
   static public void main(String[] args) {
-    PApplet.main(ImportExamples.class);
+    new ImportExamples();
   }
 }
