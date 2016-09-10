@@ -195,8 +195,8 @@ public class p5jsMode extends Mode {
   /**
    * Write the index.html file. Broken out for ImportExamples.
    */
-  static protected void buildIndex(File sketchFolder,
-                                   String sketchName) throws IOException {
+  static public void buildIndex(File sketchFolder,
+                                String sketchName) throws IOException {
     File indexFile = new File(sketchFolder, "index.html");
     String program = PApplet.join(PApplet.loadStrings(indexFile), "\n");
     program = program.replaceAll("@@sketch@@", sketchName + ".js");

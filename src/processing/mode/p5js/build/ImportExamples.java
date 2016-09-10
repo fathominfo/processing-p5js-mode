@@ -1,4 +1,4 @@
-package processing.mode.p5js;
+package processing.mode.p5js.build;
 
 import java.io.*;
 import java.util.*;
@@ -8,6 +8,7 @@ import processing.app.Platform;
 import processing.app.Util;
 import processing.core.PApplet;
 import processing.data.StringList;
+import processing.mode.p5js.p5jsMode;
 
 
 public class ImportExamples extends PApplet {
