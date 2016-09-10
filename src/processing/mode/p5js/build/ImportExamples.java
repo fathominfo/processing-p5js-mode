@@ -93,10 +93,10 @@ public class ImportExamples {
 
             // sketches that need these libraries mention 'em in the comments
             if (line.contains("p5.dom")) {
-              libraries.appendUnique("p5.dom.js");
+              libraries.appendUnique("p5.dom");
             }
             if (line.contains("p5.sound")) {
-              libraries.appendUnique("p5.sound.js");
+              libraries.appendUnique("p5.sound");
             }
 
             String[] m = PApplet.match(line, "[\"']assets/(.+)[\"']");
@@ -135,9 +135,10 @@ public class ImportExamples {
             File librariesFolder = adjacentFile("libraries");
             for (String library : libraries) {
               // libraries/p5.dom/library/p5.dom.js
-              Util.copyFile(new File(librariesFolder, library),
-                            new File(exampleFolder, "libraries/" + library +
-                                     "/library/" + library + ".js"));
+              Util.copyFile(new File(librariesFolder, library +
+                                     "/library/" + library + ".js"),
+                            new File(exampleFolder,
+                                     "libraries/" + library + ".js"));
             }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();
@@ -153,8 +154,9 @@ public class ImportExamples {
       categories.sort();
       //println("\"" + categories.join("\", \"") + "\"");
       for (String category : categories) {
-        System.out.println("\"" + fixCategory(category) + "\", ");
+        System.out.print("\"" + fixCategory(category) + "\", ");
       }
+      System.out.println();
 
     } catch (IOException e) {
       e.printStackTrace();
