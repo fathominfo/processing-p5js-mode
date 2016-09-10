@@ -57,7 +57,9 @@ public class ImportExamples extends PApplet {
       }
 
       File examplesFolder = sketchFile("examples");
-      Platform.deleteFile(examplesFolder);  // move to trash
+      if (examplesFolder.exists()) {
+        Platform.deleteFile(examplesFolder);  // move to trash
+      }
 
       StringList exampleList = new StringList(exampleMap.keySet());
       StringList categories = new StringList();
