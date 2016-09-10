@@ -67,6 +67,7 @@ public class ImportExamples {
       }
 
       StringList exampleList = new StringList(exampleMap.keySet());
+      exampleList.sort();
       StringList categories = new StringList();
 
       File templateFolder = sketchFile("template");
@@ -90,7 +91,7 @@ public class ImportExamples {
           for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
 
-            // the sketches that need these libraries mention them in the comments
+            // sketches that need these libraries mention 'em in the comments
             if (line.contains("p5.dom")) {
               libraries.appendUnique("p5.dom.js");
             }
@@ -133,8 +134,10 @@ public class ImportExamples {
             // now for some libraries
             File librariesFolder = sketchFile("libraries");
             for (String library : libraries) {
+              // libraries/p5.dom/library/p5.dom.js
               Util.copyFile(new File(librariesFolder, library),
-                            new File(exampleFolder, "libraries/" + library));
+                            new File(exampleFolder, "libraries/" + library +
+                                     "/library/" + library + ".js"));
             }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();

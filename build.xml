@@ -95,6 +95,18 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+  <target name="examples" depends="build">
+    <delete dir="examples" />
+    <java classname="processing.mode.p5js.build.ImportExamples" 
+	  classpath="bin;
+		     ${processing.dir}/core/bin;
+		     ${processing.dir}/app/bin;
+		     ${processing.dir}/app/lib/jna.jar;
+		     ${processing.dir}/app/lib/jna-platform.jar" />
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
   <target name="clean">
     <delete dir="${install.dir}" />
     <delete dir="bin" />
