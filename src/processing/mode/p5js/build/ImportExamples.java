@@ -154,8 +154,9 @@ public class ImportExamples {
       categories.sort();
       //println("\"" + categories.join("\", \"") + "\"");
       for (String category : categories) {
-        System.out.println("\"" + fixCategory(category) + "\", ");
+        System.out.print("\"" + fixCategory(category) + "\", ");
       }
+      System.out.println();
 
     } catch (IOException e) {
       e.printStackTrace();
