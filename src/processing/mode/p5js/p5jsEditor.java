@@ -1,10 +1,12 @@
 package processing.mode.p5js;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 
 import javax.swing.JMenu;
@@ -284,7 +286,13 @@ public class p5jsEditor extends Editor {
         restartServer();
       }
       statusNotice("Server running at " + server.getAddress());
-      Platform.openURL(server.getAddress());
+      //Platform.openURL(server.getAddress());
+
+      try {
+        Desktop.getDesktop().browse(new URI(server.getAddress()));
+      } catch (Exception e) {
+        statusError(e);
+      }
     }
   }
 
@@ -394,9 +402,9 @@ public class p5jsEditor extends Editor {
 
 
   /**
-   *  Start the internal server for this sketch.
-   *  @param root the root folder for the server to serve from
-   *  @return true if it was started anew, false if it was running
+   * Start the internal server for this sketch.
+   * @param root the root folder for the server to serve from
+   * @return true if it was started anew, false if it was running
    */
   protected void restartServer() {
     if (server != null && server.isDead()) {

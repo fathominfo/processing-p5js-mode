@@ -40,11 +40,10 @@ public class HttpServer {
 
   public HttpServer(p5jsEditor editor) {
     this(editor, (int) (8000 + Math.random() * 1000));
-    //root = editor.getSketch().getFolder();
   }
 
 
-  public HttpServer(p5jsEditor editor, final int port) {
+  public HttpServer(p5jsEditor editor, int port) {
     this.editor = editor;
     this.port = port;
 
@@ -83,7 +82,11 @@ public class HttpServer {
         running = true;
         ServerSocket socket = null;
         try {
+//          try {
           socket = new ServerSocket(port);
+//          } catch (BindException be) {
+//            // socket already in use; try another
+//          }
           while (Thread.currentThread() == thread) {
             @SuppressWarnings("resource")
             Socket s = socket.accept();
