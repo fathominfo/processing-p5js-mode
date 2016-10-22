@@ -76,6 +76,7 @@ public class HttpServer {
 
 
   public void start() {
+	  if (thread == null) {
     thread = new Thread(new Runnable() {
       @Override
       public void run() {
@@ -120,6 +121,7 @@ public class HttpServer {
         running = false;
       }
     });
+	  }
     thread.start();
   }
 

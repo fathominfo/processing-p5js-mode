@@ -36,6 +36,7 @@ import processing.mode.p5js.server.HttpServer;
 
 public class p5jsEditor extends Editor {
   HttpServer server;
+  boolean reusePort = true;
   boolean showSizeWarning = true;
 
 
@@ -306,8 +307,10 @@ public class p5jsEditor extends Editor {
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
-    stopServer();
-    statusNotice("Server stopped.");
+    if (!reusePort) {
+    	stopServer();
+    	statusNotice("Server stopped.");
+    }
     toolbar.deactivateRun();
   }
 
