@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import jdk.nashorn.api.scripting.ScriptUtils;
 import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ECMAException;
 import jdk.nashorn.internal.runtime.ErrorManager;
 import jdk.nashorn.internal.runtime.options.Options;
-
 import processing.app.Base;
 import processing.app.Platform;
 import processing.app.Sketch;
@@ -56,12 +60,11 @@ public class p5jsBuild {
 //    }
 
     File sketchFolder = sketch.getFolder();
-    StringList insert = new StringList();
 
     cleanTempFiles(sketch);
 
     // load p5.js first
-    insert.append(scriptPath("libraries/p5.js"));
+    //insert.append(scriptPath("libraries/p5.js"));
 
     // then other entries from /libraries
     File librariesFolder = new File(sketchFolder, "libraries");
@@ -82,27 +85,7 @@ public class p5jsBuild {
         return false;
       }
     });
-    for (File file : libraryList) {
-      insert.append(scriptPath("libraries/" + file.getName()));
-    }
-
-    // now the sketch code
-    for (int ii = 0; ii < sketch.getCodeCount(); ii++) {
-      // start at [1], and write [0] (the main code) to the file last
-      int i = (ii + 1) % sketch.getCodeCount();
-      SketchCode code =  sketch.getCode(i);
-      String filename = code.getFileName();
-      if (filename.endsWith(".js")) {
-        if (code.isModified()) {
-          // write a temporary file instead of the actual one
-          String tempPrefix = TEMP_PREFIX + code.getPrettyName();
-          File tempFile = File.createTempFile(tempPrefix, ".js", sketchFolder);
-          Util.saveFile(code.getProgram(), tempFile);
-          filename = tempFile.getName();
-        }
-        insert.append(scriptPath(filename));
-      }
-    }
+    
     // different ways to do this; let's not be presumptuous that it's
     // sketchName + ".js" and leave ourselves some room for the future.
     //insert.append(scriptPath(sketch.getCode(0).getFileName()));
@@ -125,7 +108,55 @@ public class p5jsBuild {
         sketch.reload();
       }
     }
+    
+    Document htmlDoc = Jsoup.parse(htmlFile, "UTF-8");
+    StringList scriptsInDoc = new StringList();
+    
+    Elements scriptElements = htmlDoc.getElementsByTag("script");
+    for (Element scriptElement : scriptElements) {
+    	if (scriptElement.className().trim().equals("temp")) {
+    		scriptElement.remove();
+    	}
+    	else {
+    		scriptsInDoc.append(scriptElement.attr("src"));
+    	}
+    }
+    
+    for (File file : libraryList) {
+    	String filename = "libraries/" + file.getName();
+    	if (!scriptsInDoc.hasValue(filename)) {
+    		htmlDoc.head().appendElement("script").attr("language", "javascript").
+    			attr("type", "text/javascript").attr("src", filename);
+    	}
+    }
+    
+    
+    // now the sketch code
+    for (int ii = 0; ii < sketch.getCodeCount(); ii++) {
+      // start at [1], and write [0] (the main code) to the file last
+      int i = (ii + 1) % sketch.getCodeCount();
+      SketchCode code =  sketch.getCode(i);
+      String filename = code.getFileName();
+      if (filename.endsWith(".js")) {
+        if (code.isModified()) {
+          // write a temporary file instead of the actual one
+          String tempPrefix = TEMP_PREFIX + code.getPrettyName();
+          File tempFile = File.createTempFile(tempPrefix, ".js", sketchFolder);
+          Util.saveFile(code.getProgram(), tempFile);
+          filename = tempFile.getName();
+        }
+        if (!scriptsInDoc.hasValue(filename)) {
+        	Element e = htmlDoc.head().appendElement("script").attr("language", "javascript").
+        			attr("type", "text/javascript").attr("src", filename);
+        	if (code.isModified()) {
+        		e.addClass("temp");
+        	}
+        }
+        	
+      }
+    }
 
+    /*
     // write the HTML based on the template
     String html = PApplet.join(PApplet.loadStrings(htmlFile), "\n");
     int start = html.indexOf(HTML_PREFIX);
@@ -144,6 +175,9 @@ public class p5jsBuild {
       HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX +
       html.substring(stop + HTML_SUFFIX.length());
     PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
+    */
+    
+    PApplet.saveStrings(htmlFile, PApplet.split(htmlDoc.toString(), '\n'));
 
     // reload in the Editor
     if (indexCode != null) {

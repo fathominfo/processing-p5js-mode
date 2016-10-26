@@ -8,7 +8,7 @@
 
   <fail unless="props.present" 
         message=" ${line.separator}Missing file.
-${line.separator}Create a file named local.properties inside the dist folder,
+${line.separator}Create a file named local.properties,
 ${line.separator}and write a line that reads:
 ${line.separator}processing.dir=/path/to/processing-git
 ${line.separator}with the path to where you have the code for processing checked out
@@ -25,6 +25,9 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <property name="dist.path"
             value="${me}.zip" />
+	
+	<property name="jsoup.path"
+			value="lib/jsoup-1.10.1.jar" />
 
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -54,7 +57,8 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 	   destdir="bin"
 	   classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
-                      ${processing.dir}/java/bin"
+                      ${processing.dir}/java/bin;
+    					${jsoup.path}"
 	   nowarn="true">
       <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
       <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
@@ -71,13 +75,17 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
   <target name="install" depends="build">
-    <available file="examples" property="examples.exist" />
+  <!--  <available file="examples" property="examples.exist" />
     <fail unless="examples.exist" message="First run the 'ant examples' target to get the examples folder ready." />
 
     <copy todir="${install.dir}/examples">
       <fileset dir="examples" />
     </copy>
-
+-->
+  	<copy todir="${install.dir}/lib">
+  		<fileset file="${jsoup.path}"/>
+  	</copy>
+  	
     <copy todir="${install.dir}/libraries">
       <fileset dir="libraries" />
     </copy>
