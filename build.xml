@@ -26,8 +26,8 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <property name="dist.path"
             value="${me}.zip" />
 	
-	<property name="jsoup.path"
-			value="lib/jsoup-1.10.1.jar" />
+  <property name="jsoup.path"
+	    value="lib/jsoup-1.10.1.jar" />
 
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -58,7 +58,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 	   classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin;
-    					${jsoup.path}"
+    		      ${jsoup.path}"
 	   nowarn="true">
       <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
       <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
@@ -75,17 +75,17 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
   <target name="install" depends="build">
-  <!--  <available file="examples" property="examples.exist" />
+    <available file="examples" property="examples.exist" />
     <fail unless="examples.exist" message="First run the 'ant examples' target to get the examples folder ready." />
 
     <copy todir="${install.dir}/examples">
       <fileset dir="examples" />
     </copy>
--->
-  	<copy todir="${install.dir}/lib">
-  		<fileset file="${jsoup.path}"/>
-  	</copy>
-  	
+
+    <copy todir="${install.dir}/lib">
+      <fileset file="${jsoup.path}"/>
+    </copy>
+
     <copy todir="${install.dir}/libraries">
       <fileset dir="libraries" />
     </copy>
