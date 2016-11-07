@@ -25,10 +25,12 @@ import processing.data.StringList;
 
 
 public class p5jsBuild {
+  /*
   static final String HTML_PREFIX =
     "<!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->";
   static final String HTML_SUFFIX =
     "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
+  */
 
   static final String TEMP_PREFIX = "p5js-temp-";
 //  ScriptEngine engine;

@@ -25,10 +25,6 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <property name="dist.path"
             value="${me}.zip" />
-	
-  <property name="jsoup.path"
-	    value="lib/jsoup-1.10.1.jar" />
-
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -58,7 +54,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 	   classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin;
-    		      ${jsoup.path}"
+                      mode/jsoup-1.10.1.jar"
 	   nowarn="true">
       <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
       <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
@@ -80,10 +76,6 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
     <copy todir="${install.dir}/examples">
       <fileset dir="examples" />
-    </copy>
-
-    <copy todir="${install.dir}/lib">
-      <fileset file="${jsoup.path}"/>
     </copy>
 
     <copy todir="${install.dir}/libraries">
