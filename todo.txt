@@ -19,10 +19,13 @@ git tag -a v1.0.1 -m 'version 1.0.1'
 git tag -a v1.0.2 -m 'version 1.0.2'
 git tag -a v1.0.3 -m 'version 1.0.3'
 git push origin --tags
-# replace the 'latest' tag with the current state of the repo
-git tag -f -a latest
-# try this one text time:
-git tag -f -a latest -m 'version 1.0.2'
+
+# delete the previous 'latest'
+git tag -d latest
+git push origin :refs/tags/latest
+
+# create new 'latest' tag with the current state of the repo
+git tag -f -a latest -m 'version 1.0.3'
 # actually update things
 git push -f --tags
 
