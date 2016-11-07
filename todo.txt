@@ -1,4 +1,6 @@
 0003
+X update to p5js 0.5.4
+
 
 
 . . .
@@ -14,6 +16,8 @@ git tag -f -a latest
 git tag -f -a latest -m 'version 1.0.2'
 # actually update things
 git push -f --tags
+
+. . .
 
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
