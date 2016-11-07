@@ -7,6 +7,8 @@ X (hopefully) fix the release itself so that it installs properly
 _   https://github.com/fathominfo/processing-p5js-mode/issues/11
 X re-using the same server port for each run
 _   https://github.com/fathominfo/processing-p5js-mode/issues/8
+X Windows temp files still in use and cannot be removed
+_   https://github.com/fathominfo/processing-p5js-mode/issues/6
 
 
 . . .
@@ -15,6 +17,7 @@ _   https://github.com/fathominfo/processing-p5js-mode/issues/8
 git tag -a release-1.0 -m '1.0 final'
 git tag -a v1.0.1 -m 'version 1.0.1'
 git tag -a v1.0.2 -m 'version 1.0.2'
+git tag -a v1.0.3 -m 'version 1.0.3'
 git push origin --tags
 # replace the 'latest' tag with the current state of the repo
 git tag -f -a latest
