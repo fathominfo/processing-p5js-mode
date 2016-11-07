@@ -11,17 +11,13 @@ import java.util.Arrays;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import processing.app.Base;
 import processing.app.Formatter;
-import processing.app.Language;
 import processing.app.Library;
 import processing.app.Mode;
 import processing.app.Platform;
-import processing.app.Preferences;
 import processing.app.Problem;
-import processing.app.Sketch;
 import processing.app.SketchException;
 import processing.app.Util;
 import processing.app.syntax.JEditTextArea;
@@ -478,53 +474,4 @@ public class p5jsEditor extends Editor {
       statusError(e);
     }
   }
-
-
-
-/**
- * Second stage of open, occurs after having checked to see if the
- * modifications (if any) to the previous sketch need to be saved.
- * Because this method is called in Editor's constructor, a subclass
- * shouldn't rely on any of its variables being initialized already.
- */
-  @Override
-protected void handleOpenInternal(String path) throws EditorException {
-  // check to make sure that this .pde file is
-  // in a folder of the same name
-  final File file = new File(path);
-  final File parentFile = new File(file.getParent());
-  final String parentName = parentFile.getName();
-  final String defaultName = parentName + "." + mode.getDefaultExtension();
-  final File altFile = new File(file.getParent(), defaultName);
-
-  if (defaultName.equals(file.getName())) {
-    // no beef with this guy
-  } else if (altFile.exists()) {
-    // The user selected a source file from the same sketch,
-    // but open the file with the default extension instead.
-    path = altFile.getAbsolutePath();
-  } else if (!mode.canEdit(file)) {
-    final String modeName = mode.getTitle().equals("Java") ?
-      "Processing" : (mode.getTitle() + " Mode");
-    throw new EditorException(modeName + " can only open its own sketches\n" +
-                              "and other files ending in " +
-                              mode.getDefaultExtension());
-  }
-
-  try {
-    sketch = new Sketch(path, this);
-  } catch (IOException e) {
-    throw new EditorException("Could not create the sketch.", e);
-  }
-
-  header.rebuild();
-  updateTitle();
-  // Disable untitled setting from previous document, if any
-//  untitled = false;
-
-  // Store information on who's open and running
-  // (in case there's a crash or something that can't be recovered)
-  // TODO this probably need not be here because of the Recent menu, right?
-  Preferences.save();
-}
 }
