@@ -200,7 +200,13 @@ public class p5jsBuild {
     // remove these files
     if (tempList != null) {
       for (File tempItem : tempList) {
-        Platform.deleteFile(tempItem);  // move to trash, hopefully
+        try {
+          Platform.deleteFile(tempItem);  // move to trash, hopefully
+        } catch (IOException e) {
+          // Try to just silently catch these and move on
+          // https://github.com/fathominfo/processing-p5js-mode/issues/6
+          System.err.println(e.getMessage());
+        }
       }
     }
   }

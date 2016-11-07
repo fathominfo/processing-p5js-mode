@@ -1,6 +1,12 @@
 0003
 X update to p5js 0.5.4
-
+X investigate problem with browser returning -600 error
+X   https://github.com/fathominfo/processing-p5js-mode/issues/4
+X use jsoup to parse/modify the html instead of find/replace
+X (hopefully) fix the release itself so that it installs properly
+_   https://github.com/fathominfo/processing-p5js-mode/issues/11
+X re-using the same server port for each run
+_   https://github.com/fathominfo/processing-p5js-mode/issues/8
 
 
 . . .
