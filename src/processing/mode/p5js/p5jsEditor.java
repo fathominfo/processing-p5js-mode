@@ -155,13 +155,24 @@ public class p5jsEditor extends Editor {
 
         // update with the new path
         path = properPdeFile.getAbsolutePath();
-        try {
-			mode.addTemplateFiles(properFolder, properParent);
-		} catch (IOException e) {
-			throw new EditorException("Could not add library files.", e);
-		}
         mode.rebuildLibraryList();
-        rebuildHeader();
+        File templateFolder = mode.getTemplateFolder();
+        
+        if (templateFolder.exists()) {
+        	try {
+				Util.copyDir(new File(templateFolder.getAbsoluteFile() + File.separator + "libraries"), new File(properFolder.getAbsolutePath() + File.separator + "libraries"));
+				Util.copyFile(new File(templateFolder.getAbsoluteFile() + File.separator + "index.html"), new File(properFolder.getAbsolutePath() + File.separator + "index.html"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        try {
+			p5jsMode.buildIndex(properFolder, properParent);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
       } else {  //if (result == JOptionPane.NO_OPTION) {
         // Catch all other cases, including Cancel or ESC
