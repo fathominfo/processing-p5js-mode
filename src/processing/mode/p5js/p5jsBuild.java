@@ -177,7 +177,12 @@ public class p5jsBuild {
     PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
     */
 
-    PApplet.saveStrings(htmlFile, PApplet.split(htmlDoc.toString(), '\n'));
+    //PApplet.saveStrings(htmlFile, PApplet.split(htmlDoc.toString(), '\n'));
+
+    // https://github.com/fathominfo/processing-p5js-mode/issues/13
+    htmlDoc.outputSettings().prettyPrint(false);
+    String html = htmlDoc.toString().replace("\r\n", "\n");
+    PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
 
     // reload in the Editor
     if (indexCode != null) {
