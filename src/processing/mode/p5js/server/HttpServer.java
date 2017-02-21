@@ -211,23 +211,34 @@ public class HttpServer {
     mimeTypes.put(".jpg", "image/jpeg");
     mimeTypes.put(".jpeg", "image/jpeg");
     mimeTypes.put(".png", "image/png");
+    mimeTypes.put(".svg", "image/svg+xml");
 
     mimeTypes.put(".htm", "text/html");
     mimeTypes.put(".html", "text/html");
     mimeTypes.put(".css", "text/css");
     mimeTypes.put(".js", "text/javascript");
+    // 'application/xml' is an alternative for .xml's mime type
+    mimeTypes.put(".xml", "text/xml");
 
     mimeTypes.put(".json", "application/json");
     mimeTypes.put(".jsonp", "application/javascript");
 
+    mimeTypes.put(".csv", "text/csv");
+    mimeTypes.put(".tsv", "text/tab-separated-values");
+
+    // 'application/x-font-opentype' is another .otf alternative
+    mimeTypes.put(".otf", "font/opentype");
+    // 'application/x-font-truetype' is an alternative for .ttf
+    mimeTypes.put(".ttf", "application/x-font-ttf");
+    mimeTypes.put(".woff", "application/font-woff");
+    mimeTypes.put(".woff2", "application/font-woff2");
+    // 'font/opentype' is an alternate for .eot's mime type
+    mimeTypes.put(".eot", "application/vnd.ms-fontobject");
+
+    mimeTypes.put(".cur", "image/vnd.microsoft.icon");
+
     mimeTypes.put(".txt", "text/plain");
     mimeTypes.put(".java", "text/plain");  // x-java-source -> plain is better
-
-    mimeTypes.put(".c", "text/plain");
-    mimeTypes.put(".cc", "text/plain");
-    mimeTypes.put(".c++", "text/plain");
-    mimeTypes.put(".h", "text/plain");
-    mimeTypes.put(".pl", "text/plain");
   }
 
 
