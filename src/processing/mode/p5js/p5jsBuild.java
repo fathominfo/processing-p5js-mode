@@ -181,6 +181,8 @@ public class p5jsBuild {
 
     // https://github.com/fathominfo/processing-p5js-mode/issues/13
     htmlDoc.outputSettings().prettyPrint(false);
+
+    // Replace CRLF with just LF, then split so saveStrings() works
     String html = htmlDoc.toString().replace("\r\n", "\n");
     PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
 
