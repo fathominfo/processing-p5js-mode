@@ -37,25 +37,25 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <property name="jdt.jar"
               value="${processing.dir}/java/mode/org.eclipse.jdt.core.jar" />
     <condition property="build.compiler" 
-	       value="org.eclipse.jdt.core.JDTCompilerAdapter"
-	       else="modern">
+               value="org.eclipse.jdt.core.JDTCompilerAdapter"
+               else="modern">
       <available file="${jdt.jar}" />
     </condition>
     <!--<echo message="compiler is ${build.compiler}" />-->
 
     <mkdir dir="bin" />
     <javac source="1.8"
-	   target="1.8"
-	   encoding="UTF-8"
-	   includeAntRuntime="false"
-	   debug="true"
+           target="1.8"
+           encoding="UTF-8"
+           includeAntRuntime="false"
+           debug="true"
            srcdir="src"
-	   destdir="bin"
-	   classpath="${processing.dir}/core/bin;
+           destdir="bin"
+           classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin;
                       mode/jsoup-1.10.1.jar"
-	   nowarn="true">
+           nowarn="true">
       <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
       <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
     </javac>
@@ -102,11 +102,11 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <target name="examples" depends="build">
     <delete dir="examples" />
     <java classname="processing.mode.p5js.build.ImportExamples" 
-	  classpath="bin;
-		     ${processing.dir}/core/bin;
-		     ${processing.dir}/app/bin;
-		     ${processing.dir}/app/lib/jna.jar;
-		     ${processing.dir}/app/lib/jna-platform.jar" />
+          classpath="bin;
+                     ${processing.dir}/core/bin;
+                     ${processing.dir}/app/bin;
+                     ${processing.dir}/app/lib/jna.jar;
+                     ${processing.dir}/app/lib/jna-platform.jar" />
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
