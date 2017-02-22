@@ -7,23 +7,17 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import processing.app.Base;
 import processing.app.Formatter;
-import processing.app.Language;
 import processing.app.Library;
 import processing.app.Mode;
 import processing.app.Platform;
-import processing.app.Preferences;
 import processing.app.Problem;
-import processing.app.Sketch;
 import processing.app.SketchException;
 import processing.app.Util;
 import processing.app.syntax.JEditTextArea;
@@ -56,12 +50,7 @@ public class p5jsEditor extends Editor {
   }
 
 
-  /**
-   * Second stage of open, occurs after having checked to see if the
-   * modifications (if any) to the previous sketch need to be saved.
-   * Because this method is called in Editor's constructor, a subclass
-   * shouldn't rely on any of its variables being initialized already.
-   */
+  /*
   @Override
   protected void handleOpenInternal(String path) throws EditorException {
     // check to make sure that this .pde file is
@@ -85,39 +74,39 @@ public class p5jsEditor extends Editor {
                                 "and other files ending in " +
                                 mode.getDefaultExtension());
     } else if (file.getName().equals("sketch.js")){
-    	String prompt =
-    			"The file \"" + file.getName() + "\" needs to be renamed\n" +
-    					"to \"" + file.getParentFile().getName() + ". " + mode.getDefaultExtension()+ "\".\n" +
-    					"Rename the file and continue?";
+        String prompt =
+                        "The file \"" + file.getName() + "\" needs to be renamed\n" +
+                                        "to \"" + file.getParentFile().getName() + ". " + mode.getDefaultExtension()+ "\".\n" +
+                                        "Rename the file and continue?";
 
-    	Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
-    	int result = JOptionPane.showOptionDialog(this,
-    			prompt,
-    			"Moving",
-    			JOptionPane.YES_NO_OPTION,
-    			JOptionPane.QUESTION_MESSAGE,
-    			null,
-    			options,
-    			options[0]);
+        Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
+        int result = JOptionPane.showOptionDialog(this,
+                        prompt,
+                        "Moving",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
 
-    	if (result == JOptionPane.YES_OPTION) {
-    		try {
-    			Files.move(file.toPath(),
-    					new File(file.getParentFile().getAbsolutePath().toString() +
-    							File.separator + file.getParentFile().getName() + "." + mode.getDefaultExtension()).toPath(),
-    					StandardCopyOption.REPLACE_EXISTING);
-    		} catch (IOException e) {
-    			throw new EditorException("Cannot rename file.");
-    		}
-    	}
+        if (result == JOptionPane.YES_OPTION) {
+                try {
+                        Files.move(file.toPath(),
+                                        new File(file.getParentFile().getAbsolutePath().toString() +
+                                                        File.separator + file.getParentFile().getName() + "." + mode.getDefaultExtension()).toPath(),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                        throw new EditorException("Cannot rename file.");
+                }
+        }
 
     }
     else {
-    	final String properParent =
-    			file.getName().substring(0, file.getName().lastIndexOf('.'));
+        final String properParent =
+                        file.getName().substring(0, file.getName().lastIndexOf('.'));
 
-    	Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
-    	String prompt =
+        Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
+        String prompt =
         "The file \"" + file.getName() + "\" needs to be inside\n" +
         "a sketch folder named \"" + properParent + "\".\n" +
         "Create this folder, move the file, and continue?";
@@ -159,20 +148,20 @@ public class p5jsEditor extends Editor {
         File templateFolder = mode.getTemplateFolder();
 
         if (templateFolder.exists()) {
-        	try {
-				Util.copyDir(new File(templateFolder.getAbsoluteFile() + File.separator + "libraries"), new File(properFolder.getAbsolutePath() + File.separator + "libraries"));
-				Util.copyFile(new File(templateFolder.getAbsoluteFile() + File.separator + "index.html"), new File(properFolder.getAbsolutePath() + File.separator + "index.html"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                try {
+                                Util.copyDir(new File(templateFolder.getAbsoluteFile() + File.separator + "libraries"), new File(properFolder.getAbsolutePath() + File.separator + "libraries"));
+                                Util.copyFile(new File(templateFolder.getAbsoluteFile() + File.separator + "index.html"), new File(properFolder.getAbsolutePath() + File.separator + "index.html"));
+                        } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                        }
         }
         try {
-			p5jsMode.buildIndex(properFolder, properParent);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                        p5jsMode.buildIndex(properFolder, properParent);
+                } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
 
       } else {  //if (result == JOptionPane.NO_OPTION) {
         // Catch all other cases, including Cancel or ESC
@@ -197,6 +186,7 @@ public class p5jsEditor extends Editor {
     // TODO this probably need not be here because of the Recent menu, right?
     Preferences.save();
   }
+  */
 
 
   @Override
@@ -457,8 +447,8 @@ public class p5jsEditor extends Editor {
       e.printStackTrace();  // TODO ignore?
     }
     if (!REUSE_PORT) {
-    	stopServer();
-    	statusNotice("Server stopped.");
+        stopServer();
+        statusNotice("Server stopped.");
     }
     toolbar.deactivateRun();
   }
