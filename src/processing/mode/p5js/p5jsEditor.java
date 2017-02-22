@@ -42,7 +42,7 @@ import processing.mode.p5js.server.HttpServer;
 
 public class p5jsEditor extends Editor {
   HttpServer server;
-  boolean reusePort = true;
+  static final boolean REUSE_PORT = false;
   boolean showSizeWarning = true;
 
 
@@ -54,8 +54,8 @@ public class p5jsEditor extends Editor {
       rebuildHtml();
     }
   }
-  
-  
+
+
   /**
    * Second stage of open, occurs after having checked to see if the
    * modifications (if any) to the previous sketch need to be saved.
@@ -157,7 +157,7 @@ public class p5jsEditor extends Editor {
         path = properPdeFile.getAbsolutePath();
         mode.rebuildLibraryList();
         File templateFolder = mode.getTemplateFolder();
-        
+
         if (templateFolder.exists()) {
         	try {
 				Util.copyDir(new File(templateFolder.getAbsoluteFile() + File.separator + "libraries"), new File(properFolder.getAbsolutePath() + File.separator + "libraries"));
@@ -456,7 +456,7 @@ public class p5jsEditor extends Editor {
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
-    if (!reusePort) {
+    if (!REUSE_PORT) {
     	stopServer();
     	statusNotice("Server stopped.");
     }
