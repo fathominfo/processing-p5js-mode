@@ -25,12 +25,15 @@ import processing.data.StringList;
 
 
 public class p5jsBuild {
-  static final boolean USE_SOUP = false;
+  static final String P5JS_UNMINIFIED = "p5.js";
+  static final String P5JS_MINIFIED = "p5.min.js";
 
   static final String HTML_PREFIX =
     "<!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->";
   static final String HTML_SUFFIX =
     "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
+
+  static final boolean USE_SOUP = false;
 
   static final String TEMP_PREFIX = "p5js-temp-";
 //  ScriptEngine engine;
@@ -71,7 +74,7 @@ public class p5jsBuild {
 
     // load p5.js first
     if (!USE_SOUP) {
-      insert.append(scriptPath("libraries/p5.js"));
+      insert.append(scriptPath("libraries/" + P5JS_MINIFIED));
     }
 
     // then other entries from /libraries
@@ -85,7 +88,8 @@ public class p5jsBuild {
         //System.out.println("checking " + file);
         if (!file.isDirectory()) {  // not doing subdirectories
           String name = file.getName();
-          if (!name.equals("p5.js") &&  // already loaded first
+          if (!name.equals(P5JS_MINIFIED) &&  // already loaded first
+              !name.equals(P5JS_UNMINIFIED) &&  // don't double-add
               name.toLowerCase().endsWith(".js")) {
             return true;
           }

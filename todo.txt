@@ -2,6 +2,12 @@
 X prevent reformatting of index.html
 X   https://github.com/fathominfo/processing-p5js-mode/issues/13
 X update to 0.5.7 release of p5js and supporting libraries
+X remove the sketch.js renaming code
+X switch to minified version of libraries
+
+_ when adding library, add it to the "do not touch" section as well
+_ don't tell people "do not touch", then talk about un-commenting libraries
+_ need better solution when opening sketch.js files
 
 verify
 X (hopefully) fix the release itself so that it installs properly
