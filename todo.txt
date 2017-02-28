@@ -12,7 +12,8 @@ _ need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
 
 _ properly implement the minified versions of libs
-_   bring back files via commit 5cf9736345014f603ed51980fc2f36ed75ac7707
+_   bring back files via 
+_   git checkout <deleting_commit>^ -- <file_path>
 
 verify
 X (hopefully) fix the release itself so that it installs properly
