@@ -4,17 +4,19 @@ X   https://github.com/fathominfo/processing-p5js-mode/issues/13
 X update to 0.5.7 release of p5js and supporting libraries
 X remove the sketch.js renaming code
 X switch to minified version of libraries
+X   and switch back
 
 _ when adding library, add it to the "do not touch" section as well
+
 _ don't tell people "do not touch", then talk about un-commenting libraries
 _ need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
 
 verify
 X (hopefully) fix the release itself so that it installs properly
-_   https://github.com/fathominfo/processing-p5js-mode/issues/11
+X   https://github.com/fathominfo/processing-p5js-mode/issues/11
 X re-using the same server port for each run
-_   https://github.com/fathominfo/processing-p5js-mode/issues/8
+X   https://github.com/fathominfo/processing-p5js-mode/issues/8
 X Windows temp files still in use and cannot be removed
 _   https://github.com/fathominfo/processing-p5js-mode/issues/6
 
