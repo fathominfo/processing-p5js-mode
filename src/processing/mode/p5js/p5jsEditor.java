@@ -36,7 +36,7 @@ import processing.mode.p5js.server.HttpServer;
 
 public class p5jsEditor extends Editor {
   HttpServer server;
-  static final boolean REUSE_PORT = false;
+  static final boolean REUSE_PORT = true;
   boolean showSizeWarning = true;
 
 
