@@ -8,6 +8,7 @@ X switch to minified version of libraries
 _ when adding library, add it to the "do not touch" section as well
 _ don't tell people "do not touch", then talk about un-commenting libraries
 _ need better solution when opening sketch.js files
+_   just rename the sketch.js file itself
 
 verify
 X (hopefully) fix the release itself so that it installs properly

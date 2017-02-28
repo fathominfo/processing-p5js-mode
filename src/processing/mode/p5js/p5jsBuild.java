@@ -199,17 +199,23 @@ public class p5jsBuild {
       // write the HTML based on the template
       String html = PApplet.join(PApplet.loadStrings(htmlFile), "\n");
       int start = html.indexOf(HTML_PREFIX);
-      if (start == -1) {
-        System.err.println("HTML prefix is missing in the index.html file.");
-        throw new SketchException("The index.html file is damaged, " +
-                                  "please remove it and try again.", false);
-      }
       int stop = html.indexOf(HTML_SUFFIX);
+
+      if (start == -1 || stop == -1) {
+        System.out.println("p5jsMode uses a specially crafted index.html to work properly.");
+        System.out.println("Use Sketch > Show Sketch Folder and rename index.html to something else.");
+        System.out.println("The index.html file will be re-created to work with p5jsMode,");
+        System.out.println("and if necessary, copy parts of your old index.html to the new one.");
+        throw new SketchException("The index.html file is damaged, " +
+                                  "please remove or rename it and try again.", false);
+      }
+      /*
       if (stop == -1) {
         System.err.println("HTML suffix is missing in the index.html file.");
         throw new SketchException("Somebody broke the index.html file, " +
                                   "please remove it and try again.", false);
       }
+      */
       html = html.substring(0, start) +
         HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX +
         html.substring(stop + HTML_SUFFIX.length());

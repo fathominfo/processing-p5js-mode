@@ -35,8 +35,9 @@ import processing.mode.p5js.server.HttpServer;
 
 
 public class p5jsEditor extends Editor {
+  // One server per Editor, same port used for the same Editor
   HttpServer server;
-  static final boolean REUSE_PORT = true;
+//  static final boolean REUSE_PORT = true;
   boolean showSizeWarning = true;
 
 
@@ -415,24 +416,21 @@ public class p5jsEditor extends Editor {
       prepareRun();
       // write the HTML here in case we need temp files
       p5jsBuild.updateHtml(sketch);
+
+      if (checkErrors(true)) {
+        toolbar.deactivateRun();
+
+      } else {
+        if (server == null || server.isDead()) {
+          restartServer();
+        }
+        statusNotice("Server running at " + server.getAddress());
+        //Platform.openURL(server.getAddress());
+
+        Desktop.getDesktop().browse(new URI(server.getAddress()));
+      }
     } catch (Exception e) {
       statusError(e);
-    }
-    if (checkErrors(true)) {
-      toolbar.deactivateRun();
-
-    } else {
-      if (server == null || server.isDead()) {
-        restartServer();
-      }
-      statusNotice("Server running at " + server.getAddress());
-      //Platform.openURL(server.getAddress());
-
-      try {
-        Desktop.getDesktop().browse(new URI(server.getAddress()));
-      } catch (Exception e) {
-        statusError(e);
-      }
     }
   }
 
@@ -446,10 +444,10 @@ public class p5jsEditor extends Editor {
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
-    if (!REUSE_PORT) {
-        stopServer();
-        statusNotice("Server stopped.");
-    }
+    //if (!REUSE_PORT) {
+    stopServer();
+    statusNotice("Server stopped.");
+    //}
     toolbar.deactivateRun();
   }
 
@@ -466,6 +464,7 @@ public class p5jsEditor extends Editor {
     } catch (SketchException se) {
       if (fatal) {
         statusError(se);
+
       } else {
         setProblemList(Arrays.asList(new Problem() {
 
@@ -556,7 +555,8 @@ public class p5jsEditor extends Editor {
     }
 
     if (server == null) {
-      server = new HttpServer(this);
+      int port = (int) (8000 + Math.random() * 1000);
+      server = new HttpServer(this, port);
     }
 
     server.start();

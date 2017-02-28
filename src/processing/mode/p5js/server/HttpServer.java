@@ -38,9 +38,11 @@ public class HttpServer {
   //File root;
 
 
+  /*
   public HttpServer(p5jsEditor editor) {
     this(editor, (int) (8000 + Math.random() * 1000));
   }
+  */
 
 
   public HttpServer(p5jsEditor editor, int port) {
