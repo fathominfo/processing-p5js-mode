@@ -1,5 +1,8 @@
 0005 (1.0.5 or 1.1)
 
+_ when sketch is moved while the editor is open
+_   it can't re-create any of the supporting files
+_   leaving you with a broken sketch, which is messy b/c it looks ok
 
 _ need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
