@@ -89,6 +89,6 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.0.3'
+git tag -f -a latest -m 'version 1.0.4'
 # actually update things
 git push -f --tags
