@@ -1,4 +1,4 @@
-0004
+0004 (1.0.4)
 X prevent reformatting of index.html
 X   https://github.com/fathominfo/processing-p5js-mode/issues/13
 X update to 0.5.7 release of p5js and supporting libraries
@@ -29,26 +29,7 @@ _   (that's the commit that started deleting, ^ will get us to previous)
 _ when rewriting the index.html file, 'sketch modified externally' messages
 _   https://github.com/fathominfo/processing-p5js-mode/issues/15
 
-
-. . .
-
-# update the release in mode.properties
-git tag -a release-1.0 -m '1.0 final'
-git tag -a v1.0.1 -m 'version 1.0.1'
-git tag -a v1.0.2 -m 'version 1.0.2'
-git tag -a v1.0.3 -m 'version 1.0.3'
-git push origin --tags
-
-# delete the previous 'latest'
-git tag -d latest
-git push origin :refs/tags/latest
-
-# create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.0.3'
-# actually update things
-git push -f --tags
-
-. . .
+_ update the examples (they've not been updated in a while)
 
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
@@ -90,3 +71,24 @@ _   txt, html, css, js, json, scss, xml, csv, less
 _   include: html, css, js, json, scss, less
 _   exclude: xml, txt, csv (like to be in data folder)
 _ add basic syntax highlighting for css
+
+
+. . .
+
+
+# update the release in mode.properties
+git tag -a release-1.0 -m '1.0 final'
+git tag -a v1.0.1 -m 'version 1.0.1'
+git tag -a v1.0.2 -m 'version 1.0.2'
+git tag -a v1.0.3 -m 'version 1.0.3'
+git tag -a v1.0.4 -m 'version 1.0.4'
+git push origin --tags
+
+# delete the previous 'latest'
+git tag -d latest
+git push origin :refs/tags/latest
+
+# create new 'latest' tag with the current state of the repo
+git tag -f -a latest -m 'version 1.0.3'
+# actually update things
+git push -f --tags
