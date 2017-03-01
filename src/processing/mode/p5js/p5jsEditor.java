@@ -51,6 +51,26 @@ public class p5jsEditor extends Editor {
   }
 
 
+  @Override
+  protected void handleOpenInternal(String path) throws EditorException {
+    if (path.endsWith("sketch.js")) {
+      /*
+      System.out.println("This version of p5jsMode does not play nicely with sketches created with other editors.");
+      System.out.println("To use this code, please use File > New to create a new sketch and copy your code into it.");
+      System.out.println("See https://github.com/fathominfo/processing-p5js-mode/issues/14 for updates or details.");
+      throw new EditorException("Cannot open this type of sketch, see below for how to fix.");
+      */
+      // Because of poor Exception handling by me, there isn't a good way to
+      // recover from this situation without throwing this ridiculous blob of
+      // text into the Exception message itself. Ben 1, Software Engineering 0.
+      throw new EditorException("Cannot open this type of sketch.\n" +
+                                "This version of p5jsMode does not play nicely with sketches created by other editors.\n" +
+                                "To use this code, please use File > New to create a new sketch and copy your code into it.\n" +
+                                "See https://github.com/fathominfo/processing-p5js-mode/issues/14 for updates or details.");
+    }
+    super.handleOpenInternal(path);
+  }
+
   /*
   @Override
   protected void handleOpenInternal(String path) throws EditorException {

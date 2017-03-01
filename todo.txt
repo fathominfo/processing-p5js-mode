@@ -7,13 +7,7 @@ X switch to minified version of libraries
 X   and switch back
 X when adding library, add it to the "do not touch" section as well
 X don't tell people "do not touch", then talk about un-commenting libraries
-
-_ need better solution when opening sketch.js files
-_   just rename the sketch.js file itself
-
-_ properly implement the minified versions of libs
-_   bring back files via 
-_   git checkout <deleting_commit>^ -- <file_path>
+X disable opening of sketch.js files so things don't get destroyed
 
 verify
 X (hopefully) fix the release itself so that it installs properly
@@ -21,7 +15,16 @@ X   https://github.com/fathominfo/processing-p5js-mode/issues/11
 X re-using the same server port for each run
 X   https://github.com/fathominfo/processing-p5js-mode/issues/8
 X Windows temp files still in use and cannot be removed
-_   https://github.com/fathominfo/processing-p5js-mode/issues/6
+X   https://github.com/fathominfo/processing-p5js-mode/issues/6
+
+
+_ need better solution when opening sketch.js files
+_   just rename the sketch.js file itself
+_   https://github.com/fathominfo/processing-p5js-mode/issues/14
+
+_ properly implement the minified versions of libs
+_   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
+_   (that's the commit that started deleting, ^ will get us to previous)
 
 
 . . .
