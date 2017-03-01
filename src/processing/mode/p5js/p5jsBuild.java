@@ -54,8 +54,8 @@ public class p5jsBuild {
   static void updateHtml(Sketch sketch) throws SketchException, IOException {
 //    Mode mode = sketch.getMode();
 
-    SketchCode indexCode = findIndex(sketch);
-    if (indexCode != null && indexCode.isModified()) {
+    SketchCode indexHtmlCode = findIndexHtml(sketch);
+    if (indexHtmlCode != null && indexHtmlCode.isModified()) {
       // TODO can we throw an exception here? how often is this happening?
       System.err.println("Could not update index.html because it has unsaved changes.");
       return;
@@ -231,11 +231,16 @@ public class p5jsBuild {
       PApplet.saveStrings(htmlFile, PApplet.split(html, '\n'));
     }
 
-    // reload in the Editor
-    if (indexCode != null) {
-      indexCode.load();
+    // reload in the Editor after modifications
+    if (indexHtmlCode != null) {
+      indexHtmlCode.load();
       // unfortunate hack that seems necessary at the moment?
-      indexCode.setDocument(null);
+      indexHtmlCode.setDocument(null);
+
+    } else {
+      // TODO when the index.html file has been removed (and now, rewritten),
+      //      add its tab to the PDE, and mark it as opened so that we don't
+      //      get the message about the file being modified externally.
     }
   }
 
@@ -264,7 +269,7 @@ public class p5jsBuild {
   }
 
 
-  static private SketchCode findIndex(Sketch sketch) {
+  static private SketchCode findIndexHtml(Sketch sketch) {
     for (SketchCode code : sketch.getCode()) {
       if (code.getFileName().equals("index.html")) {
         return code;

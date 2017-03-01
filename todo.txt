@@ -26,6 +26,9 @@ _ properly implement the minified versions of libs
 _   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
 _   (that's the commit that started deleting, ^ will get us to previous)
 
+_ when rewriting the index.html file, 'sketch modified externally' messages
+_   https://github.com/fathominfo/processing-p5js-mode/issues/15
+
 
 . . .
 
