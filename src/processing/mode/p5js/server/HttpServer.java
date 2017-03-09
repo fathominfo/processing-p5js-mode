@@ -19,7 +19,7 @@ import processing.mode.p5js.p5jsEditor;
  */
 public class HttpServer {
   // Where worker threads stand idle
-  static List<HttpWorker> threads = new ArrayList<>();
+  List<HttpWorker> threads = new ArrayList<>();
 
   // timeout on client connections
   static final int TIMEOUT = 10000;
@@ -130,6 +130,18 @@ public class HttpServer {
 
   public void stop() {
     thread = null;
+  }
+
+
+  public boolean addWorker(HttpWorker worker) {
+    synchronized (threads) {
+      if (threads.size() >= WORKERS) {
+        // too many threads, exit this one
+        return false;
+      }
+      threads.add(worker);
+      return true;
+    }
   }
 
 

@@ -1,8 +1,9 @@
 package processing.mode.p5js.server;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import processing.core.PApplet;
 
@@ -47,14 +48,8 @@ public class HttpWorker implements Runnable {
       }
       // go back in wait queue if there's fewer than numHandler connections.
       socket = null;
-      List<HttpWorker> pool = HttpServer.threads;
-      synchronized (pool) {
-        if (pool.size() >= HttpServer.WORKERS) {
-          // too many threads, exit this one
-          return;
-        } else {
-          pool.add(this);
-        }
+      if (!server.addWorker(this)) {
+        return;
       }
     }
   }

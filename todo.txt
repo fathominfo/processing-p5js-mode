@@ -1,6 +1,10 @@
 0005 (1.0.5 or 1.1)
+X move away from static worker objects, likely causing collisions
+
+
 _ oops, port is not being reused per sketch
 
+_ showing a css tab was causing a lot of error messages
 
 _ when sketch is moved while the editor is open
 _   it can't re-create any of the supporting files
