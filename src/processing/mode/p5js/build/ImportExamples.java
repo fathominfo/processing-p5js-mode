@@ -20,11 +20,9 @@ public class ImportExamples {
   static final String WEB_MASTER =
     "https://github.com/processing/p5.js-website/archive/master.zip";
   static final String EXAMPLE_PREFIX =
-    "p5.js-website-master/examples/examples_src/";
+    "p5.js-website-master/dist/assets/examples/en/";
   static final String ASSETS_PREFIX =
-    "p5.js-website-master/examples/examples/assets/";
-
-
+    "p5.js-website-master/dist/assets/examples/assets/";
 
   public ImportExamples() {
     File masterFile = adjacentFile("examples-master.zip");
@@ -41,11 +39,11 @@ public class ImportExamples {
     Map<String, ZipEntry> assetMap = new HashMap<>();
     Map<String, ZipEntry> exampleMap = new HashMap<>();
 
-    // p5.js-website-master/examples/examples_src/33_Sound/00_Load_and_Play_Sound.js
+    // p5.js-website-master/dist/assets/examples/en/33_Sound/00_Load_and_Play_Sound.js
     ZipFile zip = null;
     try {
       zip = new ZipFile(masterFile);
-      assetMap = new HashMap<String, ZipEntry>();
+      assetMap = new HashMap<>();
       Enumeration<?> en = zip.entries();
       while (en.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) en.nextElement();
