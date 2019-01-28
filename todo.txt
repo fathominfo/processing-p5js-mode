@@ -13,6 +13,14 @@ X p5.js sketch breaks when I save it (looks like issue with 'let')
 X   https://github.com/fathominfo/processing-p5js-mode/issues/18
 X update examples
 X use minified versions of code?
+X issues when editing css files
+X   https://github.com/fathominfo/processing-p5js-mode/issues/21
+X   showing a css tab was causing a lot of error messages
+X Add support for editing .json files in the Editor
+X   https://github.com/fathominfo/processing-p5js-mode/issues/16
+X   modify p5jsMode.getExtensions() (what to do about data folder?)
+o   and how should syntax highlighting work? (uses js highlighter)
+
 
 _ NPE when doing Find in Reference w/ nothing selected
 Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
@@ -23,15 +31,6 @@ at processing.mode.p5js.p5jsEditor$5.actionPerformed(p5jsEditor.java:337)
 _ how to enable the cdn version?
 _   would be nice to use by default, but don't net connection as requirement
 _   or is there a way to handle it inside the p5js server?
-
-_ issues when editing css files
-_   https://github.com/fathominfo/processing-p5js-mode/issues/21
-_ showing a css tab was causing a lot of error messages
-_ Add support for editing .json files in the Editor
-_   https://github.com/fathominfo/processing-p5js-mode/issues/16
-_   modify p5jsMode.getExtensions() (what to do about data folder?)
-_   and how should syntax highlighting work?
-_   what about .txt? .csv? etc
 
 _ Find in Reference not working?
 _   what does loadKeywords map to?
@@ -46,7 +45,6 @@ _   too many problems with unsaved code not working properly
 _ still a lot of temp files left around?
 
 _ oops, port is not being reused per sketch
-
 
 _ when sketch is moved while the editor is open
 _   it can't re-create any of the supporting files

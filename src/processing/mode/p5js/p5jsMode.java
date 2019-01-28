@@ -71,6 +71,10 @@ public class p5jsMode extends Mode {
 
     } else if (code.isExtension("html")) {
       return new HtmlTokenMarker();
+
+//    } else if (code.isExtension("css")) {
+//      System.out.println("no highlight for " + code.getFile());
+//      return null;
     }
     return null;  // no styling
   }
@@ -101,23 +105,10 @@ public class p5jsMode extends Mode {
   @Override
   public File[] getExampleCategoryFolders() {
     final String[] titles = {
-      "Structure",
-      "Form",
-      "Data",
-      "Arrays",
-      "Control",
-      "Image",
-      "Color",
-      "Math",
-      "Simulate",
-      "Interaction",
-      "Objects",
-      "Lights",
-      "Instance Mode",
-      "DOM",
-      "3D",
-      "Sound",
-      "Mobile"
+      "Structure", "Form", "Data", "Arrays", "Control", "Image", "Color",
+      "Math", "Simulate", "Interaction", "Objects", "Lights", "Motion",
+      "Instance Mode", "DOM", "Drawing", "Transform", "Typography",
+      "3D", "Input", "Advanced Data", "Sound", "Mobile", "Hello P5"
     };
 
     File[] outgoing = new File[titles.length];
@@ -165,7 +156,7 @@ public class p5jsMode extends Mode {
    */
   @Override
   public String[] getExtensions () {
-    return new String[] { "js", "html", "css" };
+    return new String[] { "js", "html", "css", "json" };
   }
 
 
