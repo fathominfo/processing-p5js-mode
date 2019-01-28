@@ -445,9 +445,19 @@ public class p5jsEditor extends Editor {
           restartServer();
         }
         statusNotice("Server running at " + server.getAddress());
-        //Platform.openURL(server.getAddress());
 
-        Desktop.getDesktop().browse(new URI(server.getAddress()));
+        if (Desktop.isDesktopSupported()) {
+          // use this version so that errors pop out as exceptions,
+          // and we can show them as errors in the PDE (otherwise weird
+          // URL opening problems are confusing for new users)
+          Desktop.getDesktop().browse(new URI(server.getAddress()));
+        } else {
+          // if Desktop not available, try the Platform version,
+          // which will try platform tricks (but is wrapped so the Exception
+          // doesn't propagate, and therefore we're not using this by default)
+          // https://github.com/fathominfo/processing-p5js-mode/issues/17
+          Platform.openURL(server.getAddress());
+        }
       }
     } catch (Exception e) {
       statusError(e);

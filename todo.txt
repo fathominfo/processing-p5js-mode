@@ -23,6 +23,8 @@ o   and how should syntax highlighting work? (uses js highlighter)
 X   .json files must be in the root of the sketch folder
 X   (not a subfolder like data or assets) to be visible/editable
 X use minified version of libs for the examples
+X check whether Desktop is available for URL opening
+X   https://github.com/fathominfo/processing-p5js-mode/issues/17
 
 cleaning
 o NPE when doing Find in Reference w/ nothing selected
@@ -35,6 +37,10 @@ o properly implement the minified versions of libs
 o   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
 o   (that's the commit that started deleting, ^ will get us to previous)
 
+
+_ need better solution when opening sketch.js files
+_   just rename the sketch.js file itself
+_   https://github.com/fathominfo/processing-p5js-mode/issues/14
 
 _ when rewriting the index.html file, 'sketch modified externally' messages
 _   https://github.com/fathominfo/processing-p5js-mode/issues/15
@@ -58,10 +64,6 @@ _ oops, port is not being reused per sketch
 _ when sketch is moved while the editor is open
 _   it can't re-create any of the supporting files
 _   leaving you with a broken sketch, which is messy b/c it looks ok
-
-_ need better solution when opening sketch.js files
-_   just rename the sketch.js file itself
-_   https://github.com/fathominfo/processing-p5js-mode/issues/14
 
 _ how to enable the cdn version?
 _   would be nice to use by default, but don't net connection as requirement
