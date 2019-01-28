@@ -6,6 +6,9 @@ X update to 0.7.3
 X   update sound and dom libraries
 _ Allow use of let and const in p5js-mode
 _   https://github.com/fathominfo/processing-p5js-mode/issues/20
+_   seems to be supported as of 8u40?
+_     https://bugs.openjdk.java.net/browse/JDK-8046038
+_   https://developer.oracle.com/databases/nashorn-javascript-part1
 _ p5.js sketch breaks when I save it (looks like issue with 'let')
 _   https://github.com/fathominfo/processing-p5js-mode/issues/18
 _ update examples

@@ -443,6 +443,7 @@ public class p5jsBuild {
     options.set("anon.functions", true);
     options.set("parse.only", true);
     options.set("scripting", true);
+    options.set("language", "es6");
 
     ErrorManager errors = new ErrorManager();
     Context context = new Context(options, errors, Base.class.getClassLoader());
