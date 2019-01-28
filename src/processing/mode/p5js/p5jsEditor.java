@@ -414,6 +414,20 @@ public class p5jsEditor extends Editor {
   }
 
 
+  @Override
+  public void showReference(String filename) {
+    // this will give us "blah_.html" or "blah.html"
+    // first remove the .html from the end
+    String term = filename.substring(0, filename.length() - 5);
+    // p5js doesn't do the underscore thing (functions and vars
+    // can't have the same name in JS anyway, those lucky ducks)
+    if (term.endsWith("_")) {
+      term = term.substring(0, term.length() - 1);
+    }
+    Platform.openURL("https://p5js.org/reference/#/p5/" + term);
+  }
+
+
   protected boolean rebuildHtml() {
     try {
       p5jsBuild.updateHtml(sketch);

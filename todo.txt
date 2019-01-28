@@ -27,6 +27,12 @@ X check whether Desktop is available for URL opening
 X   https://github.com/fathominfo/processing-p5js-mode/issues/17
 X Opening a sketch without PDE folder structure not working properly
 X   https://github.com/fathominfo/processing-p5js-mode/issues/7
+X Find in Reference not implemented
+X   https://github.com/fathominfo/processing-p5js-mode/issues/22
+X   "Could not open the URL... p5jsMode/reference/ellipse_.html"
+X   http://p5js.org/reference/#/p5/ellipse
+o   what does loadKeywords map to?
+X   implemented a hokey version
 
 cleaning
 o NPE when doing Find in Reference w/ nothing selected
@@ -49,19 +55,14 @@ _   https://github.com/fathominfo/processing-p5js-mode/issues/14
 _   This might be better handled by an “Import” tool that pulls
 _   from a local folder or from the online editor.
 
-_ Find in Reference not implemented
-_   "Could not open the URL... p5jsMode/reference/ellipse_.html"
-_   http://p5js.org/reference/#/p5/ellipse
-_   what does loadKeywords map to?
-
 _ if starting a new sketch, must reload the browser first?
 _   what's happening here? concerned about code mods not updating
 _   set no cache on returned objects?
 
+_ still a lot of temp files left around?
 _ when using p5jsMode, just require that sketches are saved
 _   too many problems with unsaved code not working properly
-
-_ still a lot of temp files left around?
+_   (instead of doing the weird tricks with temp files)
 
 _ oops, port is not being reused per sketch
 
