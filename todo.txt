@@ -1,17 +1,21 @@
-0005 (1.0.5 or 1.1)
+0005 (1.1)
 X make worker objects no longer static, fixing collisions and cache issues
 X update p5.js to 0.5.16
 X   https://github.com/fathominfo/processing-p5js-mode/pull/19
 X update to 0.7.3
 X   update sound and dom libraries
-_ Allow use of let and const in p5js-mode
-_   https://github.com/fathominfo/processing-p5js-mode/issues/20
-_   seems to be supported as of 8u40?
-_     https://bugs.openjdk.java.net/browse/JDK-8046038
-_   https://developer.oracle.com/databases/nashorn-javascript-part1
-_ p5.js sketch breaks when I save it (looks like issue with 'let')
-_   https://github.com/fathominfo/processing-p5js-mode/issues/18
-_ update examples
+X Allow use of let and const in p5js-mode
+X   https://github.com/fathominfo/processing-p5js-mode/issues/20
+X   seems to be supported as of 8u40?
+X     https://bugs.openjdk.java.net/browse/JDK-8046038
+X   https://developer.oracle.com/databases/nashorn-javascript-part1
+X p5.js sketch breaks when I save it (looks like issue with 'let')
+X   https://github.com/fathominfo/processing-p5js-mode/issues/18
+X update examples
+_ use minified versions of code?
+_ how to enable the cdn version?
+_   would be nice to use by default, but don't net connection as requirement
+_   or is there a way to handle it inside the p5js server?
 
 _ issues when editing css files
 _   https://github.com/fathominfo/processing-p5js-mode/issues/21

@@ -1,13 +1,9 @@
 package processing.mode.p5js.build;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.JarURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.zip.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import processing.app.Platform;
 import processing.app.Util;
@@ -25,50 +21,43 @@ import processing.mode.p5js.p5jsMode;
 // git pull
 // npm run watch
 
-public class ImportExamples {
-  static final String WEB_MASTER =
-    "https://github.com/processing/p5.js-website/archive/master.zip";
+public class ImportExamples extends PApplet {
   static final String EXAMPLE_PREFIX =
-    "p5.js-website/dist/assets/examples/en/";
+    "dist/assets/examples/en/";
   static final String ASSETS_PREFIX =
-    "p5.js-website-master/dist/assets/examples/assets/";
+    "dist/assets/examples/assets/";
 
-  public ImportExamples() {
-    File masterFile = adjacentFile("examples-master.zip");
-    if (!masterFile.exists()) {
-      System.out.println("Downloading " + WEB_MASTER);
-      if (!PApplet.saveStream(masterFile, createUrlInput(WEB_MASTER))) {
-        System.err.println("Error while downloading");
-        masterFile.delete();
-        System.exit(0);
-      }
-      System.out.println("Finished.");
+
+  @Override
+  public void setup() {
+    File siteFolder = sketchFile("p5.js-website");
+    if (!siteFolder.exists()) {
+      System.err.println("You must first clone p5.js-website before running");
+      System.exit(1);
+    }
+    if (!new File(siteFolder, EXAMPLE_PREFIX).exists()) {
+      System.err.println("First run 'npm run watch' inside 'p5.js-website'");
+      System.exit(1);
     }
 
-    Map<String, ZipEntry> assetMap = new HashMap<>();
-    Map<String, ZipEntry> exampleMap = new HashMap<>();
+    Map<String, File> assetMap = new HashMap<>();
+    Map<String, File> exampleMap = new HashMap<>();
 
-    // p5.js-website-master/dist/assets/examples/en/33_Sound/00_Load_and_Play_Sound.js
-    ZipFile zip = null;
     try {
-      zip = new ZipFile(masterFile);
-      assetMap = new HashMap<>();
-      Enumeration<?> en = zip.entries();
-      while (en.hasMoreElements()) {
-        ZipEntry entry = (ZipEntry) en.nextElement();
-        String path = entry.getName();
+      String[] paths =
+        listPaths(siteFolder.getAbsolutePath(), "recursive", "relative");
+      printArray(paths);
+      for (String path : paths) {
         if (path.startsWith(EXAMPLE_PREFIX) && path.endsWith(".js")) {
-          //entries.put(entry.getName(), entry);
-          //exampleList.append(path);
           String name = path.substring(EXAMPLE_PREFIX.length());
-          exampleMap.put(name, entry);
+          exampleMap.put(name, new File(siteFolder, path));
         } else if (path.startsWith(ASSETS_PREFIX)) {
           String name = path.substring(ASSETS_PREFIX.length());
-          assetMap.put(name, entry);
+          assetMap.put(name, new File(siteFolder, path));
         }
       }
 
-      File examplesFolder = adjacentFile("examples");
+      File examplesFolder = sketchFile("examples");
       if (examplesFolder.exists()) {
         Platform.deleteFile(examplesFolder);  // move to trash
       }
@@ -77,7 +66,7 @@ public class ImportExamples {
       exampleList.sort();
       StringList categories = new StringList();
 
-      File templateFolder = adjacentFile("template");
+      File templateFolder = sketchFile("template");
 
       for (String item : exampleList) {
         System.out.println(item);
@@ -91,8 +80,7 @@ public class ImportExamples {
         File exampleFolder = new File(categoryFolder, name);
         if (exampleFolder.mkdirs()) {
           File exampleFile = new File(exampleFolder, name + ".js");
-          String[] lines =
-            PApplet.loadStrings(zip.getInputStream(exampleMap.get(item)));
+          String[] lines = loadStrings(exampleMap.get(item));
           //for (String line : lines) {
           StringList libraries = new StringList();
           for (int i = 0; i < lines.length; i++) {
@@ -108,23 +96,23 @@ public class ImportExamples {
 
             String[] m = PApplet.match(line, "[\"']assets/(.+)[\"']");
             if (m != null) {
-//              println(m[1].length());
               // Switch to using the data folder so that it
               // plays nicely with the PDE's "Add File" command.
               lines[i] = line.replace("assets/" + m[1], "data/" + m[1]);
 
-              ZipEntry entry = assetMap.get(m[1]);
+              //ZipEntry entry = assetMap.get(m[1]);
+              File entry = assetMap.get(m[1]);
               if (entry != null) {
                 // saveStream() will create intermediate folders as necessary
                 PApplet.saveStream(new File(exampleFolder, "data/" + m[1]),
-                                   zip.getInputStream(entry));
+                                   createInput(entry));
               } else {
                 boolean found = false;
                 for (String ext : new String[] { ".mp3", ".ogg" }) {
                   entry = assetMap.get(m[1] + ext);
                   if (entry != null) {
                     PApplet.saveStream(new File(exampleFolder, "data/" + m[1] + ext),
-                                       zip.getInputStream(entry));
+                                       createInput(entry));
                     found = true;
                   }
                 }
@@ -139,7 +127,7 @@ public class ImportExamples {
             // Add index.html and the p5js library itself
             Util.copyDir(templateFolder, exampleFolder);
             // now for some libraries
-            File librariesFolder = adjacentFile("libraries");
+            File librariesFolder = sketchFile("libraries");
             for (String library : libraries) {
               // libraries/p5.dom/library/p5.dom.js
               Util.copyFile(new File(librariesFolder, library +
@@ -157,9 +145,8 @@ public class ImportExamples {
       }
 
       System.out.println();
-      System.out.println("Example categories to be added to p5jsMode.java:");
+      System.out.println("Example categories to be updated in p5jsMode.java:");
       categories.sort();
-      //println("\"" + categories.join("\", \"") + "\"");
       for (String category : categories) {
         System.out.print("\"" + fixCategory(category) + "\", ");
       }
@@ -167,19 +154,11 @@ public class ImportExamples {
 
     } catch (IOException e) {
       e.printStackTrace();
-
-    } finally {
-      try {
-        zip.close();
-      } catch (Exception e) {
-        // might be an NPE if zip not initialized
-        // or an IOException from calling close()
-      }
     }
   }
 
 
-  private String fixCategory(String what) {
+  static private String fixCategory(String what) {
     what = what.substring(3);
     if ("Dom".equals(what)) {
       // consistent with example title and other folder naming
@@ -189,54 +168,7 @@ public class ImportExamples {
   }
 
 
-  //
-
-
-  // This was formerly sketchFile() when subclassing PApplet, but keeping it
-  // as a method in case we need to come back to it and set the working dir.
-  private File adjacentFile(String what) {
-    return new File(what);
-  }
-
-
-  // A subset of PApplet.createInputRaw()
-  static public InputStream createUrlInput(String path) {
-    try {
-      URL url = new URL(path);
-      URLConnection conn = url.openConnection();
-      if (conn instanceof HttpURLConnection) {
-        HttpURLConnection httpConn = (HttpURLConnection) conn;
-        // Will not handle a protocol change (see below)
-        httpConn.setInstanceFollowRedirects(true);
-        int response = httpConn.getResponseCode();
-        // Normally will not follow HTTPS redirects from HTTP due to security concerns
-        // http://stackoverflow.com/questions/1884230/java-doesnt-follow-redirect-in-urlconnection/1884427
-        if (response >= 300 && response < 400) {
-          String newLocation = httpConn.getHeaderField("Location");
-          return createUrlInput(newLocation);
-        }
-        return conn.getInputStream();
-      } else if (conn instanceof JarURLConnection) {
-        return url.openStream();
-      }
-    } catch (MalformedURLException mfue) {
-      // not a url, that's fine
-
-    } catch (FileNotFoundException fnfe) {
-      // Added in 0119 b/c Java 1.5 throws FNFE when URL not available.
-      // http://dev.processing.org/bugs/show_bug.cgi?id=403
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-
-  //
-
-
   static public void main(String[] args) {
-    new ImportExamples();
+    PApplet.main(ImportExamples.class);
   }
 }
