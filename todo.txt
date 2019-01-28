@@ -20,19 +20,28 @@ X Add support for editing .json files in the Editor
 X   https://github.com/fathominfo/processing-p5js-mode/issues/16
 X   modify p5jsMode.getExtensions() (what to do about data folder?)
 o   and how should syntax highlighting work? (uses js highlighter)
+X   .json files must be in the root of the sketch folder
+X   (not a subfolder like data or assets) to be visible/editable
+X use minified version of libs for the examples
+
+cleaning
+o NPE when doing Find in Reference w/ nothing selected
+o   Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+o   at processing.app.ui.Editor.handleFindReference(Editor.java:2309)
+o   at processing.mode.p5js.p5jsEditor.access$0(p5jsEditor.java:1)
+o   at processing.mode.p5js.p5jsEditor$5.actionPerformed(p5jsEditor.java:337)
+X   doesn't seem to be possible anymore
+o properly implement the minified versions of libs
+o   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
+o   (that's the commit that started deleting, ^ will get us to previous)
 
 
-_ NPE when doing Find in Reference w/ nothing selected
-Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
-at processing.app.ui.Editor.handleFindReference(Editor.java:2309)
-at processing.mode.p5js.p5jsEditor.access$0(p5jsEditor.java:1)
-at processing.mode.p5js.p5jsEditor$5.actionPerformed(p5jsEditor.java:337)
+_ when rewriting the index.html file, 'sketch modified externally' messages
+_   https://github.com/fathominfo/processing-p5js-mode/issues/15
 
-_ how to enable the cdn version?
-_   would be nice to use by default, but don't net connection as requirement
-_   or is there a way to handle it inside the p5js server?
-
-_ Find in Reference not working?
+_ Find in Reference not implemented
+_   "Could not open the URL... p5jsMode/reference/ellipse_.html"
+_   http://p5js.org/reference/#/p5/ellipse
 _   what does loadKeywords map to?
 
 _ if starting a new sketch, must reload the browser first?
@@ -54,12 +63,13 @@ _ need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
 _   https://github.com/fathominfo/processing-p5js-mode/issues/14
 
-_ properly implement the minified versions of libs
-_   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
-_   (that's the commit that started deleting, ^ will get us to previous)
-
-_ when rewriting the index.html file, 'sketch modified externally' messages
-_   https://github.com/fathominfo/processing-p5js-mode/issues/15
+_ how to enable the cdn version?
+_   would be nice to use by default, but don't net connection as requirement
+_   or is there a way to handle it inside the p5js server?
+_ how do we bring back the auto-update block if it's broken?
+_   or if it's not present, stop updating that file?
+_ ability to update p5*.js in the libraries subfolder
+_   automatically notify user if version in the template is updated?
 
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
@@ -75,12 +85,6 @@ _   Library.discover(File) is static and expects .jar files
 _     even once that's fixed, need to make sure js libs don't show up w/ Java
 _     meaning that there needs to be other ironing in there
 
-_ ability to update p5*.js in the libraries subfolder
-_   automatically notify user if version in the template is updated?
-
-_ how do we bring back the auto-update block if it's broken?
-_   or if it's not present, stop updating that file?
-
 _ make it possible for the main class to be something besides the default name
 _   want to use sketch.js (this is a fine restriction)
 _   how difficult to have modes determine whether a sketch is a sketch?
@@ -91,6 +95,7 @@ _   would need some means of specifying what the 'main' file is
 _     at least with p5js we could provisionally just use sketch.js?
 
 _ mode option for showing html and css or not
+_   might be nice to hide these for beginners who will never modify them
 _   is it time to add Mode preferences?
 _ other supported types from p5js editor
 _   txt, html, css, js, json, scss, xml, csv, less

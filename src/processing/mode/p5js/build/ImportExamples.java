@@ -46,7 +46,6 @@ public class ImportExamples extends PApplet {
     try {
       String[] paths =
         listPaths(siteFolder.getAbsolutePath(), "recursive", "relative");
-      printArray(paths);
       for (String path : paths) {
         if (path.startsWith(EXAMPLE_PREFIX) && path.endsWith(".js")) {
           String name = path.substring(EXAMPLE_PREFIX.length());
@@ -94,7 +93,8 @@ public class ImportExamples extends PApplet {
               libraries.appendUnique("p5.sound");
             }
 
-            String[] m = PApplet.match(line, "[\"']assets/(.+)[\"']");
+            //String[] m = PApplet.match(line, "[\"']assets/(.+)[\"']");
+            String[] m = PApplet.match(line, "[\"']assets/([^\"']+)");
             if (m != null) {
               // Switch to using the data folder so that it
               // plays nicely with the PDE's "Add File" command.
@@ -131,9 +131,9 @@ public class ImportExamples extends PApplet {
             for (String library : libraries) {
               // libraries/p5.dom/library/p5.dom.js
               Util.copyFile(new File(librariesFolder, library +
-                                     "/library/" + library + ".js"),
+                                     "/library/" + library + ".min.js"),
                             new File(exampleFolder,
-                                     "libraries/" + library + ".js"));
+                                     "libraries/" + library + ".min.js"));
             }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();
@@ -145,12 +145,13 @@ public class ImportExamples extends PApplet {
       }
 
       System.out.println();
-      System.out.println("Example categories to be updated in p5jsMode.java:");
+      System.out.println("Example categories for p5jsMode.java:");
       categories.sort();
       for (String category : categories) {
         System.out.print("\"" + fixCategory(category) + "\", ");
       }
       System.out.println();
+      exit();
 
     } catch (IOException e) {
       e.printStackTrace();
