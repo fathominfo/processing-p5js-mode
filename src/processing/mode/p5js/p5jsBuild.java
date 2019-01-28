@@ -74,8 +74,8 @@ public class p5jsBuild {
 
     // load p5.js first
     if (!USE_SOUP) {
-      //insert.append(scriptPath("libraries/" + P5JS_MINIFIED));
-      insert.append(scriptPath("libraries/" + P5JS_UNMINIFIED));
+      insert.append(scriptPath("libraries/" + P5JS_MINIFIED));
+      //insert.append(scriptPath("libraries/" + P5JS_UNMINIFIED));
     }
 
     // then other entries from /libraries
