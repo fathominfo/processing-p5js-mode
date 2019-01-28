@@ -355,20 +355,16 @@ public class p5jsEditor extends Editor {
   }
 
 
-  //public boolean handleExport(boolean openFolder) {
   protected boolean checkErrors(boolean fatal) {
-    //return mode.handleExport(sketch);
-//    long t = System.currentTimeMillis();
     try {
       new p5jsBuild(sketch);
-//      new p5jsBuildFX(this, sketch);
-//      System.out.println("elapsed: " + (System.currentTimeMillis() - t));
-//      return true;
+
     } catch (SketchException se) {
       if (fatal) {
         statusError(se);
 
       } else {
+        // should SketchException have a toProblem() method?
         setProblemList(Arrays.asList(new Problem() {
 
           @Override
@@ -409,7 +405,6 @@ public class p5jsEditor extends Editor {
       }
       return true;
     }
-//    System.out.println("elapsed: " + (System.currentTimeMillis() - t));
     return false;
   }
 
