@@ -45,7 +45,23 @@ public class p5jsEditor extends Editor {
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
 
+    // if getting started with the template, get things cleaned up
     if (sketch.isUntitled()) {
+      rebuildHtml();
+    }
+
+    // if the "libraries" folder doesn't exist, re-create it
+    File sketchLibs = new File(sketch.getFolder(), "libraries");
+    if (!sketchLibs.exists()) {
+      File templateLibs = new File(mode.getTemplateFolder(), "libraries");
+      try {
+        Util.copyDir(templateLibs, sketchLibs);
+      } catch (IOException e) {
+        throw new EditorException("Could not re-create the libraries folder for this sketch.", e);
+      }
+    }
+    // if the index.html file has gone missing, re-create it
+    if (p5jsBuild.findIndexHtml(sketch) == null) {
       rebuildHtml();
     }
   }
@@ -54,12 +70,6 @@ public class p5jsEditor extends Editor {
   @Override
   protected void handleOpenInternal(String path) throws EditorException {
     if (path.endsWith("sketch.js")) {
-      /*
-      System.out.println("This version of p5jsMode does not play nicely with sketches created with other editors.");
-      System.out.println("To use this code, please use File > New to create a new sketch and copy your code into it.");
-      System.out.println("See https://github.com/fathominfo/processing-p5js-mode/issues/14 for updates or details.");
-      throw new EditorException("Cannot open this type of sketch, see below for how to fix.");
-      */
       // Because of poor Exception handling by me, there isn't a good way to
       // recover from this situation without throwing this ridiculous blob of
       // text into the Exception message itself. Ben 1, Software Engineering 0.
@@ -70,144 +80,6 @@ public class p5jsEditor extends Editor {
     }
     super.handleOpenInternal(path);
   }
-
-  /*
-  @Override
-  protected void handleOpenInternal(String path) throws EditorException {
-    // check to make sure that this .pde file is
-    // in a folder of the same name
-    final File file = new File(path);
-    final File parentFile = new File(file.getParent());
-    final String parentName = parentFile.getName();
-    final String defaultName = parentName + "." + mode.getDefaultExtension();
-    final File altFile = new File(file.getParent(), defaultName);
-
-    if (defaultName.equals(file.getName())) {
-      // no beef with this guy
-    } else if (altFile.exists()) {
-      // The user selected a source file from the same sketch,
-      // but open the file with the default extension instead.
-      path = altFile.getAbsolutePath();
-    } else if (!mode.canEdit(file)) {
-      final String modeName = mode.getTitle().equals("Java") ?
-        "Processing" : (mode.getTitle() + " Mode");
-      throw new EditorException(modeName + " can only open its own sketches\n" +
-                                "and other files ending in " +
-                                mode.getDefaultExtension());
-    } else if (file.getName().equals("sketch.js")){
-        String prompt =
-                        "The file \"" + file.getName() + "\" needs to be renamed\n" +
-                                        "to \"" + file.getParentFile().getName() + ". " + mode.getDefaultExtension()+ "\".\n" +
-                                        "Rename the file and continue?";
-
-        Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
-        int result = JOptionPane.showOptionDialog(this,
-                        prompt,
-                        "Moving",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
-
-        if (result == JOptionPane.YES_OPTION) {
-                try {
-                        Files.move(file.toPath(),
-                                        new File(file.getParentFile().getAbsolutePath().toString() +
-                                                        File.separator + file.getParentFile().getName() + "." + mode.getDefaultExtension()).toPath(),
-                                        StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                        throw new EditorException("Cannot rename file.");
-                }
-        }
-
-    }
-    else {
-        final String properParent =
-                        file.getName().substring(0, file.getName().lastIndexOf('.'));
-
-        Object[] options = { Language.text("prompt.ok"), Language.text("prompt.cancel") };
-        String prompt =
-        "The file \"" + file.getName() + "\" needs to be inside\n" +
-        "a sketch folder named \"" + properParent + "\".\n" +
-        "Create this folder, move the file, and continue?";
-
-      int result = JOptionPane.showOptionDialog(this,
-                                                prompt,
-                                                "Moving",
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
-
-      if (result == JOptionPane.YES_OPTION) {
-        // create properly named folder
-        File properFolder = new File(file.getParent(), properParent);
-        if (properFolder.exists()) {
-          throw new EditorException("A folder named \"" + properParent + "\" " +
-                                    "already exists. Can't open sketch.");
-        }
-        if (!properFolder.mkdirs()) {
-          throw new EditorException("Could not create the sketch folder.");
-        }
-        // copy the sketch inside
-        File properPdeFile = new File(properFolder, file.getName());
-        File origPdeFile = new File(path);
-        try {
-          Util.copyFile(origPdeFile, properPdeFile);
-        } catch (IOException e) {
-          throw new EditorException("Could not copy to a proper location.", e);
-        }
-
-        // remove the original file, so user doesn't get confused
-        origPdeFile.delete();
-
-        // update with the new path
-        path = properPdeFile.getAbsolutePath();
-        mode.rebuildLibraryList();
-        File templateFolder = mode.getTemplateFolder();
-
-        if (templateFolder.exists()) {
-                try {
-                                Util.copyDir(new File(templateFolder.getAbsoluteFile() + File.separator + "libraries"), new File(properFolder.getAbsolutePath() + File.separator + "libraries"));
-                                Util.copyFile(new File(templateFolder.getAbsoluteFile() + File.separator + "index.html"), new File(properFolder.getAbsolutePath() + File.separator + "index.html"));
-                        } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                        }
-        }
-        try {
-                        p5jsMode.buildIndex(properFolder, properParent);
-                } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                }
-
-      } else {  //if (result == JOptionPane.NO_OPTION) {
-        // Catch all other cases, including Cancel or ESC
-        //return false;
-        throw new EditorException();
-      }
-    }
-
-    try {
-      sketch = new Sketch(path, this);
-    } catch (IOException e) {
-      throw new EditorException("Could not create the sketch.", e);
-    }
-
-    header.rebuild();
-    updateTitle();
-    // Disable untitled setting from previous document, if any
-//    untitled = false;
-
-    // Store information on who's open and running
-    // (in case there's a crash or something that can't be recovered)
-    // TODO this probably need not be here because of the Recent menu, right?
-    Preferences.save();
-  }
-  */
 
 
   @Override
@@ -451,6 +323,7 @@ public class p5jsEditor extends Editor {
           // and we can show them as errors in the PDE (otherwise weird
           // URL opening problems are confusing for new users)
           Desktop.getDesktop().browse(new URI(server.getAddress()));
+
         } else {
           // if Desktop not available, try the Platform version,
           // which will try platform tricks (but is wrapped so the Exception

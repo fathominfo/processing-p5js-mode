@@ -25,6 +25,8 @@ X   (not a subfolder like data or assets) to be visible/editable
 X use minified version of libs for the examples
 X check whether Desktop is available for URL opening
 X   https://github.com/fathominfo/processing-p5js-mode/issues/17
+X Opening a sketch without PDE folder structure not working properly
+X   https://github.com/fathominfo/processing-p5js-mode/issues/7
 
 cleaning
 o NPE when doing Find in Reference w/ nothing selected
@@ -68,10 +70,15 @@ _   leaving you with a broken sketch, which is messy b/c it looks ok
 _ how to enable the cdn version?
 _   would be nice to use by default, but don't net connection as requirement
 _   or is there a way to handle it inside the p5js server?
+_   just have a preference/checkbox in the menu
+_     enabling the cdn will remove p5.min.js from the sketch
+_     new sketches inherit the last setting
 _ how do we bring back the auto-update block if it's broken?
 _   or if it's not present, stop updating that file?
 _ ability to update p5*.js in the libraries subfolder
 _   automatically notify user if version in the template is updated?
+_   not just about p5jsMode updates, but updating older sketches
+_   this could be a Mode menu item, grayed out if up-to-date
 
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case

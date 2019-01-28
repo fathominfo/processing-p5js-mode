@@ -270,7 +270,7 @@ public class p5jsBuild {
   }
 
 
-  static private SketchCode findIndexHtml(Sketch sketch) {
+  static SketchCode findIndexHtml(Sketch sketch) {
     for (SketchCode code : sketch.getCode()) {
       if (code.getFileName().equals("index.html")) {
         return code;
