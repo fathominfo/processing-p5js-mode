@@ -16,11 +16,20 @@ import processing.data.StringList;
 import processing.mode.p5js.p5jsMode;
 
 
+// git clone git@github.com:processing/p5.js-website.git
+// cd p5.js-website.git
+// npm install
+// npm run watch
+
+// cd p5.js-website.git
+// git pull
+// npm run watch
+
 public class ImportExamples {
   static final String WEB_MASTER =
     "https://github.com/processing/p5.js-website/archive/master.zip";
   static final String EXAMPLE_PREFIX =
-    "p5.js-website-master/dist/assets/examples/en/";
+    "p5.js-website/dist/assets/examples/en/";
   static final String ASSETS_PREFIX =
     "p5.js-website-master/dist/assets/examples/assets/";
 
