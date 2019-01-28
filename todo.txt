@@ -1,6 +1,43 @@
 0005 (1.0.5 or 1.1)
-X move away from static worker objects, likely causing collisions
+X make worker objects no longer static, fixing collisions and cache issues
+X update p5.js to 0.5.16
+X   https://github.com/fathominfo/processing-p5js-mode/pull/19
+X update to 0.7.3
+X   update sound and dom libraries
+_ Allow use of let and const in p5js-mode
+_   https://github.com/fathominfo/processing-p5js-mode/issues/20
+_ p5.js sketch breaks when I save it (looks like issue with 'let')
+_   https://github.com/fathominfo/processing-p5js-mode/issues/18
+_ update examples
 
+_ issues when editing css files
+_   https://github.com/fathominfo/processing-p5js-mode/issues/21
+
+_ Add support for editing .json files in the Editor
+_   https://github.com/fathominfo/processing-p5js-mode/issues/16
+_   modify p5jsMode.getExtensions() (what to do about data folder?)
+_   and how should syntax highlighting work?
+_   what about .txt? .csv? etc
+
+_ update the examples (they've not been updated in a while)
+
+_ Find in Reference not working?
+_   what does loadKeywords map to?
+
+_ if starting a new sketch, must reload the browser first?
+_   what's happening here? concerned about code mods not updating
+_   set no cache on returned objects?
+
+_ when using p5jsMode, just require that sketches are saved
+_   too many problems with unsaved code not working properly
+
+_ NPE when doing Find in Reference w/ nothing selected
+Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+at processing.app.ui.Editor.handleFindReference(Editor.java:2309)
+at processing.mode.p5js.p5jsEditor.access$0(p5jsEditor.java:1)
+at processing.mode.p5js.p5jsEditor$5.actionPerformed(p5jsEditor.java:337)
+
+_ still a lot of temp files left around?
 
 _ oops, port is not being reused per sketch
 
@@ -21,8 +58,6 @@ _   (that's the commit that started deleting, ^ will get us to previous)
 _ when rewriting the index.html file, 'sketch modified externally' messages
 _   https://github.com/fathominfo/processing-p5js-mode/issues/15
 
-_ update the examples (they've not been updated in a while)
-
 _ other import library changes
 _   it's actually 'add library' not 'import' in this case
 _   probably need a way to *remove* the libraries too
@@ -36,10 +71,6 @@ _     clean up the static stuff since it's not just Examples
 _   Library.discover(File) is static and expects .jar files
 _     even once that's fixed, need to make sure js libs don't show up w/ Java
 _     meaning that there needs to be other ironing in there
-
-_ if starting a new sketch, must reload the browser first?
-_   what's happening here? concerned about code mods not updating
-_   set no cache on returned objects?
 
 _ ability to update p5*.js in the libraries subfolder
 _   automatically notify user if version in the template is updated?
