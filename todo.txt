@@ -38,14 +38,16 @@ X   doesn't seem to be possible anymore
 o properly implement the minified versions of libs
 o   git checkout e560d0576c2440081787e7b09eefdc760152f022^ -- <file_path>
 o   (that's the commit that started deleting, ^ will get us to previous)
+o when rewriting the index.html file, 'sketch modified externally' messages
+o   https://github.com/fathominfo/processing-p5js-mode/issues/15
+X   seems like the Change Detector has ironed this out in the meantime.
 
 
 _ need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
 _   https://github.com/fathominfo/processing-p5js-mode/issues/14
-
-_ when rewriting the index.html file, 'sketch modified externally' messages
-_   https://github.com/fathominfo/processing-p5js-mode/issues/15
+_   This might be better handled by an “Import” tool that pulls
+_   from a local folder or from the online editor.
 
 _ Find in Reference not implemented
 _   "Could not open the URL... p5jsMode/reference/ellipse_.html"
