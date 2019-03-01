@@ -1,4 +1,4 @@
-package ca.cutterslade.parnashjsh;
+package processing.mode.p5js;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 
-public final class ParallelNashornJSHint {
+public final class Linter {
   private static final int REPEAT_COUNT = 1;
   private static final String OPTIONS = "{es3: false," +
       "boss: true," +
@@ -73,7 +73,7 @@ public final class ParallelNashornJSHint {
   }
 
   private static List<String> getScriptLines() throws IOException {
-    final URL resource = ParallelNashornJSHint.class.getResource("jshint.js");
+    final URL resource = Linter.class.getResource("jshint.js");
     try (final InputStream stream = resource.openStream();
          final InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
          final BufferedReader buffered = new BufferedReader(reader)) {
