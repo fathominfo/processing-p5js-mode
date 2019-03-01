@@ -4,11 +4,17 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import jdk.nashorn.api.scripting.ScriptUtils;
 import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ECMAException;
@@ -302,6 +308,28 @@ public class p5jsBuild {
     Context context = new Context(options, errors, Base.class.getClassLoader());
     Context.setGlobal(context.createGlobal());
     String code = PApplet.join(PApplet.loadStrings(file), "\n");
+
+    try {
+      Linter.test(code);
+//      Object o = Linter.test(code);
+//      System.out.println("printing o:");
+//      System.out.println(o);
+//      System.out.println("...printing o");
+    } catch (ScriptException e1) {
+      e1.printStackTrace();
+    }
+
+//    //ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+//    final String[] args = { "--language=es6" };
+//    ScriptEngine engine = new NashornScriptEngineFactory().getScriptEngine(args);
+//    try {
+//      System.err.println("evaluating...");
+//      engine.eval(code);
+//      System.err.println("done evaluating...");
+//    } catch (ScriptException e1) {
+//      e1.printStackTrace();
+//    }
+
     try {
       //String json = ScriptUtils.parse(code, sketch.getName(), true);
       ScriptUtils.parse(code, sketch.getName(), true);
@@ -319,6 +347,7 @@ public class p5jsBuild {
 
       if (m == null) {
         // not sure how to parse this one, just posted it as-is
+        ecma.printStackTrace();
         throw new SketchException(ecma.getMessage(), false);
       } else {
         // Subtract 1 from the result because the lines are 1-indexed.
