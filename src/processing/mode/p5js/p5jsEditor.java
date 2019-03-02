@@ -4,6 +4,8 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -34,10 +36,12 @@ import processing.app.ui.EditorFooter;
 import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
-import processing.data.JSONArray;
+
 import processing.mode.java.AutoFormat;
 import processing.mode.java.JavaInputHandler;
 import processing.mode.p5js.server.HttpServer;
+
+import processing.data.JSONArray;
 
 
 public class p5jsEditor extends Editor {
@@ -81,8 +85,7 @@ public class p5jsEditor extends Editor {
       rebuildHtml();
     }
 
-    watcher = new ErrorWatcher();
-    watcher.start();
+    initWatcher();
   }
 
 
@@ -445,17 +448,47 @@ public class p5jsEditor extends Editor {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
+  private void initWatcher() {
+    // window will fire an activated event, so don't call startWatcher()
+
+    addWindowListener(new WindowAdapter() {
+
+      @Override
+      public void windowActivated(WindowEvent e) {
+        startWatcher();
+      }
+
+      @Override
+      public void windowDeactivated(WindowEvent e) {
+        stopWatcher();
+      }
+    });
+  }
+
+
+  private void startWatcher() {
+    watcher = new ErrorWatcher();
+    watcher.start();
+  }
+
+
+  public void stopWatcher() {
+    watcher = null;
+  }
+
+
   class ErrorWatcher extends Thread {
 
     @Override
     public void run() {
-      while (Thread.currentThread() == this) {
+//      while (Thread.currentThread() == this) {
+      while (watcher == this) {
         if (System.currentTimeMillis() > nextUpdate) {
           System.out.println("gonna check errors");
           checkErrors();
         }
         try {
-          System.out.println("gonna sleep");
+          System.out.println("gonna sleep " + ErrorWatcher.this);
           Thread.sleep(1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -472,6 +505,8 @@ public class p5jsEditor extends Editor {
         JSONArray result = linter.lint(code);
         if (result != null) {
           System.out.println(result.format(2));
+          // no more updates until this is reset by a document change
+          nextUpdate = Long.MAX_VALUE;
         }
       }
     } catch (ScriptException e1) {
@@ -513,7 +548,6 @@ public class p5jsEditor extends Editor {
   }
 
 
-
   /**
    * Event handler called when switching between tabs.
    * @param code tab to switch to
@@ -528,6 +562,13 @@ public class p5jsEditor extends Editor {
     if (oldDoc != newDoc) {
       addDocumentListener(newDoc);
     }
+  }
+
+
+  @Override
+  public void dispose() {
+    // set the error thread to null when closing
+    stopWatcher();
   }
 
 
