@@ -61,12 +61,14 @@ public class Linter {
 
 
   JSONArray lint(String code) throws ScriptException {
-    Object result = compiled.eval(new SimpleBindings(new HashMap<>(Collections.singletonMap("lines", code))));
-    if (result instanceof String) {
-      return JSONArray.parse((String) result);
-    } else {
-      System.err.println("result not a string: " + result.getClass().getName());
-      System.err.println("result toString() is " + result);
+    if (compiled != null) {
+      Object result = compiled.eval(new SimpleBindings(new HashMap<>(Collections.singletonMap("lines", code))));
+      if (result instanceof String) {
+        return JSONArray.parse((String) result);
+      } else {
+        System.err.println("result not a string: " + result.getClass().getName());
+        System.err.println("result toString() is " + result);
+      }
     }
     return null;
   }

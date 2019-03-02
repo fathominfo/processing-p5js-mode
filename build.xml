@@ -90,6 +90,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
     <copy todir="${install.dir}">
       <fileset file="mode.properties" />
+      <fileset file="jshint.js" />
       <fileset file="keywords.txt" />
     </copy>
   </target>
@@ -125,6 +126,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <zip destfile="dist/${me}.zip">
       <!-- This can probably be done more efficiently, no? How about a PR? -->
       <zipfileset dir="." prefix="p5jsMode" includes="examples/**" />
+      <zipfileset dir="." prefix="p5jsMode" includes="jshint.js" />
       <zipfileset dir="." prefix="p5jsMode" includes="keywords.txt" />
       <zipfileset dir="." prefix="p5jsMode" includes="libraries/**" />
       <zipfileset dir="." prefix="p5jsMode" includes="mode/**" />

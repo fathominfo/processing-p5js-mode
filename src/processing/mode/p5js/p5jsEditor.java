@@ -9,8 +9,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 
+import javax.script.ScriptException;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import processing.app.Base;
 import processing.app.Formatter;
@@ -18,6 +22,7 @@ import processing.app.Library;
 import processing.app.Mode;
 import processing.app.Platform;
 import processing.app.Problem;
+import processing.app.SketchCode;
 import processing.app.SketchException;
 import processing.app.Util;
 import processing.app.syntax.JEditTextArea;
@@ -29,6 +34,7 @@ import processing.app.ui.EditorFooter;
 import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
+import processing.data.JSONArray;
 import processing.mode.java.AutoFormat;
 import processing.mode.java.JavaInputHandler;
 import processing.mode.p5js.server.HttpServer;
@@ -43,6 +49,8 @@ public class p5jsEditor extends Editor {
   // object to handle linting, invoke once b/c heavyweight
   //static Object linterLock = new Object();
   static Linter linter;
+
+  ErrorWatcher watcher;
 
 
   protected p5jsEditor(Base base, String path,
@@ -72,6 +80,9 @@ public class p5jsEditor extends Editor {
     if (p5jsBuild.findIndexHtml(sketch) == null) {
       rebuildHtml();
     }
+
+    watcher = new ErrorWatcher();
+    watcher.start();
   }
 
 
@@ -429,6 +440,98 @@ public class p5jsEditor extends Editor {
     }
     Platform.openURL("https://p5js.org/reference/#/p5/" + term);
   }
+
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+
+  class ErrorWatcher extends Thread {
+
+    @Override
+    public void run() {
+      while (Thread.currentThread() == this) {
+        if (System.currentTimeMillis() > nextUpdate) {
+          System.out.println("gonna check errors");
+          checkErrors();
+        }
+        try {
+          System.out.println("gonna sleep");
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+
+  private void checkErrors() {
+    try {
+      if (linter != null) {
+        String code = sketch.getMainProgram();
+        JSONArray result = linter.lint(code);
+        if (result != null) {
+          System.out.println(result.format(2));
+        }
+      }
+    } catch (ScriptException e1) {
+      e1.printStackTrace();
+    }
+  }
+
+
+  static final int DELAY_BEFORE_UPDATE = 650;
+  long nextUpdate;
+
+
+  @Override
+  public void sketchChanged() {
+    nextUpdate = System.currentTimeMillis() + DELAY_BEFORE_UPDATE;
+  }
+
+
+  final DocumentListener sketchChangedListener = new DocumentListener() {
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      sketchChanged();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      sketchChanged();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+      sketchChanged();
+    }
+  };
+
+
+  public void addDocumentListener(Document doc) {
+    if (doc != null) doc.addDocumentListener(sketchChangedListener);
+  }
+
+
+
+  /**
+   * Event handler called when switching between tabs.
+   * @param code tab to switch to
+   */
+  @Override
+  public void setCode(SketchCode code) {
+    Document oldDoc = code.getDocument();
+
+    super.setCode(code);
+
+    Document newDoc = code.getDocument();
+    if (oldDoc != newDoc) {
+      addDocumentListener(newDoc);
+    }
+  }
+
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
   protected boolean rebuildHtml() {
