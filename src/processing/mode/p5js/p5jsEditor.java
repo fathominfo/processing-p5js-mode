@@ -382,11 +382,41 @@ public class p5jsEditor extends Editor {
   }
 
 
+  /** Find the first entry in the list of Problem objects that's an error. */
+  private Problem findError() {
+    for (Problem p : problems) {
+      if (p.isError()) return p;
+    }
+    return null;
+  }
+
+
+  /**
+   * Check for errors before launching
+   * @param fatal if an error should halt running
+   * @return true if fatal errors found
+   */
   protected boolean checkErrors(boolean fatal) {
     try {
+      // if using the linter and there's an error, fail with that
+      if (p5jsBuild.USE_LINTER) {
+        System.out.println("using linter");
+        Problem p = findError();
+        if (p != null) {
+          System.out.println("found error");
+          int line = p.getLineNumber();
+          int column = p.getStartOffset() - getLineStartOffset(line);
+          statusError(new SketchException(p.getMessage(),
+                                          p.getTabIndex(),
+                                          p.getLineNumber(),
+                                          column,
+                                          false));
+          return true;
+        }
+      }
       new p5jsBuild(sketch);
 
-    } catch (SketchException se) {
+    } catch (SketchException se) {  // this only happens if using NashornParse
       if (fatal) {
         statusError(se);
 

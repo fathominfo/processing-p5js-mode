@@ -38,9 +38,7 @@ public class p5jsBuild {
 
 
   public p5jsBuild(Sketch sketch) throws SketchException {
-    if (USE_LINTER) {
-
-    } else {
+    if (!USE_LINTER) {
       // otherwise just use the basic Nashorn parser as in 1.1 and earlier
       NashornParse.handle(sketch);
     }
