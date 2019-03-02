@@ -1,5 +1,13 @@
-0006 (1.1.1)
-X fix up the build process to avoid errors
+0007 (1.2)
+X incorporating linter
+
+
+_ still a lot of temp files left around?
+_ when using p5jsMode, just require that sketches are saved
+_   too many problems with unsaved code not working properly
+_   (instead of doing the weird tricks with temp files)
+
+_ oops, port is not being reused per sketch
 
 
 _ better means of understanding actual use of p5jsMode?
@@ -14,13 +22,6 @@ _   from a local folder or from the online editor.
 _ if starting a new sketch, must reload the browser first?
 _   what's happening here? concerned about code mods not updating
 _   set no cache on returned objects?
-
-_ still a lot of temp files left around?
-_ when using p5jsMode, just require that sketches are saved
-_   too many problems with unsaved code not working properly
-_   (instead of doing the weird tricks with temp files)
-
-_ oops, port is not being reused per sketch
 
 _ when sketch is moved while the editor is open
 _   it can't re-create any of the supporting files
@@ -65,7 +66,7 @@ _     at least with p5js we could provisionally just use sketch.js?
 _ mode option for showing html and css or not
 _   might be nice to hide these for beginners who will never modify them
 _   is it time to add Mode preferences?
-_ other supported types from p5js editor
+_ other supported types from old/offline p5js editor
 _   txt, html, css, js, json, scss, xml, csv, less
 _   include: html, css, js, json, scss, less
 _   exclude: xml, txt, csv (like to be in data folder)

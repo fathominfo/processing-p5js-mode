@@ -1,3 +1,7 @@
+0006 (1.1.1)
+X fix up the build process to avoid errors
+
+
 0005 (1.1)
 X make worker objects no longer static, fixing collisions and cache issues
 X update p5.js to 0.5.16
