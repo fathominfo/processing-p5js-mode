@@ -288,8 +288,6 @@ public class p5jsBuild {
   static void handleFile(Sketch sketch, int codeIndex) throws SketchException {
     SketchCode sketchCode = sketch.getCode(codeIndex);
     if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
-//      File file = sketchCode.getFile();
-
       Options options = new Options("nashorn");
       options.set("anon.functions", true);
       options.set("parse.only", true);
@@ -299,33 +297,12 @@ public class p5jsBuild {
       ErrorManager errors = new ErrorManager();
       Context context = new Context(options, errors, Base.class.getClassLoader());
       Context.setGlobal(context.createGlobal());
-//      String code = PApplet.join(PApplet.loadStrings(file), "\n");
-      String code = sketchCode.getProgram();
-
-      /*
-      try {
-        JSONArray result = p5jsEditor.linter.lint(code);
-        if (result != null) {
-          System.out.println(result.format(2));
-        }
-      } catch (ScriptException e1) {
-        e1.printStackTrace();
-      }
-      */
-
-      /*
-      try {
-        Linter.test(code);
-  //      Object o = Linter.test(code);
-  //      System.out.println("printing o:");
-  //      System.out.println(o);
-  //      System.out.println("...printing o");
-      } catch (ScriptException e1) {
-        e1.printStackTrace();
-      }
-      */
+      //String code = PApplet.join(PApplet.loadStrings(file), "\n");
+      //String code = sketchCode.getProgram();
 
       try {
+        String code = sketchCode.getDocumentText();
+
         //String json = ScriptUtils.parse(code, sketch.getName(), true);
         ScriptUtils.parse(code, sketch.getName(), true);
 
