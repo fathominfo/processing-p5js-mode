@@ -286,79 +286,79 @@ public class p5jsBuild {
 
 
   static void handleFile(Sketch sketch, int codeIndex) throws SketchException {
-    File file = sketch.getCode(codeIndex).getFile();
-    if (!file.getName().endsWith(".js") &&
-        !file.getName().endsWith(".json")) {
-      return;  // nope, not this one
-    }
+    SketchCode sketchCode = sketch.getCode(codeIndex);
+    if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
+//      File file = sketchCode.getFile();
 
-    Options options = new Options("nashorn");
-    options.set("anon.functions", true);
-    options.set("parse.only", true);
-    options.set("scripting", true);
-    options.set("language", "es6");
+      Options options = new Options("nashorn");
+      options.set("anon.functions", true);
+      options.set("parse.only", true);
+      options.set("scripting", true);
+      options.set("language", "es6");
 
-    ErrorManager errors = new ErrorManager();
-    Context context = new Context(options, errors, Base.class.getClassLoader());
-    Context.setGlobal(context.createGlobal());
-    String code = PApplet.join(PApplet.loadStrings(file), "\n");
+      ErrorManager errors = new ErrorManager();
+      Context context = new Context(options, errors, Base.class.getClassLoader());
+      Context.setGlobal(context.createGlobal());
+//      String code = PApplet.join(PApplet.loadStrings(file), "\n");
+      String code = sketchCode.getProgram();
 
-    /*
-    try {
-      JSONArray result = p5jsEditor.linter.lint(code);
-      if (result != null) {
-        System.out.println(result.format(2));
+      /*
+      try {
+        JSONArray result = p5jsEditor.linter.lint(code);
+        if (result != null) {
+          System.out.println(result.format(2));
+        }
+      } catch (ScriptException e1) {
+        e1.printStackTrace();
       }
-    } catch (ScriptException e1) {
-      e1.printStackTrace();
-    }
-    */
+      */
 
-    /*
-    try {
-      Linter.test(code);
-//      Object o = Linter.test(code);
-//      System.out.println("printing o:");
-//      System.out.println(o);
-//      System.out.println("...printing o");
-    } catch (ScriptException e1) {
-      e1.printStackTrace();
-    }
-    */
-
-    try {
-      //String json = ScriptUtils.parse(code, sketch.getName(), true);
-      ScriptUtils.parse(code, sketch.getName(), true);
-
-    } catch (ECMAException ecma) {
-      // [0] "SyntaxError: test2:6:14 Expected ; but found !"
-      // [1] "SyntaxError"
-      // [2] " test2"
-      // [3] "6"
-      // [4] "14"
-      // [5] "Expected ; but found !"
-      String[] m = PApplet.match(ecma.getMessage(),
-                                 "(.*:\\s*)(.*):(\\d+):(\\d+)\\s+([^\n]*)");
-      //PApplet.printArray(m);
-
-      if (m == null) {
-        // not sure how to parse this one, just posted it as-is
-        ecma.printStackTrace();
-        throw new SketchException(ecma.getMessage(), false);
-      } else {
-        // Subtract 1 from the result because the lines are 1-indexed.
-        // If the parseInt fails, won't set the line or column number,
-        // because it'll return 0 and then subtract 1, and -1 passed to
-        // SketchException for line or column is "unknown".
-        throw new SketchException(m[1] + m[5], codeIndex,
-                                  PApplet.parseInt(m[3]) - 1,
-                                  PApplet.parseInt(m[4]) - 1,
-                                  false);
+      /*
+      try {
+        Linter.test(code);
+  //      Object o = Linter.test(code);
+  //      System.out.println("printing o:");
+  //      System.out.println(o);
+  //      System.out.println("...printing o");
+      } catch (ScriptException e1) {
+        e1.printStackTrace();
       }
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new SketchException("Internal error: check console for details");
-      //System.out.println(e.getClass().getName());
+      */
+
+      try {
+        //String json = ScriptUtils.parse(code, sketch.getName(), true);
+        ScriptUtils.parse(code, sketch.getName(), true);
+
+      } catch (ECMAException ecma) {
+        // [0] "SyntaxError: test2:6:14 Expected ; but found !"
+        // [1] "SyntaxError"
+        // [2] " test2"
+        // [3] "6"
+        // [4] "14"
+        // [5] "Expected ; but found !"
+        String[] m = PApplet.match(ecma.getMessage(),
+                                   "(.*:\\s*)(.*):(\\d+):(\\d+)\\s+([^\n]*)");
+        //PApplet.printArray(m);
+
+        if (m == null) {
+          // not sure how to parse this one, just posted it as-is
+          ecma.printStackTrace();
+          throw new SketchException(ecma.getMessage(), false);
+        } else {
+          // Subtract 1 from the result because the lines are 1-indexed.
+          // If the parseInt fails, won't set the line or column number,
+          // because it'll return 0 and then subtract 1, and -1 passed to
+          // SketchException for line or column is "unknown".
+          throw new SketchException(m[1] + m[5], codeIndex,
+                                    PApplet.parseInt(m[3]) - 1,
+                                    PApplet.parseInt(m[4]) - 1,
+                                    false);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new SketchException("Internal error: check console for details");
+        //System.out.println(e.getClass().getName());
+      }
     }
   }
 }

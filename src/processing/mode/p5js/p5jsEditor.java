@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.script.ScriptException;
 import javax.swing.JMenu;
@@ -21,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import processing.app.Base;
@@ -47,6 +46,7 @@ import processing.mode.java.JavaInputHandler;
 import processing.mode.p5js.server.HttpServer;
 
 import processing.data.JSONArray;
+import processing.data.JSONObject;
 
 
 public class p5jsEditor extends Editor {
@@ -455,7 +455,6 @@ public class p5jsEditor extends Editor {
 
   private void initWatcher() {
     // window will fire an activated event, so don't call startWatcher()
-
     addWindowListener(new WindowAdapter() {
 
       @Override
@@ -468,6 +467,11 @@ public class p5jsEditor extends Editor {
         stopWatcher();
       }
     });
+
+    // install the ErrorListener on all js and json tabs
+    for (SketchCode sc : sketch.getCode()) {
+      checkDocumentListener(sc);
+    }
   }
 
 
@@ -493,7 +497,7 @@ public class p5jsEditor extends Editor {
           checkErrors();
         }
         try {
-          System.out.println("gonna sleep " + ErrorWatcher.this);
+//          System.out.println("gonna sleep " + ErrorWatcher.this);
           Thread.sleep(1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -506,13 +510,17 @@ public class p5jsEditor extends Editor {
   private void checkErrors() {
     try {
       if (linter != null) {
-        String code = sketch.getMainProgram();
-        JSONArray result = linter.lint(code);
-        if (result != null) {
-          parseErrors(result);
-          // no more updates until this is reset by a document change
-          nextUpdate = Long.MAX_VALUE;
-        }
+        //String code = sketch.getMainProgram();
+        try {
+          // grab the code from the current tab (the one that changed)
+          String code = sketch.getCurrentCode().getDocumentText();
+          JSONArray result = linter.lint(code);
+          if (result != null) {
+            parseErrors(result);
+            // no more updates until this is reset by a document change
+            nextUpdate = Long.MAX_VALUE;
+          }
+        } catch (BadLocationException ble) { }  // ignore for now
       }
     } catch (ScriptException e1) {
       e1.printStackTrace();
@@ -522,46 +530,66 @@ public class p5jsEditor extends Editor {
 
   private void parseErrors(JSONArray result) {
     System.out.println(result.format(2));
+    final int tabIndex = sketch.getCurrentCodeIndex();
+
     List<Problem> problems = new ArrayList<>();
 
-    // go through the result
+    //for (JSONObject obj : result.)
+    for (int i = 0; i < result.size(); i++) {
+      JSONObject obj = result.getJSONObject(i);
 
-    /*
-    Problem p = new Problem() {
-      public boolean isError() {
+      String errorCode = obj.getString("code", null);
+      final boolean error = errorCode != null && errorCode.startsWith("E");
 
-      }
+      final String message = obj.getString("reason");
 
-      public boolean isWarning() {
+      final int line = obj.getInt("line", 1) - 1;
+      final int start = getLineStartOffset(line);
+      // use the evidence or the entire line
+      String evidence = obj.getString("evidence", getLineText(line));
+      final int stop = start + evidence.length();
 
-      }
+      problems.add(new Problem() {
 
-      public int getTabIndex() {
+        @Override
+        public boolean isWarning() {
+          return !error;
+        }
 
-      }
+        @Override
+        public boolean isError() {
+          return error;
+        }
 
-      public int getLineNumber() {
+        @Override
+        public int getTabIndex() {
+          return tabIndex;
+        }
 
-      }
+        @Override
+        public int getStartOffset() {
+          return start;
+        }
 
-      public String getMessage() {
+        @Override
+        public int getStopOffset() {
+          return stop;
+        }
 
-      }
+        @Override
+        public String getMessage() {
+          return message;
+        }
 
-      public int getStartOffset() {
-
-      }
-
-      public int getStopOffset() {
-
-      }
-    };
-
+        @Override
+        public int getLineNumber() {
+          return line;
+        }
+      });
+    }
     setProblemList(problems);
-    */
   }
 
-  Set<Document> listeningDocuments;
 
   static final int DELAY_BEFORE_UPDATE = 650;
   long nextUpdate;
@@ -604,21 +632,44 @@ public class p5jsEditor extends Editor {
   */
 
 
-  private void checkDocumentListener(Document doc) {
-    if (doc != null) {
-      if (listeningDocuments == null) {
-        listeningDocuments = new HashSet<>();
+  private boolean hasListener(Document doc) {
+    for (DocumentListener dl : ((AbstractDocument) doc).getDocumentListeners()) {
+      if (dl == sketchChangedListener) {
+        return true;
       }
+    }
+    return false;
+  }
+
+
+//  private void checkDocumentListeners() {
+//    for (SketchCode sc : sketch.getCode()) {
+//      checkDocumentListener(sc);
+//    }
+//  }
+
+
+  private void checkDocumentListener(SketchCode sketchCode) {
+    if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
+      Document doc = sketchCode.getDocument();
+      if (doc != null) {
+//      if (listeningDocuments == null) {
+//        listeningDocuments = new HashSet<>();
+//      }
       //System.out.println("listening docs: " + listeningDocuments);
       //System.out.println("this doc: " + doc + ", listening docs:");
-      System.out.println("listener: " + sketchChangedListener + ", doc listeners:");
-      DocumentListener[] dl = ((AbstractDocument) doc).getDocumentListeners();
-      for (int i = 0; i < dl.length; i++) {
-        System.out.println(dl[i]);
-      }
-      if (!listeningDocuments.contains(doc)) {
-        doc.addDocumentListener(sketchChangedListener);
-        listeningDocuments.add(doc);
+//      System.out.println("listener: " + sketchChangedListener + ", doc listeners:");
+//      DocumentListener[] dl = ((AbstractDocument) doc).getDocumentListeners();
+//      for (int i = 0; i < dl.length; i++) {
+//        System.out.println(dl[i]);
+//      }
+//      if (!listeningDocuments.contains(doc)) {
+//        doc.addDocumentListener(sketchChangedListener);
+//        listeningDocuments.add(doc);
+//      }
+        if (!hasListener(doc)) {
+          doc.addDocumentListener(sketchChangedListener);
+        }
       }
     }
   }
@@ -641,7 +692,7 @@ public class p5jsEditor extends Editor {
     }
     */
     super.setCode(code);
-    checkDocumentListener(code.getDocument());
+    checkDocumentListener(code);
   }
 
 
