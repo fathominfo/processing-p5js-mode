@@ -9,13 +9,18 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.script.ScriptException;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.Document;
 
 import processing.app.Base;
@@ -504,7 +509,7 @@ public class p5jsEditor extends Editor {
         String code = sketch.getMainProgram();
         JSONArray result = linter.lint(code);
         if (result != null) {
-          System.out.println(result.format(2));
+          parseErrors(result);
           // no more updates until this is reset by a document change
           nextUpdate = Long.MAX_VALUE;
         }
@@ -515,12 +520,56 @@ public class p5jsEditor extends Editor {
   }
 
 
+  private void parseErrors(JSONArray result) {
+    System.out.println(result.format(2));
+    List<Problem> problems = new ArrayList<>();
+
+    // go through the result
+
+    /*
+    Problem p = new Problem() {
+      public boolean isError() {
+
+      }
+
+      public boolean isWarning() {
+
+      }
+
+      public int getTabIndex() {
+
+      }
+
+      public int getLineNumber() {
+
+      }
+
+      public String getMessage() {
+
+      }
+
+      public int getStartOffset() {
+
+      }
+
+      public int getStopOffset() {
+
+      }
+    };
+
+    setProblemList(problems);
+    */
+  }
+
+  Set<Document> listeningDocuments;
+
   static final int DELAY_BEFORE_UPDATE = 650;
   long nextUpdate;
 
 
   @Override
   public void sketchChanged() {
+    System.out.println("changed");
     nextUpdate = System.currentTimeMillis() + DELAY_BEFORE_UPDATE;
   }
 
@@ -528,23 +577,50 @@ public class p5jsEditor extends Editor {
   final DocumentListener sketchChangedListener = new DocumentListener() {
     @Override
     public void insertUpdate(DocumentEvent e) {
+      System.out.println(e);
       sketchChanged();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
+      System.out.println(e);
       sketchChanged();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
+      System.out.println(e);
       sketchChanged();
     }
   };
 
 
+  /*
   public void addDocumentListener(Document doc) {
-    if (doc != null) doc.addDocumentListener(sketchChangedListener);
+    if (doc != null) {
+      doc.addDocumentListener(sketchChangedListener);
+    }
+  }
+  */
+
+
+  private void checkDocumentListener(Document doc) {
+    if (doc != null) {
+      if (listeningDocuments == null) {
+        listeningDocuments = new HashSet<>();
+      }
+      //System.out.println("listening docs: " + listeningDocuments);
+      //System.out.println("this doc: " + doc + ", listening docs:");
+      System.out.println("listener: " + sketchChangedListener + ", doc listeners:");
+      DocumentListener[] dl = ((AbstractDocument) doc).getDocumentListeners();
+      for (int i = 0; i < dl.length; i++) {
+        System.out.println(dl[i]);
+      }
+      if (!listeningDocuments.contains(doc)) {
+        doc.addDocumentListener(sketchChangedListener);
+        listeningDocuments.add(doc);
+      }
+    }
   }
 
 
@@ -554,6 +630,7 @@ public class p5jsEditor extends Editor {
    */
   @Override
   public void setCode(SketchCode code) {
+    /*
     Document oldDoc = code.getDocument();
 
     super.setCode(code);
@@ -562,6 +639,9 @@ public class p5jsEditor extends Editor {
     if (oldDoc != newDoc) {
       addDocumentListener(newDoc);
     }
+    */
+    super.setCode(code);
+    checkDocumentListener(code.getDocument());
   }
 
 
