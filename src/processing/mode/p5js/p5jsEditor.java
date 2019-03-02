@@ -40,10 +40,18 @@ public class p5jsEditor extends Editor {
 //  static final boolean REUSE_PORT = true;
   boolean showSizeWarning = true;
 
+  // object to handle linting, invoke once b/c heavyweight
+  //static Object linterLock = new Object();
+  static Linter linter;
+
 
   protected p5jsEditor(Base base, String path,
                        EditorState state, Mode mode) throws EditorException {
     super(base, path, state, mode);
+
+    if (linter == null) {
+      linter = new Linter(this);
+    }
 
     // if getting started with the template, get things cleaned up
     if (sketch.isUntitled()) {

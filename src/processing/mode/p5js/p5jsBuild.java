@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.jsoup.Jsoup;
@@ -13,8 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import jdk.nashorn.api.scripting.ScriptUtils;
 import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ECMAException;
@@ -28,6 +24,7 @@ import processing.app.SketchCode;
 import processing.app.SketchException;
 import processing.app.Util;
 import processing.core.PApplet;
+import processing.data.JSONArray;
 import processing.data.StringList;
 
 
@@ -310,6 +307,16 @@ public class p5jsBuild {
     String code = PApplet.join(PApplet.loadStrings(file), "\n");
 
     try {
+      JSONArray result = p5jsEditor.linter.lint(code);
+      if (result != null) {
+        System.out.println(result.format(2));
+      }
+    } catch (ScriptException e1) {
+      e1.printStackTrace();
+    }
+
+    /*
+    try {
       Linter.test(code);
 //      Object o = Linter.test(code);
 //      System.out.println("printing o:");
@@ -318,17 +325,7 @@ public class p5jsBuild {
     } catch (ScriptException e1) {
       e1.printStackTrace();
     }
-
-//    //ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
-//    final String[] args = { "--language=es6" };
-//    ScriptEngine engine = new NashornScriptEngineFactory().getScriptEngine(args);
-//    try {
-//      System.err.println("evaluating...");
-//      engine.eval(code);
-//      System.err.println("done evaluating...");
-//    } catch (ScriptException e1) {
-//      e1.printStackTrace();
-//    }
+    */
 
     try {
       //String json = ScriptUtils.parse(code, sketch.getName(), true);
