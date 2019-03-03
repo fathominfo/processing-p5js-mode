@@ -28,3 +28,8 @@ window	KEYWORD1
 document	KEYWORD1
 
 alert	KEYWORD3
+
+circle	FUNCTION1    circle_
+square	FUNCTION1    square_
+push	FUNCTION1  push_
+pop	FUNCTION1   pop_
