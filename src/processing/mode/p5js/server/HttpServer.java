@@ -30,6 +30,7 @@ public class HttpServer {
   Map<String, Handler> handlerMap = new ConcurrentHashMap<>();
   Handler genericHandler;
 
+  ServerSocket socket;
   Thread thread;
   int port;
   boolean running;
@@ -45,7 +46,7 @@ public class HttpServer {
   */
 
 
-  public HttpServer(p5jsEditor editor, int port) {
+  public HttpServer(p5jsEditor editor, int port) throws IOException {
     this.editor = editor;
     this.port = port;
 
@@ -69,6 +70,12 @@ public class HttpServer {
       threads.add(w);
     }
 
+//    try {
+    socket = new ServerSocket(port);
+//  } catch (BindException be) {
+//    // socket already in use; try another
+//  }
+
     /*
     String url = "http://localhost:" + port + "/index.html";
     System.out.println(url);
@@ -77,58 +84,103 @@ public class HttpServer {
   }
 
 
+  /*
   public void start() {
 	  if (thread == null) {
-    thread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        running = true;
-        ServerSocket socket = null;
-        try {
-//          try {
-          socket = new ServerSocket(port);
-//          } catch (BindException be) {
-//            // socket already in use; try another
-//          }
-          while (Thread.currentThread() == thread) {
-            @SuppressWarnings("resource")
-            Socket s = socket.accept();
-//            Worker w = null;
-            synchronized (threads) {
-              if (threads.isEmpty()) {
-                HttpWorker worker = new HttpWorker(HttpServer.this);
-                worker.setSocket(s);
-                (new Thread(worker, "additional worker")).start();
-              } else {
-//                w = threads.get(0);
-//                threads.remove(0);
-                HttpWorker w = threads.remove(0);
-                w.setSocket(s);
+      thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          running = true;
+          ServerSocket socket = null;
+          try {
+  //          try {
+            socket = new ServerSocket(port);
+  //          } catch (BindException be) {
+  //            // socket already in use; try another
+  //          }
+            while (Thread.currentThread() == thread) {
+              @SuppressWarnings("resource")
+              Socket s = socket.accept();
+  //            Worker w = null;
+              synchronized (threads) {
+                if (threads.isEmpty()) {
+                  HttpWorker worker = new HttpWorker(HttpServer.this);
+                  worker.setSocket(s);
+                  (new Thread(worker, "additional worker")).start();
+                } else {
+  //                w = threads.get(0);
+  //                threads.remove(0);
+                  HttpWorker w = threads.remove(0);
+                  w.setSocket(s);
+                }
+              }
+            }
+
+          } catch (IOException e) {
+            e.printStackTrace();
+
+          } finally {
+            if (socket != null) {
+              try {
+                socket.close();
+              } catch (IOException e) {
+                e.printStackTrace();
               }
             }
           }
+          running = false;
+        }
+      });
+	  }
+    thread.start();
+  }
+  */
 
-        } catch (IOException e) {
-          e.printStackTrace();
 
-        } finally {
-          if (socket != null) {
-            try {
-              socket.close();
-            } catch (IOException e) {
-              e.printStackTrace();
+  public void start() {
+    if (thread == null) {
+      thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          running = true;
+          try {
+            while (Thread.currentThread() == thread) {
+              @SuppressWarnings("resource")
+              Socket s = socket.accept();
+              synchronized (threads) {
+                if (threads.isEmpty()) {
+                  HttpWorker worker = new HttpWorker(HttpServer.this);
+                  worker.setSocket(s);
+                  (new Thread(worker, "additional worker")).start();
+                } else {
+                  HttpWorker w = threads.remove(0);
+                  w.setSocket(s);
+                }
+              }
+            }
+
+          } catch (IOException e) {
+            e.printStackTrace();
+
+          } finally {
+            if (socket != null) {
+              try {
+                socket.close();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
             }
           }
+          running = false;
         }
-        running = false;
-      }
-    });
-	  }
+      });
+    }
     thread.start();
   }
 
 
   public void stop() {
+//    new Exception("server.stop() called").printStackTrace(System.out);
     thread = null;
   }
 

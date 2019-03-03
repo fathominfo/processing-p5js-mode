@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,8 @@ import processing.data.JSONObject;
 public class p5jsEditor extends Editor {
   // One server per Editor, same port used for the same Editor
   HttpServer server;
-//  static final boolean REUSE_PORT = true;
+  // Try to maintain the same port for this Editor window
+  int port;
   boolean showSizeWarning = true;
 
   static final boolean USE_LINTER = true;
@@ -90,6 +92,7 @@ public class p5jsEditor extends Editor {
     }
 
     initWatcher();
+    startServer();
   }
 
 
@@ -340,7 +343,7 @@ public class p5jsEditor extends Editor {
 
       } else {
         if (server == null || server.isDead()) {
-          restartServer();
+          startServer();
         }
         statusNotice("Server running at " + server.getAddress());
 
@@ -364,19 +367,14 @@ public class p5jsEditor extends Editor {
   }
 
 
-  /**
-   *  Menu item callback, replacement for STOP: stop server.
-   */
   public void handleStop() {
     try {
       p5jsBuild.cleanTempFiles(sketch);
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
-    //if (!REUSE_PORT) {
-    stopServer();
-    statusNotice("Server stopped.");
-    //}
+//    stopServer();
+//    statusNotice("Server stopped.");
     toolbar.deactivateRun();
   }
 
@@ -480,7 +478,7 @@ public class p5jsEditor extends Editor {
 //      while (Thread.currentThread() == this) {
       while (watcher == this) {
         if (System.currentTimeMillis() > nextUpdate) {
-          System.out.println("gonna check errors");
+//          System.out.println("gonna check errors");
           checkLint();
         }
         try {
@@ -516,7 +514,7 @@ public class p5jsEditor extends Editor {
 
 
   private void parseErrors(JSONArray result) {
-    System.out.println(result.format(2));
+//    System.out.println(result.format(2));
     final int tabIndex = sketch.getCurrentCodeIndex();
 
     List<Problem> problems = new ArrayList<>();
@@ -584,7 +582,6 @@ public class p5jsEditor extends Editor {
 
   @Override
   public void sketchChanged() {
-    System.out.println("changed");
     nextUpdate = System.currentTimeMillis() + DELAY_BEFORE_UPDATE;
   }
 
@@ -592,31 +589,19 @@ public class p5jsEditor extends Editor {
   final DocumentListener sketchChangedListener = new DocumentListener() {
     @Override
     public void insertUpdate(DocumentEvent e) {
-      System.out.println(e);
       sketchChanged();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-      System.out.println(e);
       sketchChanged();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-      System.out.println(e);
       sketchChanged();
     }
   };
-
-
-  /*
-  public void addDocumentListener(Document doc) {
-    if (doc != null) {
-      doc.addDocumentListener(sketchChangedListener);
-    }
-  }
-  */
 
 
   private boolean hasListener(Document doc) {
@@ -726,25 +711,46 @@ public class p5jsEditor extends Editor {
 
   /**
    * Start the internal server for this sketch.
-   * @param root the root folder for the server to serve from
-   * @return true if it was started anew, false if it was running
    */
-  protected void restartServer() {
+  protected void startServer() {
+//    System.out.println("restarting server? " + server + " " + (server != null && server.isDead()));
     if (server != null && server.isDead()) {
       // if server hung or something else went wrong .. stop it.
       server.stop();
       server = null;
     }
 
-    if (server == null) {
-      int port = (int) (8000 + Math.random() * 1000);
+    if (port == 0) {
+      resetPort();
+    }
+    try {
       server = new HttpServer(this, port);
+
+    } catch (BindException be) {
+      // If the port is in use, try another. Only do this once,
+      // because it may be due to a firewall or other circumstances.
+      resetPort();
+      try {
+        server = new HttpServer(this, port);
+      } catch (IOException ioe) {
+        statusError(ioe);  // error out here if still trouble
+      }
+    } catch (IOException e) {  // other unknown type of exception
+      statusError(e);
     }
 
-    server.start();
+    if (server != null) {  // actually kick off the listening threads
+      server.start();
+    }
   }
 
 
+  void resetPort() {
+    port = (int) (8000 + Math.random() * 1000);
+  }
+
+
+  // method is still here, though we're never gonna stop the server
   protected void stopServer() {
     if (server != null) {
       server.stop();
