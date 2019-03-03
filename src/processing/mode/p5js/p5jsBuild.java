@@ -29,20 +29,11 @@ public class p5jsBuild {
     "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
 
   static final boolean USE_SOUP = false;
-  static final boolean USE_LINTER = true;
 
   static final String TEMP_PREFIX = "p5js-temp-";
 //  ScriptEngine engine;
 //  static ScriptEngine engine =
 //    new ScriptEngineManager().getEngineByName("javascript");
-
-
-  public p5jsBuild(Sketch sketch) throws SketchException {
-    if (!USE_LINTER) {
-      // otherwise just use the basic Nashorn parser as in 1.1 and earlier
-      NashornParse.handle(sketch);
-    }
-  }
 
 
   static void updateHtml(Sketch sketch) throws SketchException, IOException {

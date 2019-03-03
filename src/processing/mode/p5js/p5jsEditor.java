@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.script.ScriptException;
@@ -55,8 +54,8 @@ public class p5jsEditor extends Editor {
 //  static final boolean REUSE_PORT = true;
   boolean showSizeWarning = true;
 
+  static final boolean USE_LINTER = true;
   // object to handle linting, invoke once b/c heavyweight
-  //static Object linterLock = new Object();
   static Linter linter;
 
   ErrorWatcher watcher;
@@ -336,7 +335,7 @@ public class p5jsEditor extends Editor {
       // write the HTML here in case we need temp files
       p5jsBuild.updateHtml(sketch);
 
-      if (checkErrors(true)) {
+      if (checkErrors()) {
         toolbar.deactivateRun();
 
       } else {
@@ -396,71 +395,29 @@ public class p5jsEditor extends Editor {
    * @param fatal if an error should halt running
    * @return true if fatal errors found
    */
-  protected boolean checkErrors(boolean fatal) {
-    try {
-      // if using the linter and there's an error, fail with that
-      if (p5jsBuild.USE_LINTER) {
-        System.out.println("using linter");
-        Problem p = findError();
-        if (p != null) {
-          System.out.println("found error");
-          int line = p.getLineNumber();
-          int column = p.getStartOffset() - getLineStartOffset(line);
-          statusError(new SketchException(p.getMessage(),
-                                          p.getTabIndex(),
-                                          p.getLineNumber(),
-                                          column,
-                                          false));
-          return true;
-        }
+  private boolean checkErrors() {
+    // if using the linter and there's an error, fail with that
+    if (USE_LINTER) {
+      Problem p = findError();
+      if (p != null) {
+        System.out.println("found error");
+        int line = p.getLineNumber();
+        int column = p.getStartOffset() - getLineStartOffset(line);
+        statusError(new SketchException(p.getMessage(),
+                                        p.getTabIndex(),
+                                        p.getLineNumber(),
+                                        column,
+                                        false));
+        return true;
       }
-      new p5jsBuild(sketch);
+    } else {  // otherwise just use the basic parser as in 1.1 and earlier
+      try {
+        NashornParse.handle(sketch);
 
-    } catch (SketchException se) {  // this only happens if using NashornParse
-      if (fatal) {
+      } catch (SketchException se) {
         statusError(se);
-
-      } else {
-        // should SketchException have a toProblem() method?
-        setProblemList(Arrays.asList(new Problem() {
-
-          @Override
-          public boolean isError() {
-            return true;
-          }
-
-          @Override
-          public boolean isWarning() {
-            return false;
-          }
-
-          @Override
-          public int getTabIndex() {
-            return se.getCodeIndex();
-          }
-
-          @Override
-          public int getLineNumber() {
-            return se.getCodeLine();
-          }
-
-          @Override
-          public String getMessage() {
-            return se.getMessage();
-          }
-
-          @Override
-          public int getStartOffset() {
-            return se.getCodeColumn();
-          }
-
-          @Override
-          public int getStopOffset() {
-            return se.getCodeColumn() + 10;
-          }
-        }));
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -524,7 +481,7 @@ public class p5jsEditor extends Editor {
       while (watcher == this) {
         if (System.currentTimeMillis() > nextUpdate) {
           System.out.println("gonna check errors");
-          checkErrors();
+          checkLint();
         }
         try {
 //          System.out.println("gonna sleep " + ErrorWatcher.this);
@@ -537,7 +494,7 @@ public class p5jsEditor extends Editor {
   }
 
 
-  private void checkErrors() {
+  private void checkLint() {
     try {
       if (linter != null) {
         //String code = sketch.getMainProgram();
