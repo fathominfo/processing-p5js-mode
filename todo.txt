@@ -1,10 +1,4 @@
-0007 (1.2)
-X incorporating linter
-X use one server/port per editor window
-X   stay fixed throughout usage
-X   still a downside to not always being the same (for breakpoints)
-X     but for advanced editing like that, people shouldn't be using this mode anyway
-X fix coloring and Find in Reference for circle(), square(), push(), pop()
+0008 (1.2.1 or 1.3)
 
 
 _ still a lot of temp files left around?
@@ -87,6 +81,7 @@ git tag -a v1.0.3 -m 'version 1.0.3'
 git tag -a v1.0.4 -m 'version 1.0.4'
 git tag -a v1.1 -m 'version 1.1'
 git tag -a v1.1.1 -m 'version 1.1.1'
+git tag -a v1.2 -m 'version 1.2'
 git push origin --tags
 
 # delete the previous 'latest'
@@ -94,6 +89,6 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.1.1'
+git tag -f -a latest -m 'version 1.2'
 # actually update things
 git push -f --tags

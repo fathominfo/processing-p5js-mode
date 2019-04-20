@@ -1,3 +1,12 @@
+0007 (1.2)
+X incorporating linter
+X use one server/port per editor window
+X   stay fixed throughout usage
+X   still a downside to not always being the same (for breakpoints)
+X     but for advanced editing like that, people shouldn't be using this mode anyway
+X fix coloring and Find in Reference for circle(), square(), push(), pop()
+
+
 0006 (1.1.1)
 X fix up the build process to avoid errors
 
