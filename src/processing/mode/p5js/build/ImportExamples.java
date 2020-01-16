@@ -12,13 +12,18 @@ import processing.data.StringList;
 import processing.mode.p5js.p5jsMode;
 
 
+// initial setup
+
 // git clone git@github.com:processing/p5.js-website.git
 // cd p5.js-website.git
 // npm install
 // npm run watch
 
+// subsequent updates
 // cd p5.js-website.git
 // git pull
+// additional modules may be in use
+// npm install
 // npm run watch
 
 public class ImportExamples extends PApplet {
