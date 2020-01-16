@@ -3,6 +3,8 @@ X update p5js version from 0.7.3 to 0.8
 X update to jshint 2.11.0
 X update p5js to 0.10.2
 X remove dom as separate library
+X disable trailing comma warning
+X   https://jshint.com/docs/options/#trailingcomma
 
 
 _ still a lot of temp files left around?
@@ -10,7 +12,6 @@ _   write the temp stuff to another folder?
 _ when using p5jsMode, just require that sketches are saved
 _   too many problems with unsaved code not working properly
 _   (instead of doing the weird tricks with temp files)
-
 
 _ better means of understanding actual use of p5jsMode?
 _   shows as installed on 30% of machines using the manager

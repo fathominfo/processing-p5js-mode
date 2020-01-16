@@ -31,7 +31,8 @@ public class Linter {
       "jquery: true," +  // turn on jquery globals
       "loopfunc: true," +  // warn about functions defined inside loops
       "noarg: true," +  // prohibits the use of arguments.caller and arguments.callee
-      "trailingcomma: true" +
+      // https://jshint.com/docs/options/#trailingcomma
+      "trailingcomma: false" +  // too confusing for users
   "}";
 
 
