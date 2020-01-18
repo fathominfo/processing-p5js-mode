@@ -1,4 +1,4 @@
-0008 (1.2.1 or 1.3)
+0008 (1.2.1)
 X update p5js version from 0.7.3 to 0.8
 X update to jshint 2.11.0
 X update p5js to 0.10.2
@@ -7,6 +7,7 @@ X disable trailing comma warning
 X   https://jshint.com/docs/options/#trailingcomma
 
 
+0009 (1.2.2 or 1.3)
 _ still a lot of temp files left around?
 _   write the temp stuff to another folder?
 _ when using p5jsMode, just require that sketches are saved
@@ -88,6 +89,7 @@ git tag -a v1.0.4 -m 'version 1.0.4'
 git tag -a v1.1 -m 'version 1.1'
 git tag -a v1.1.1 -m 'version 1.1.1'
 git tag -a v1.2 -m 'version 1.2'
+git tag -a v1.2.1 -m 'version 1.2.1'
 git push origin --tags
 
 # delete the previous 'latest'
@@ -95,6 +97,6 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.2'
+git tag -f -a latest -m 'version 1.2.1'
 # actually update things
 git push -f --tags
