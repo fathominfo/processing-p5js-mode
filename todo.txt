@@ -1,8 +1,7 @@
-0009 (1.2.2)
-X fix release numbering
-
-
 0010 (1.2.3 or 1.3)
+X add revision check to the build
+
+
 _ still a lot of temp files left around?
 _   write the temp stuff to another folder?
 _ when using p5jsMode, just require that sketches are saved
@@ -74,6 +73,7 @@ _ add basic syntax highlighting for css
 
 . . .
 
+roll the version/revision numbers in mode.properties
 
 # update the release in mode.properties (it'll match the rev number here)
 git tag -a release-1.0 -m '1.0 final'
@@ -96,3 +96,7 @@ git push origin :refs/tags/latest
 git tag -f -a latest -m 'version 1.2.2'
 # actually update things
 git push -f --tags
+
+ant dist
+then upload dist/p5jsMode.zip and dist/p5jsMode.txt to the 'latest' tag
+and name/put some info about the release into the 1.2.2 tag
