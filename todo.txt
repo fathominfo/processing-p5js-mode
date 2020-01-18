@@ -85,6 +85,7 @@ git tag -a v1.1 -m 'version 1.1'
 git tag -a v1.1.1 -m 'version 1.1.1'
 git tag -a v1.2 -m 'version 1.2'
 git tag -a v1.2.1 -m 'version 1.2.1'
+git tag -a v1.2.2 -m 'version 1.2.2'
 git push origin --tags
 
 # delete the previous 'latest'
@@ -92,6 +93,6 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.2.1'
+git tag -f -a latest -m 'version 1.2.2'
 # actually update things
 git push -f --tags
