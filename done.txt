@@ -1,3 +1,12 @@
+0008 (1.2.1)
+X update p5js version from 0.7.3 to 0.8
+X update to jshint 2.11.0
+X update p5js to 0.10.2
+X remove dom as separate library
+X disable trailing comma warning
+X   https://jshint.com/docs/options/#trailingcomma
+
+
 0007 (1.2)
 X incorporating linter
 X use one server/port per editor window
