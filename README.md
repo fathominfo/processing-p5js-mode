@@ -6,10 +6,10 @@ A simple editor for p5.js code that runs inside the PDE.
 ### Goals/Criteria
 
 * Have a simple way to get started with p5.js, while making use of the editing facilities of the PDE and its Sketchbook.
-* Provide a bridge until the official p5.js Web Editor project is complete. With any luck, this project will have a lifespan of just a few months (or maybe the 2016-2017 school year).
+* Provide a bridge until the official p5.js Web Editor project is complete. With any luck, this project will have a lifespan of just a few months (initially the 2016-2017 school year, but it's lasted longer).
 * Have a simple editor that allows offline use.
 * Make use of the PDE being installed in many schools and labs, and have a Mode that’s easy to install from inside the PDE (no download, unzip, install process).
-* A way for [us](https://fathom.info) to support courses we're teaching during Fall 2016.
+* A way for [us](https://fathom.info) to support courses we're teaching.
 * Sketches should always be runnable directly from the folder: no need to Export or otherwise prepare a Sketch. 
 * This is not an official [Processing Foundation](https://github.com/processing) project, no matter what you might know about its [primary author](https://github.com/benfry). 
 
