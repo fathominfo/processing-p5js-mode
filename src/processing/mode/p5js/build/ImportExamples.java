@@ -135,10 +135,12 @@ public class ImportExamples extends PApplet {
             File librariesFolder = sketchFile("libraries");
             for (String library : libraries) {
               // libraries/p5.dom/library/p5.dom.js
-              Util.copyFile(new File(librariesFolder, library +
-                                     "/library/" + library + ".min.js"),
-                            new File(exampleFolder,
-                                     "libraries/" + library + ".min.js"));
+              if (!library.equals("p5.dom")) {
+                Util.copyFile(new File(librariesFolder, library +
+                                       "/library/" + library + ".min.js"),
+                              new File(exampleFolder,
+                                       "libraries/" + library + ".min.js"));
+              }
             }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();

@@ -8,6 +8,7 @@ _ when using p5jsMode, just require that sketches are saved
 _   too many problems with unsaved code not working properly
 _   (instead of doing the weird tricks with temp files)
 
+
 _ better means of understanding actual use of p5jsMode?
 _   shows as installed on 30% of machines using the manager
 
