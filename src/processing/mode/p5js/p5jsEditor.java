@@ -398,7 +398,6 @@ public class p5jsEditor extends Editor {
     if (USE_LINTER) {
       Problem p = findError();
       if (p != null) {
-        System.out.println("found error");
         int line = p.getLineNumber();
         int column = p.getStartOffset() - getLineStartOffset(line);
         statusError(new SketchException(p.getMessage(),
