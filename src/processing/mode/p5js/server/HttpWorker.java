@@ -2,6 +2,8 @@ package processing.mode.p5js.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
@@ -56,8 +58,10 @@ public class HttpWorker implements Runnable {
 
 
   void handleClient() throws IOException {
-    BufferedReader reader = PApplet.createReader(socket.getInputStream());
-    CarlOrff ps = new CarlOrff(socket.getOutputStream());
+    InputStream input = socket.getInputStream();
+    BufferedReader reader = PApplet.createReader(input);
+    OutputStream output = socket.getOutputStream();
+    CarlOrff ps = new CarlOrff(output);
 
     // we will only block in read for this many milliseconds
     // before we fail with java.io.InterruptedIOException,
@@ -118,12 +122,15 @@ public class HttpWorker implements Runnable {
       e.printStackTrace();
     }
 
-    // clean up, but ignore any errors coming through
+    // clean up, but ignore any errors along the way
     try {
       reader.close();
-    } catch (IOException e) { }
+    } catch (Exception e) { }
     try {
-      socket.close();
-    } catch (IOException e) { }
+      input.close();
+    } catch (Exception e) { }
+    try {
+      output.close();
+    } catch (Exception e) { }
   }
 }

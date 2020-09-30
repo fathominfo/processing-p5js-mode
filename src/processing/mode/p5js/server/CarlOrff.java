@@ -71,6 +71,11 @@ public class CarlOrff {
   }
 
 
+  public void write(Throwable t) {
+    t.printStackTrace(ps);
+  }
+
+
   public void status(int code) {
     ps.println("HTTP/1.1 " + code + " " + HttpServer.getStatusMessage(code));
   }
