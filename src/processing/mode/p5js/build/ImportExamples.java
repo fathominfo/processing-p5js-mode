@@ -2,6 +2,7 @@ package processing.mode.p5js.build;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,9 @@ import processing.mode.p5js.p5jsMode;
 // additional modules may be in use
 // npm install
 // npm run watch
+
+// the /examples subdirectory is ignored in git,
+// so seeing changes with 'git status' won't be possible
 
 public class ImportExamples extends PApplet {
   static final String EXAMPLE_PREFIX =
@@ -109,15 +113,17 @@ public class ImportExamples extends PApplet {
               File entry = assetMap.get(m[1]);
               if (entry != null) {
                 // saveStream() will create intermediate folders as necessary
-                PApplet.saveStream(new File(exampleFolder, "data/" + m[1]),
-                                   createInput(entry));
+                InputStream in = createInput(entry);
+                PApplet.saveStream(new File(exampleFolder, "data/" + m[1]), in);
+                in.close();
               } else {
                 boolean found = false;
                 for (String ext : new String[] { ".mp3", ".ogg" }) {
                   entry = assetMap.get(m[1] + ext);
                   if (entry != null) {
-                    PApplet.saveStream(new File(exampleFolder, "data/" + m[1] + ext),
-                                       createInput(entry));
+                    InputStream in = createInput(entry);
+                    PApplet.saveStream(new File(exampleFolder, "data/" + m[1] + ext), in);
+                    in.close();
                     found = true;
                   }
                 }
