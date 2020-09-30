@@ -2,8 +2,8 @@
 X add revision check to the build
 X use p5js 1.0
 X update examples, remove p5js.dom references
-X close streams
 X update to p5js 1.1.9 (July 22, 2020)
+X fix up warnings by explicitly closing a few more streams
 
 
 _ still a lot of temp files left around?
@@ -16,7 +16,15 @@ _   (instead of doing the weird tricks with temp files)
 _ better means of understanding actual use of p5jsMode?
 _   shows as installed on 30% of machines using the manager
 
-_ need better solution when opening sketch.js files
+_ make it possible for the main class to be something besides the default name
+_   want to use sketch.js (this is a fine restriction)
+_   how difficult to have modes determine whether a sketch is a sketch?
+_     so that the main sketch class doesn't have to follow a naming convention
+_   Mode.rebuildSketchbookTree() handles creation of the sketchbook menu
+_   which calls Base.addSketches() to do the actual adding
+_   would need some means of specifying what the 'main' file is
+_     at least with p5js we could provisionally just use sketch.js?
+_ or need better solution when opening sketch.js files
 _   just rename the sketch.js file itself
 _   https://github.com/fathominfo/processing-p5js-mode/issues/14
 _   This might be better handled by an “Import” tool that pulls
@@ -56,15 +64,6 @@ _     clean up the static stuff since it's not just Examples
 _   Library.discover(File) is static and expects .jar files
 _     even once that's fixed, need to make sure js libs don't show up w/ Java
 _     meaning that there needs to be other ironing in there
-
-_ make it possible for the main class to be something besides the default name
-_   want to use sketch.js (this is a fine restriction)
-_   how difficult to have modes determine whether a sketch is a sketch?
-_     so that the main sketch class doesn't have to follow a naming convention
-_   Mode.rebuildSketchbookTree() handles creation of the sketchbook menu
-_   which calls Base.addSketches() to do the actual adding
-_   would need some means of specifying what the 'main' file is
-_     at least with p5js we could provisionally just use sketch.js?
 
 _ mode option for showing html and css or not
 _   might be nice to hide these for beginners who will never modify them
