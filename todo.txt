@@ -1,5 +1,9 @@
 0010 (1.2.3 or 1.3)
 X add revision check to the build
+X use p5js 1.0
+X update examples, remove p5js.dom references
+X close streams
+X update to p5js 1.1.9 (July 22, 2020)
 
 
 _ still a lot of temp files left around?
