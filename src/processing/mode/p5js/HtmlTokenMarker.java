@@ -34,6 +34,8 @@ public class HtmlTokenMarker extends TokenMarker {
     keywords = new KeywordMap(false);
     keywords.add("function", Token.KEYWORD3, false);
     keywords.add("var", Token.KEYWORD3, false);
+    keywords.add("let", Token.KEYWORD3, false);
+    keywords.add("const", Token.KEYWORD3, false);
     keywords.add("else", Token.KEYWORD1, false);
     keywords.add("for", Token.KEYWORD1, false);
     keywords.add("if", Token.KEYWORD1, false);
