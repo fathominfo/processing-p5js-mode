@@ -124,9 +124,9 @@ public class p5jsMode extends Mode {
     //super.rebuildLibraryList();
 
     coreLibraries = new ArrayList<>();
-    Library domLibrary =
-      new p5jsLibrary(new File(getLibrariesFolder(), "p5.dom"));
-    coreLibraries.add(domLibrary);
+//    Library domLibrary =
+//      new p5jsLibrary(new File(getLibrariesFolder(), "p5.dom"));
+//    coreLibraries.add(domLibrary);
     Library soundLibrary =
       new p5jsLibrary(new File(getLibrariesFolder(), "p5.sound"));
     coreLibraries.add(soundLibrary);
