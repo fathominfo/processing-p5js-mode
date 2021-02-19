@@ -9,10 +9,15 @@ X update to p5js 1.2.0 (December 19, 2020 release)
 
 _ still a lot of temp files left around?
 _   write the temp stuff to another folder?
+_   positive part of temp files: not having to save between runs
+_   save the temp stuff to a different folder entirely?
 _ when using p5jsMode, just require that sketches are saved
 _   too many problems with unsaved code not working properly
 _   (instead of doing the weird tricks with temp files)
 
+
+_ Warning: Nashorn engine is planned to be removed from a future JDK release
+_   https://github.com/fathominfo/processing-p5js-mode/issues/27
 
 _ better means of understanding actual use of p5jsMode?
 _   shows as installed on 30% of machines using the manager
