@@ -5,6 +5,8 @@ X update examples, remove p5js.dom references
 X update to p5js 1.1.9 (July 22, 2020)
 X fix up warnings by explicitly closing a few more streams
 X update to p5js 1.2.0 (December 19, 2020 release)
+X adding workaround for JNA issues on Big Sur
+X   https://github.com/fathominfo/processing-p5js-mode/issues/26
 
 
 _ still a lot of temp files left around?

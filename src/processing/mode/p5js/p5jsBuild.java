@@ -230,8 +230,11 @@ public class p5jsBuild {
   }
 
 
+  /**
+   * Remove any temp files from the last run.
+   */
   static void cleanTempFiles(Sketch sketch) throws IOException {
-    // remove any temp files from the last run
+    // List all files with the TEMP_PREFIX
     File[] tempList = sketch.getFolder().listFiles(new FileFilter() {
       @Override
       public boolean accept(File file) {
@@ -239,15 +242,27 @@ public class p5jsBuild {
                 file.getName().startsWith(TEMP_PREFIX));
       }
     });
-    // remove these files
+    // Attempt to remove each of the files in the list
     if (tempList != null) {
       for (File tempItem : tempList) {
         try {
-          Platform.deleteFile(tempItem);  // move to trash, hopefully
+          // Move to Recycle Bin or Trash because 1) less destructive, and
+          // 2) Windows files sometimes "in use" in spite of our best efforts.
+          Platform.deleteFile(tempItem);
+
         } catch (IOException e) {
           // Try to just silently catch these and move on
           // https://github.com/fathominfo/processing-p5js-mode/issues/6
           System.err.println(e.getMessage());
+          // Not sure if this ever gets hit
+
+        } catch (UnsatisfiedLinkError ule) {
+          // This seems to be a problem with old JNA on Big Sur. Should be
+          // fixed for Processing 4.0a4 but adding a workaround here.
+          // https://github.com/fathominfo/processing-p5js-mode/issues/26
+          if (!tempItem.delete()) {
+            tempItem.deleteOnExit();
+          }
         }
       }
     }
