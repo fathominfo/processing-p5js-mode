@@ -1,3 +1,21 @@
+0010 (1.3)
+X add revision check to the build
+X use p5js 1.0
+X update examples, remove p5js.dom references
+X update to p5js 1.1.9 (July 22, 2020)
+X fix up warnings by explicitly closing a few more streams
+X update to p5js 1.2.0 (December 19, 2020 release)
+X adding workaround for JNA issues on Big Sur
+X   https://github.com/fathominfo/processing-p5js-mode/issues/26
+X ability to update p5*.js in the libraries subfolder
+o   automatically notify user if version in the template is updated?
+X   not just about p5jsMode updates, but updating older sketches
+X   this could be a Mode menu item, grayed out if up-to-date
+o how do we bring back the auto-update block if it's broken?
+o   or if it's not present, stop updating that file?
+X reset index.html from menu option
+
+
 0009 (1.2.2)
 X fix release numbering
 

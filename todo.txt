@@ -1,22 +1,10 @@
-0010 (1.3)
-X add revision check to the build
-X use p5js 1.0
-X update examples, remove p5js.dom references
-X update to p5js 1.1.9 (July 22, 2020)
-X fix up warnings by explicitly closing a few more streams
-X update to p5js 1.2.0 (December 19, 2020 release)
-X adding workaround for JNA issues on Big Sur
-X   https://github.com/fathominfo/processing-p5js-mode/issues/26
-X ability to update p5*.js in the libraries subfolder
-o   automatically notify user if version in the template is updated?
-X   not just about p5jsMode updates, but updating older sketches
-X   this could be a Mode menu item, grayed out if up-to-date
-o how do we bring back the auto-update block if it's broken?
-o   or if it's not present, stop updating that file?
-X reset index.html from menu option
+0011 (1.3.1)
 
 
 _ still a lot of temp files left around?
+_   instead of doing temp files, should that be state stored by the server?
+_     i.e. if there's a 'temp' version of a particular file, use that when it's requested
+_     for that matter, maybe just send the contents of the editor tabs when requested?
 _   write the temp stuff to another folder?
 _   positive part of temp files: not having to save between runs
 _   save the temp stuff to a different folder entirely?
@@ -98,6 +86,7 @@ git tag -a v1.1.1 -m 'version 1.1.1'
 git tag -a v1.2 -m 'version 1.2'
 git tag -a v1.2.1 -m 'version 1.2.1'
 git tag -a v1.2.2 -m 'version 1.2.2'
+git tag -a v1.3 -m 'version 1.3'
 git push origin --tags
 
 # delete the previous 'latest'
@@ -105,10 +94,12 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.2.2'
+git tag -f -a latest -m 'version 1.3'
 # actually update things
 git push -f --tags
 
 ant dist
 then upload dist/p5jsMode.zip and dist/p5jsMode.txt to the 'latest' tag
-and name/put some info about the release into the 1.2.2 tag
+(can also upload them to the v1.3 tag for anyone installing manually)
+and name/put some info about the release into the tag
+https://github.com/fathominfo/processing-p5js-mode/releases
