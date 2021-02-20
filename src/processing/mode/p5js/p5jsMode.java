@@ -195,6 +195,16 @@ public class p5jsMode extends Mode {
   }
 
 
+  static SketchCode findIndexHtml(Sketch sketch) {
+    for (SketchCode code : sketch.getCode()) {
+      if (code.getFileName().equals("index.html")) {
+        return code;
+      }
+    }
+    return null;
+  }
+
+
   /*
   public File getTemplateLibrariesFolder() {
     return new File(getTemplateFolder(), "libraries");

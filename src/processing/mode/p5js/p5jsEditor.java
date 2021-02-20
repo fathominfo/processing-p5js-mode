@@ -25,6 +25,7 @@ import javax.swing.text.Document;
 import processing.app.Base;
 import processing.app.Formatter;
 import processing.app.Library;
+import processing.app.Messages;
 import processing.app.Mode;
 import processing.app.Platform;
 import processing.app.Problem;
@@ -87,9 +88,11 @@ public class p5jsEditor extends Editor {
       }
     }
     // if the index.html file has gone missing, re-create it
-    if (p5jsBuild.findIndexHtml(sketch) == null) {
+    if (p5jsMode.findIndexHtml(sketch) == null) {
       rebuildHtml();
     }
+
+    enableDisableModeMenu();
 
     initWatcher();
     startServer();
@@ -200,6 +203,89 @@ public class p5jsEditor extends Editor {
     });
 
     return buildSketchMenu(new JMenuItem[] { runItem, stopItem });
+  }
+
+
+  JMenuItem resetPeaFiveItem;
+  JMenuItem resetIndexItem;
+
+  @Override
+  public JMenu buildModeMenu() {
+    JMenu menu = new JMenu("p5.js");
+//    JMenuItem item;
+
+    resetPeaFiveItem = new JMenuItem("Replace p5.js library");
+    resetPeaFiveItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // copy p5.min.js to the libraries folder
+        File sourceFile =
+          new File(mode.getTemplateFolder(), "libraries/p5.min.js");
+        File targetFile =
+          new File(sketch.getFolder(), "libraries/p5.min.js");
+        try {
+          Util.copyFile(sourceFile, targetFile);
+          enableDisableModeMenu();  // disable the menu item
+
+        } catch (IOException ioe) {
+          Messages.showTrace("Could not update the p5.js library",
+                             "An error occurred while trying to replace\n" +
+                             targetFile.getAbsolutePath(), ioe, false);
+        }
+      }
+    });
+    menu.add(resetPeaFiveItem);
+
+    resetIndexItem = new JMenuItem("Re-create index.html");
+    resetIndexItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          // get a fresh index.html from the template
+          File sourceFile =
+            new File(mode.getTemplateFolder(), "index.html");
+          File targetFile =
+            new File(sketch.getFolder(), "index.html");
+          Util.copyFile(sourceFile, targetFile);
+
+          // swap @@ entries from the template with the sketch name
+          p5jsMode.buildIndex(sketch.getFolder(), sketch.getName());
+
+          // load the new one back into the editor
+          SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
+
+          if (indexHtmlCode != null) {
+            indexHtmlCode.load();
+            // unfortunate hack that seems necessary at the moment?
+            indexHtmlCode.setDocument(null);
+            // this gets the editor text area to update
+            setCode(indexHtmlCode);
+          }
+        } catch (Exception ex) {
+          Messages.showTrace("Error", "Could not write index.html.", ex, false);
+        }
+      }
+    });
+    menu.add(resetIndexItem);
+
+    enableDisableModeMenu();
+    return menu;
+  }
+
+
+  private void enableDisableModeMenu() {
+    if (sketch != null) {
+      File sourceFile =
+        new File(mode.getTemplateFolder(), "libraries/p5.min.js");
+      File targetFile =
+        new File(sketch.getFolder(), "libraries/p5.min.js");
+
+      // not a perfect check, but good enough for this usage
+      boolean p5jsDifferent =
+        (sourceFile.lastModified() != targetFile.lastModified()) ||
+        (sourceFile.length() != targetFile.length());
+      resetPeaFiveItem.setEnabled(p5jsDifferent);
+    }
   }
 
 

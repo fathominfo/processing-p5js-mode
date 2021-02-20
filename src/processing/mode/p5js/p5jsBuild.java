@@ -39,7 +39,7 @@ public class p5jsBuild {
   static void updateHtml(Sketch sketch) throws SketchException, IOException {
 //    Mode mode = sketch.getMode();
 
-    SketchCode indexHtmlCode = findIndexHtml(sketch);
+    SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
     if (indexHtmlCode != null && indexHtmlCode.isModified()) {
       // TODO can we throw an exception here? how often is this happening?
       System.err.println("Could not update index.html because it has unsaved changes.");
@@ -266,16 +266,6 @@ public class p5jsBuild {
         }
       }
     }
-  }
-
-
-  static SketchCode findIndexHtml(Sketch sketch) {
-    for (SketchCode code : sketch.getCode()) {
-      if (code.getFileName().equals("index.html")) {
-        return code;
-      }
-    }
-    return null;
   }
 
 
