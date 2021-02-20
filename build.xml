@@ -144,31 +144,29 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
       <filterchain>
         <headfilter lines="1"/>
         <tokenfilter>
-          <stringtokenizer suppressdelims="true"/>
+          <stringtokenizer suppressdelims="true" />
           <!-- remove the preceding zeroes -->
-          <containsregex pattern="0+(\d+)" />
+          <containsregex pattern="\d\d\d\d" />
         </tokenfilter>
       </filterchain>
     </loadfile>
     <!-- <echo message="revision is ${revision}." /> -->
 
-    <!-- figure out the revision number in base.java -->
+    <!-- figure out the revision number in mode.properties -->
     <loadfile srcfile="mode.properties"
               property="revision.base">
       <filterchain>
         <tokenfilter>
-          <linetokenizer />
+          <stringtokenizer suppressdelims="true" />
           <containsregex pattern="version="/>
-          <replaceregex pattern="[^0-9]*" flags="g" replace=""/>
+          <replaceregex pattern="\D*" replace=""/>
         </tokenfilter>
       </filterchain>
     </loadfile>
     <!-- <echo message="base revision is ${revision.base}." /> -->
 
     <condition property="revision.correct">
-      <!-- Using contains because I can't figure out how to get rid of the
-           LF in revision.base. Please file a bug if you have a fix. -->
-      <contains string="${revision.base}" substring="${revision}"/>
+      <contains string="${revision}" substring="${revision.base}"/>
     </condition>
 
     <!-- the revision.base property won't be set
