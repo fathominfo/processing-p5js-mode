@@ -256,6 +256,14 @@ public class p5jsBuild {
           System.err.println(e.getMessage());
           // Not sure if this ever gets hit
 
+        } catch (NoClassDefFoundError ncdfe) {
+          // Also while trying to fix #26, ran into NoClassDefFoundError
+          // for com.sun.jna.platform.mac.MacFileUtils$FileManager.
+          // Not sure what's happening there, but need to fix that separately.
+          if (!tempItem.delete()) {
+            tempItem.deleteOnExit();
+          }
+
         } catch (UnsatisfiedLinkError ule) {
           // This seems to be a problem with old JNA on Big Sur. Should be
           // fixed for Processing 4.0a4 but adding a workaround here.
