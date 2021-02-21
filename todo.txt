@@ -1,5 +1,5 @@
-0011 (1.3.1)
-X workaround for NoClassDefFoundError that Chris ran into
+0012 (1.3.2)
+_ need to sort out the deleteFile() weirdness in JNA
 
 
 _ still a lot of temp files left around?
@@ -96,7 +96,7 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.3'
+git tag -f -a latest -m 'version 1.3.1'
 # actually update things
 git push -f --tags
 
