@@ -1,4 +1,6 @@
 0012 (1.3.2)
+X change 'authorList' to 'authors' (that changed in, uh, 3.0a11)
+X update p5.js to 1.4.0 instead of 1.2.0
 _ need to sort out the deleteFile() weirdness in JNA
 
 
