@@ -1,6 +1,22 @@
-0012 (1.3.2)
+0012 (1.4)
 X change 'authorList' to 'authors' (that changed in, uh, 3.0a11)
 X update p5.js to 1.4.0 instead of 1.2.0
+X update jshint from 2.12 to 2.13.3
+X   https://github.com/jshint/jshint/releases/tag/2.13.3
+X add nashorn-core-15.3.jar (named as nashorn-core.jar)
+
+
+return new org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory()            .getScriptEngine();
+
+https://stackoverflow.com/questions/65265629/how-to-use-nashorn-in-java-15-and-later
+
+https://github.com/openjdk/nashorn
+https://search.maven.org/artifact/org.openjdk.nashorn/nashorn-core/15.3/jar
+
+Exception in thread "Thread-2" java.lang.NullPointerException: Cannot invoke "javax.script.Compilable.compile(String)" because "engine" is null
+    at processing.mode.p5js.Linter.lambda$0(Linter.java:55)
+    at java.base/java.lang.Thread.run(Thread.java:833)
+
 
 _ need to sort out the deleteFile() weirdness in JNA
 
