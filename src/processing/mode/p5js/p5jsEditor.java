@@ -476,7 +476,6 @@ public class p5jsEditor extends Editor {
 
   /**
    * Check for errors before launching
-   * @param fatal if an error should halt running
    * @return true if fatal errors found
    */
   private boolean checkErrors() {
