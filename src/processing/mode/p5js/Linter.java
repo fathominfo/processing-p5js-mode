@@ -7,9 +7,10 @@ import java.util.HashMap;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
+
+import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import processing.app.ui.Editor;
 import processing.core.PApplet;
@@ -49,8 +50,9 @@ public class Linter {
       String[] lines = PApplet.loadStrings(jshintFile);
       String preamble = PApplet.join(lines, '\n') + "\n" + FUNCTION_CALL;
 
-      final ScriptEngineManager manager = new ScriptEngineManager();
-      final ScriptEngine engine = manager.getEngineByMimeType("text/javascript");
+      //final ScriptEngineManager manager = new ScriptEngineManager();
+      //final ScriptEngine engine = manager.getEngineByMimeType("text/javascript");
+      final ScriptEngine engine = new NashornScriptEngineFactory().getScriptEngine();
       try {
         compiled = ((Compilable) engine).compile(preamble);
         lint("");
