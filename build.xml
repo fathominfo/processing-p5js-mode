@@ -26,20 +26,6 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <target name="build">
-
-    <!-- Locate the JDT compiler, since we know processing.dir must exist and
-         using the JDT allows us to build the PDE with only a JRE on Windows
-         and Linux. If something goes wrong, javac (the "modern" compiler)
-         will be used instead. (Logic from processing/core/build.xml) -->
-    <property name="jdt.jar"
-              value="${processing.dir}/java/mode/org.eclipse.jdt.core.jar" />
-    <condition property="build.compiler"
-               value="org.eclipse.jdt.core.JDTCompilerAdapter"
-               else="modern">
-      <available file="${jdt.jar}" />
-    </condition>
-    <!--<echo message="compiler is ${build.compiler}" />-->
-
     <mkdir dir="bin" />
     <javac source="1.8"
            target="1.8"
@@ -53,8 +39,6 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
                       ${processing.dir}/java/bin;
                       mode/jsoup-1.10.1.jar"
            nowarn="true">
-      <!-- kinda gross, but if not using the JDT, this just ignored anyway -->
-      <compilerclasspath path="${jdt.jar}; ${processing.dir}/java/mode/jdtCompilerAdapter.jar" />
     </javac>
 
     <!-- make sure this exists -->
