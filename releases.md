@@ -1,3 +1,40 @@
+# p5jsMode 1.4
+
+* TODO
+
+
+# p5jsMode 1.3.1
+
+* Another workaround for the JNA issues seen in the previous releases
+
+
+# p5jsMode 1.3
+
+Bug fixes and other updates
+
+* Added workaround for JNA issues on Big Sur [#26](https://github.com/fathominfo/processing-p5js-mode/issues/26)
+* Update to p5.js 1.2.0 (the December 19, 2020 release)
+* Update the examples
+* Added p5.js menu
+* Added menu option to replace p5.js with the version included with p5jsMode
+* Implemented menu option to replace `index.html`
+
+Internal changes
+
+* Add revision check to the build
+* Fix up a few warnings by explicitly closing a few more streams
+* Remove p5js.dom references
+
+
+# p5jsMode 1.2.2
+
+A few bug fixes and updates:
+
+* Updated p5.js to version 0.10.2
+* Update jshint to 2.11.0
+* Remove warning about trailing commas in code
+
+
 # p5jsMode 1.2
 
 Significant improvements to syntax and error checking!
