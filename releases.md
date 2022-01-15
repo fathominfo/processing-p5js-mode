@@ -1,6 +1,14 @@
 # p5jsMode 1.4
 
-* TODO
+Latest p5.js (1.4) and support for Processing 4.0 beta 3 (which uses Java 17).
+
+* Update p5.js from 1.2.0 to 1.4.0.
+
+* Switch to Nashorn scripting engine 15.3 from OpenJDK built by Attila Szegedi. The original Nashorn engine was removed prior to the Java 17 release, so this was necessary to keep things compatible with Processing 4.0 beta 3.
+
+* Update jshint from 2.12 to [2.13.3](https://github.com/jshint/jshint/releases/tag/2.13.3)
+
+* Change `authorList` to `authors` in `mode.properties` (responding to a change from, uh, Processing 3.0 alpha 11, which brings us in line with the spec as of 2015).
 
 
 # p5jsMode 1.3.1
