@@ -1,3 +1,74 @@
+0012 (1.4)
+X change 'authorList' to 'authors' (that changed in, uh, 3.0a11)
+X update p5.js to 1.4.0 instead of 1.2.0
+X update jshint from 2.12 to 2.13.3
+X   https://github.com/jshint/jshint/releases/tag/2.13.3
+
+update to new Nashorn scripting engine
+X Warning: Nashorn engine is planned to be removed from a future JDK release
+X   https://github.com/fathominfo/processing-p5js-mode/issues/27
+X add nashorn-core-15.3.jar (named as nashorn-core.jar)
+X   https://search.maven.org/artifact/org.openjdk.nashorn/nashorn-core/15.3/jar
+X nashorn-core uses version 7.3.1 of asm, asm-commons, asm-tree, asm-util
+X   web page https://search.maven.org/artifact/org.ow2.asm/asm-util/7.3.1/jar
+X   jar download https://search.maven.org/remotecontent?filepath=org/ow2/asm/asm-commons/7.3.1/asm-commons-7.3.1.jar
+
+return new org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory()            .getScriptEngine();
+
+https://stackoverflow.com/questions/65265629/how-to-use-nashorn-in-java-15-and-later
+
+https://github.com/openjdk/nashorn
+https://search.maven.org/artifact/org.openjdk.nashorn/nashorn-core/15.3/jar
+
+Exception in thread "Thread-2" java.lang.NullPointerException: Cannot invoke "javax.script.Compilable.compile(String)" because "engine" is null
+    at processing.mode.p5js.Linter.lambda$0(Linter.java:55)
+    at java.base/java.lang.Thread.run(Thread.java:833)
+
+X aborted attempt to work with GraalVM
+o   what a f*king mess: https://medium.com/graalvm/d4da3605b6cb
+o     scroll to "How to run GraalVM JavaScript on a stock JDK"
+o     decompose this maven-fest https://github.com/graalvm/graal-js-jdk11-maven-demo
+o     into the necessary collection of jars, and try to move from there
+X   seems to be possible to follow our use case: a Java-only engine,
+X     though everything seems to push in direction of native code or full VM
+o   how to suppress the warning
+o     https://bugs.openjdk.java.net/browse/JDK-8210140
+o     pass "--no-deprecation-warning" as a Nashorn startup arg
+o     or on JVM startup: -Dnashorn.args="--no-deprecation-warning"
+o   https://www.graalvm.org/downloads/
+o   ok, less of a mess:
+o     simpler tutorial: https://golb.hplar.ch/2020/04/java-javascript-engine.html
+o     list of jars needed: https://www.graalvm.org/reference-manual/js/RunOnJDK/#graalvm-javascript-without-maven---jar-files-from-graalvm
+o   using a Linux download just in case any native libs are in there
+o     https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.2.0
+
+$GRAALVM/jre/languages/js/graaljs.jar - core component of GraalVM JavaScript
+https://repo.maven.apache.org/maven2/org/graalvm/js/js/20.3.0/js-20.3.0.jar
+
+$GRAALVM/jre/languages/js/icu4j.jar - ICU4J component for internationalization
+https://repo.maven.apache.org/maven2/com/ibm/icu/icu4j/67.1/icu4j-67.1.jar
+
+$GRAALVM/jre/languages/regex/tregex.jar - GraalVM’s regular expression engine
+https://repo.maven.apache.org/maven2/org/graalvm/regex/regex/20.3.0/regex-20.3.0.jar
+
+$GRAALVM/jre/lib/boot/graal-sdk.jar - GraalVM’s SDK to implement languages
+https://repo.maven.apache.org/maven2/org/graalvm/sdk/graal-sdk/20.3.0/graal-sdk-20.3.0.jar
+
+$GRAALVM/jre/lib/truffle/truffle-api.jar - GraalVM’s Language API, to implement interpreters
+https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-api/20.3.0/truffle-api-20.3.0.jar
+
+$GRAALVM/jre/lib/graalvm/graaljs-launcher.jar - GraalVM JS cmd line interpreter (optional)
+???
+
+$GRAALVM/jre/lib/graalvm/launcher-common.jar - common launcher code shared by all languages
+???
+https://search.maven.org/artifact/org.graalvm/launcher-common (but that's old...)
+also https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/js/RunOnJDK/
+
+$GRAALVM/jre/lib/boot/graaljs-scriptengine.jar - ScriptEngine/JSR 223 support (optional)
+https://repo.maven.apache.org/maven2/org/graalvm/js/js-scriptengine/20.3.0/js-scriptengine-20.3.0.jar
+
+
 0011 (1.3.1)
 X workaround for NoClassDefFoundError that Chris ran into
 
