@@ -3,8 +3,15 @@ X change 'authorList' to 'authors' (that changed in, uh, 3.0a11)
 X update p5.js to 1.4.0 instead of 1.2.0
 X update jshint from 2.12 to 2.13.3
 X   https://github.com/jshint/jshint/releases/tag/2.13.3
-X add nashorn-core-15.3.jar (named as nashorn-core.jar)
 
+update to new Nashorn scripting engine
+X Warning: Nashorn engine is planned to be removed from a future JDK release
+X   https://github.com/fathominfo/processing-p5js-mode/issues/27
+X add nashorn-core-15.3.jar (named as nashorn-core.jar)
+X   https://search.maven.org/artifact/org.openjdk.nashorn/nashorn-core/15.3/jar
+X nashorn-core uses version 7.3.1 of asm, asm-commons, asm-tree, asm-util
+X   web page https://search.maven.org/artifact/org.ow2.asm/asm-util/7.3.1/jar
+X   jar download https://search.maven.org/remotecontent?filepath=org/ow2/asm/asm-commons/7.3.1/asm-commons-7.3.1.jar
 
 return new org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory()            .getScriptEngine();
 
@@ -17,39 +24,23 @@ Exception in thread "Thread-2" java.lang.NullPointerException: Cannot invoke "ja
     at processing.mode.p5js.Linter.lambda$0(Linter.java:55)
     at java.base/java.lang.Thread.run(Thread.java:833)
 
-
-_ need to sort out the deleteFile() weirdness in JNA
-
-
-_ still a lot of temp files left around?
-_   instead of doing temp files, should that be state stored by the server?
-_     i.e. if there's a 'temp' version of a particular file, use that when it's requested
-_     for that matter, maybe just send the contents of the editor tabs when requested?
-_   write the temp stuff to another folder?
-_   positive part of temp files: not having to save between runs
-_   save the temp stuff to a different folder entirely?
-_ when using p5jsMode, just require that sketches are saved
-_   too many problems with unsaved code not working properly
-_   (instead of doing the weird tricks with temp files)
-
-_ Warning: Nashorn engine is planned to be removed from a future JDK release
-_   https://github.com/fathominfo/processing-p5js-mode/issues/27
+X aborted attempt to work with GraalVM
 o   what a f*king mess: https://medium.com/graalvm/d4da3605b6cb
 o     scroll to "How to run GraalVM JavaScript on a stock JDK"
 o     decompose this maven-fest https://github.com/graalvm/graal-js-jdk11-maven-demo
 o     into the necessary collection of jars, and try to move from there
 X   seems to be possible to follow our use case: a Java-only engine,
-X     though everything seems to push in the direction of native code or the full VM
-_   how to suppress the warning
-_     https://bugs.openjdk.java.net/browse/JDK-8210140
-_     pass "--no-deprecation-warning" as a Nashorn startup arg
-_     or on JVM startup: -Dnashorn.args="--no-deprecation-warning"
-_   https://www.graalvm.org/downloads/
-_   ok, less of a mess:
-_     simpler tutorial: https://golb.hplar.ch/2020/04/java-javascript-engine.html
-_     list of jars needed: https://www.graalvm.org/reference-manual/js/RunOnJDK/#graalvm-javascript-without-maven---jar-files-from-graalvm
-_   using a Linux download just in case any native libs are in there
-_     https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.2.0
+X     though everything seems to push in direction of native code or full VM
+o   how to suppress the warning
+o     https://bugs.openjdk.java.net/browse/JDK-8210140
+o     pass "--no-deprecation-warning" as a Nashorn startup arg
+o     or on JVM startup: -Dnashorn.args="--no-deprecation-warning"
+o   https://www.graalvm.org/downloads/
+o   ok, less of a mess:
+o     simpler tutorial: https://golb.hplar.ch/2020/04/java-javascript-engine.html
+o     list of jars needed: https://www.graalvm.org/reference-manual/js/RunOnJDK/#graalvm-javascript-without-maven---jar-files-from-graalvm
+o   using a Linux download just in case any native libs are in there
+o     https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.2.0
 
 $GRAALVM/jre/languages/js/graaljs.jar - core component of GraalVM JavaScript
 https://repo.maven.apache.org/maven2/org/graalvm/js/js/20.3.0/js-20.3.0.jar
@@ -76,6 +67,20 @@ also https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/js/R
 
 $GRAALVM/jre/lib/boot/graaljs-scriptengine.jar - ScriptEngine/JSR 223 support (optional)
 https://repo.maven.apache.org/maven2/org/graalvm/js/js-scriptengine/20.3.0/js-scriptengine-20.3.0.jar
+
+
+_ need to sort out the deleteFile() weirdness in JNA
+
+_ still a lot of temp files left around?
+_   instead of doing temp files, should that be state stored by the server?
+_     i.e. if there's a 'temp' version of a particular file, use that when it's requested
+_     for that matter, maybe just send the contents of the editor tabs when requested?
+_   write the temp stuff to another folder?
+_   positive part of temp files: not having to save between runs
+_   save the temp stuff to a different folder entirely?
+_ when using p5jsMode, just require that sketches are saved
+_   too many problems with unsaved code not working properly
+_   (instead of doing the weird tricks with temp files)
 
 _ make it possible for the main class to be something besides the default name
 _   want to use sketch.js (this is a fine restriction)

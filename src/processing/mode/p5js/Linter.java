@@ -46,13 +46,12 @@ public class Linter {
 
   public Linter(Editor editor) {
     new Thread(() -> {
+      final ScriptEngine engine =
+        new NashornScriptEngineFactory().getScriptEngine();
+
       File jshintFile = editor.getMode().getContentFile("jshint.js");
       String[] lines = PApplet.loadStrings(jshintFile);
       String preamble = PApplet.join(lines, '\n') + "\n" + FUNCTION_CALL;
-
-      //final ScriptEngineManager manager = new ScriptEngineManager();
-      //final ScriptEngine engine = manager.getEngineByMimeType("text/javascript");
-      final ScriptEngine engine = new NashornScriptEngineFactory().getScriptEngine();
       try {
         compiled = ((Compilable) engine).compile(preamble);
         lint("");

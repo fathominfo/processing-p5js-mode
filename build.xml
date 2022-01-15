@@ -37,7 +37,11 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
            classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin;
-                      mode/nashorn-core.jar"
+                      mode/nashorn-core.jar;
+                      mode/asm.jar;
+                      mode/asm-commons.jar;
+                      mode/asm-tree.jar;
+                      mode/asm-util"
            nowarn="true">
     </javac>
 
