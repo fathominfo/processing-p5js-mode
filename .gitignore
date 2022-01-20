@@ -1,5 +1,6 @@
 *~
 /bin/
+/out/
 .DS_Store
 thumbs.db
 local.properties
