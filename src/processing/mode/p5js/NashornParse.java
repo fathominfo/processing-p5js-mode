@@ -1,10 +1,10 @@
 package processing.mode.p5js;
 
-import jdk.nashorn.api.scripting.ScriptUtils;
-import jdk.nashorn.internal.runtime.Context;
-import jdk.nashorn.internal.runtime.ECMAException;
-import jdk.nashorn.internal.runtime.ErrorManager;
-import jdk.nashorn.internal.runtime.options.Options;
+import org.openjdk.nashorn.api.scripting.ScriptUtils;
+import org.openjdk.nashorn.internal.runtime.Context;
+import org.openjdk.nashorn.internal.runtime.ECMAException;
+import org.openjdk.nashorn.internal.runtime.ErrorManager;
+import org.openjdk.nashorn.internal.runtime.options.Options;
 
 import processing.app.Base;
 import processing.app.Sketch;
