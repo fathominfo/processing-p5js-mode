@@ -37,6 +37,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
            classpath="${processing.dir}/core/bin;
                       ${processing.dir}/app/bin;
                       ${processing.dir}/java/bin;
+                      mode/jsoup-1.10.1.jar;
                       mode/nashorn-core.jar;
                       mode/asm.jar;
                       mode/asm-commons.jar;
