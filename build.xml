@@ -27,8 +27,8 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
 
   <target name="build">
     <mkdir dir="bin" />
-    <javac source="1.8"
-           target="1.8"
+    <javac source="11"
+           target="11"
            encoding="UTF-8"
            includeAntRuntime="false"
            debug="true"
@@ -43,7 +43,7 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
                       mode/asm-commons.jar;
                       mode/asm-tree.jar;
                       mode/asm-util"
-           nowarn="true">
+           nowarn="false">
     </javac>
 
     <jar destfile="${jar.path}">
