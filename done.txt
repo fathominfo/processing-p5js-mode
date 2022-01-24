@@ -1,3 +1,9 @@
+0013 (1.4.1)
+X imports were totally wrong inside build
+X   apparently was building with IntelliJ against Java 11?
+X get things working properly from build.xml
+
+
 0012 (1.4)
 X change 'authorList' to 'authors' (that changed in, uh, 3.0a11)
 X update p5.js to 1.4.0 instead of 1.2.0
