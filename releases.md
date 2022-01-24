@@ -1,3 +1,8 @@
+# p5jsMode 1.4.1
+
+All the things from the previous release (1.4) actually work in this one.
+
+
 # p5jsMode 1.4
 
 Latest p5.js (1.4) and support for Processing 4.0 beta 3 (which uses Java 17).
