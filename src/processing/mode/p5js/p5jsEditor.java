@@ -433,6 +433,7 @@ public class p5jsEditor extends Editor {
         }
         statusNotice("Server running at " + server.getAddress());
 
+        /*
         if (Desktop.isDesktopSupported()) {
           // use this version so that errors pop out as exceptions,
           // and we can show them as errors in the PDE (otherwise weird
@@ -446,6 +447,9 @@ public class p5jsEditor extends Editor {
           // https://github.com/fathominfo/processing-p5js-mode/issues/17
           Platform.openURL(server.getAddress());
         }
+        */
+        // in 4.0 beta 5, some fixes to how openURL() works
+        Platform.openURL(server.getAddress());
       }
     } catch (Exception e) {
       statusError(e);
