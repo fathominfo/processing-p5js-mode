@@ -2,6 +2,8 @@
 
 A simple editor for [p5.js](https://p5js.org) code that runs inside the PDE.
 
+Starting in 2022, Processing 4.0 is required. Major changes in Java 17 make backwards compatibility difficult, and Processing 3 was last updated in January 2020.
+
 
 ### Goals/Criteria
 
