@@ -30,9 +30,6 @@ public class p5jsBuild {
   static final boolean USE_SOUP = false;
 
   static final String TEMP_PREFIX = "p5js-temp-";
-//  ScriptEngine engine;
-//  static ScriptEngine engine =
-//    new ScriptEngineManager().getEngineByName("javascript");
 
 
   static void updateHtml(Sketch sketch) throws SketchException, IOException {
@@ -44,9 +41,6 @@ public class p5jsBuild {
       System.err.println("Could not update index.html because it has unsaved changes.");
       return;
     }
-//    if (indexCode == null) {
-//      throw new SketchException("Could not find index.html file");
-//    }
 
     File sketchFolder = sketch.getFolder();
     StringList insert;
@@ -67,6 +61,7 @@ public class p5jsBuild {
     File[] libraryList = librariesFolder.listFiles(file -> {
       if (!file.isDirectory()) {  // not doing subdirectories
         String name = file.getName();
+        //noinspection RedundantIfStatement
         if (!name.equals(P5JS_MINIFIED) &&  // already loaded first
             !name.equals(P5JS_UNMINIFIED) &&  // don't double-add
             name.toLowerCase().endsWith(".js")) {
