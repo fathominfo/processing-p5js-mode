@@ -51,7 +51,6 @@ public class p5jsEditor extends Editor {
   HttpServer server;
   // Try to maintain the same port for this Editor window
   int port;
-  boolean showSizeWarning = true;
 
   static final boolean USE_LINTER = true;
   // object to handle linting, invoke once b/c heavyweight
@@ -101,10 +100,11 @@ public class p5jsEditor extends Editor {
       // Because of poor Exception handling by me, there isn't a good way to
       // recover from this situation without throwing this ridiculous blob of
       // text into the Exception message itself. Ben 1, Software Engineering 0.
-      throw new EditorException("Cannot open this type of sketch.\n" +
-                                "This version of p5jsMode does not play nicely with sketches created by other editors.\n" +
-                                "To use this code, please use File > New to create a new sketch and copy your code into it.\n" +
-                                "See https://github.com/fathominfo/processing-p5js-mode/issues/14 for updates or details.");
+      throw new EditorException("""
+        Cannot open this type of sketch.
+        This version of p5jsMode does not play nicely with sketches created by other editors.
+        To use this code, please use File > New to create a new sketch and copy your code into it.
+        See https://github.com/fathominfo/processing-p5js-mode/issues/14 for updates or details.""");
     }
     super.handleOpenInternal(path);
   }
@@ -161,16 +161,6 @@ public class p5jsEditor extends Editor {
    */
   @Override
   public JMenu buildFileMenu() {
-    /*
-    JMenuItem exportItem = Toolkit.newJMenuItem("Export", 'E');
-    exportItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        handleExport(true);
-      }
-    });
-    return buildFileMenu(new JMenuItem[] { exportItem });
-    */
     return buildFileMenu(null);
   }
 
@@ -351,18 +341,6 @@ public class p5jsEditor extends Editor {
   }
 
 
-  /*
-  public File getTemplateFolder() {
-    return getMode().getContentFile("template");
-  }
-
-
-  public File getLibrariesFolder() {
-    return new File(mode.getTemplateFolder(), "libraries");
-  }
-   */
-
-
   public void handleRun() {
     toolbar.activateRun();
 
@@ -386,22 +364,6 @@ public class p5jsEditor extends Editor {
           System.out.println("To connect from another device on the local network, try:");
           System.out.println(local);
         }
-
-        /*
-        if (Desktop.isDesktopSupported()) {
-          // use this version so that errors pop out as exceptions,
-          // and we can show them as errors in the PDE (otherwise weird
-          // URL opening problems are confusing for new users)
-          Desktop.getDesktop().browse(new URI(server.getAddress()));
-
-        } else {
-          // if Desktop not available, try the Platform version,
-          // which will try platform tricks (but is wrapped so the Exception
-          // doesn't propagate, and therefore we're not using this by default)
-          // https://github.com/fathominfo/processing-p5js-mode/issues/17
-          Platform.openURL(server.getAddress());
-        }
-        */
         // in 4.0 beta 5, some fixes to how openURL() works
         Platform.openURL(server.getAddress());
       }
@@ -417,8 +379,6 @@ public class p5jsEditor extends Editor {
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
-//    stopServer();
-//    statusNotice("Server stopped.");
     toolbar.deactivateRun();
   }
 
@@ -450,7 +410,7 @@ public class p5jsEditor extends Editor {
                                         false));
         return true;
       }
-    } else {  // otherwise just use the basic parser as in 1.1 and earlier
+    } else {  // otherwise, just use the basic parser as in 1.1 and earlier
       try {
         NashornParse.handle(sketch);
 
@@ -517,14 +477,11 @@ public class p5jsEditor extends Editor {
 
     @Override
     public void run() {
-//      while (Thread.currentThread() == this) {
       while (watcher == this) {
         if (System.currentTimeMillis() > nextUpdate) {
-//          System.out.println("gonna check errors");
           checkLint();
         }
         try {
-//          System.out.println("gonna sleep " + ErrorWatcher.this);
           Thread.sleep(1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -656,31 +613,10 @@ public class p5jsEditor extends Editor {
   }
 
 
-//  private void checkDocumentListeners() {
-//    for (SketchCode sc : sketch.getCode()) {
-//      checkDocumentListener(sc);
-//    }
-//  }
-
-
   private void checkDocumentListener(SketchCode sketchCode) {
     if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
       Document doc = sketchCode.getDocument();
       if (doc != null) {
-//      if (listeningDocuments == null) {
-//        listeningDocuments = new HashSet<>();
-//      }
-      //System.out.println("listening docs: " + listeningDocuments);
-      //System.out.println("this doc: " + doc + ", listening docs:");
-//      System.out.println("listener: " + sketchChangedListener + ", doc listeners:");
-//      DocumentListener[] dl = ((AbstractDocument) doc).getDocumentListeners();
-//      for (int i = 0; i < dl.length; i++) {
-//        System.out.println(dl[i]);
-//      }
-//      if (!listeningDocuments.contains(doc)) {
-//        doc.addDocumentListener(sketchChangedListener);
-//        listeningDocuments.add(doc);
-//      }
         if (!hasListener(doc)) {
           doc.addDocumentListener(sketchChangedListener);
         }
@@ -695,16 +631,6 @@ public class p5jsEditor extends Editor {
    */
   @Override
   public void setCode(SketchCode code) {
-    /*
-    Document oldDoc = code.getDocument();
-
-    super.setCode(code);
-
-    Document newDoc = code.getDocument();
-    if (oldDoc != newDoc) {
-      addDocumentListener(newDoc);
-    }
-    */
     super.setCode(code);
     checkDocumentListener(code);
   }
@@ -734,16 +660,13 @@ public class p5jsEditor extends Editor {
   @Override
   public boolean handleSaveAs() {
     if (super.handleSaveAs()) {
-      EventQueue.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          while (sketch.isSaving()) {  // wait until Save As completes
-            try {
-              Thread.sleep(5);
-            } catch (InterruptedException ignored) { }
-          }
-          rebuildHtml();
+      EventQueue.invokeLater(() -> {
+        while (sketch.isSaving()) {  // wait until Save As completes
+          try {
+            Thread.sleep(5);
+          } catch (InterruptedException ignored) { }
         }
+        rebuildHtml();
       });
       return true;  // kind of a farce
     }
@@ -757,7 +680,7 @@ public class p5jsEditor extends Editor {
   protected void startServer() {
 //    System.out.println("restarting server? " + server + " " + (server != null && server.isDead()));
     if (server != null && server.isDead()) {
-      // if server hung or something else went wrong .. stop it.
+      // if server hung or something else went wrong... stop it.
       server.stop();
       server = null;
     }
@@ -828,16 +751,6 @@ public class p5jsEditor extends Editor {
     try {
       Util.copyDir(folder, new File(sketch.getFolder(), "libraries"));
       statusNotice("Copied " + name + " to the libraries folder of this sketch.");
-
-      /*
-      try {
-        // write the HTML here in case we need temp files
-        p5jsBuild.updateHtml(sketch);
-      } catch (Exception e) {
-        statusError(e);
-      }
-      */
-
     } catch (IOException e) {
       statusError(e);
     }

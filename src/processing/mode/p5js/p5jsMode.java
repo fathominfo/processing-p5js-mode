@@ -38,21 +38,6 @@ public class p5jsMode extends Mode {
   }
 
 
-  /*
-  public JavaMode getJavaMode() {
-    if (defaultJavaMode == null) {
-      for (Mode m : base.getModeList() ) {
-        if (m.getClass() == JavaMode.class) {
-          defaultJavaMode = (JavaMode) m;
-          break;
-        }
-      }
-    }
-    return defaultJavaMode;
-  }
-  */
-
-
   @Override
   public File[] getKeywordFiles() {
     return new File[] {
@@ -95,7 +80,7 @@ public class p5jsMode extends Mode {
   // public Formatter createFormatter() { }
 
 
-  // public Editor createEditor(Base ibase, String path, int[] location) { }
+  // public Editor createEditor(Base base, String path, int[] location) { }
 
 
   /**
@@ -121,12 +106,7 @@ public class p5jsMode extends Mode {
 
   @Override
   public void rebuildLibraryList() {
-    //super.rebuildLibraryList();
-
     coreLibraries = new ArrayList<>();
-//    Library domLibrary =
-//      new p5jsLibrary(new File(getLibrariesFolder(), "p5.dom"));
-//    coreLibraries.add(domLibrary);
     Library soundLibrary =
       new p5jsLibrary(new File(getLibrariesFolder(), "p5.sound"));
     coreLibraries.add(soundLibrary);
@@ -189,7 +169,11 @@ public class p5jsMode extends Mode {
   static public void buildIndex(File sketchFolder,
                                 String sketchName) throws IOException {
     File indexFile = new File(sketchFolder, "index.html");
-    String program = PApplet.join(PApplet.loadStrings(indexFile), "\n");
+    String[] lines = PApplet.loadStrings(indexFile);
+    if (lines == null) {
+      throw new IOException("Could not read " + indexFile);
+    }
+    String program = PApplet.join(lines, "\n");
     program = program.replaceAll("@@sketch@@", sketchName + ".js");
     PApplet.saveStrings(indexFile, PApplet.split(program, '\n'));
   }
@@ -203,11 +187,4 @@ public class p5jsMode extends Mode {
     }
     return null;
   }
-
-
-  /*
-  public File getTemplateLibrariesFolder() {
-    return new File(getTemplateFolder(), "libraries");
-  }
-  */
 }
