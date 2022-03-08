@@ -1,7 +1,6 @@
 package processing.mode.p5js;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
@@ -65,24 +64,23 @@ public class p5jsBuild {
 
     // then other entries from /libraries
     File librariesFolder = new File(sketchFolder, "libraries");
-    //System.out.println(librariesFolder + " " + librariesFolder.exists());
-    //PApplet.launch(librariesFolder.getAbsolutePath());
-    //PApplet.printArray(Util.listFiles(librariesFolder, false));
-    File[] libraryList = librariesFolder.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        //System.out.println("checking " + file);
-        if (!file.isDirectory()) {  // not doing subdirectories
-          String name = file.getName();
-          if (!name.equals(P5JS_MINIFIED) &&  // already loaded first
-              !name.equals(P5JS_UNMINIFIED) &&  // don't double-add
-              name.toLowerCase().endsWith(".js")) {
-            return true;
-          }
+    File[] libraryList = librariesFolder.listFiles(file -> {
+      if (!file.isDirectory()) {  // not doing subdirectories
+        String name = file.getName();
+        if (!name.equals(P5JS_MINIFIED) &&  // already loaded first
+            !name.equals(P5JS_UNMINIFIED) &&  // don't double-add
+            name.toLowerCase().endsWith(".js")) {
+          return true;
         }
-        return false;
       }
+      return false;
     });
+
+    // if folder is unreadable, show a warning and recover
+    if (libraryList == null) {
+      System.err.println("Could not read " + librariesFolder);
+      libraryList = new File[0];
+    }
 
     if (!USE_SOUP) {
       for (File file : libraryList) {
@@ -124,7 +122,7 @@ public class p5jsBuild {
         throw new SketchException(e.getMessage());
       }
       // Can't risk breaking the user's sketch if there are edits,
-      // but with no modifications, handle the reload to bring back index.html
+      // but with no modifications, handle reload to bring back index.html
       if (!sketch.isModified()) {
         sketch.reload();
       }
@@ -182,7 +180,12 @@ public class p5jsBuild {
 
     if (!USE_SOUP) {
       // write the HTML based on the template
-      String html = PApplet.join(PApplet.loadStrings(htmlFile), "\n");
+      String[] lines = PApplet.loadStrings(htmlFile);
+      if (lines == null) {
+        System.err.println("Could not read " + htmlFile);
+        lines = new String[0];  // recover; shows more useful error msg below
+      }
+      String html = PApplet.join(lines, "\n");
       int start = html.indexOf(HTML_PREFIX);
       int stop = html.indexOf(HTML_SUFFIX);
 
@@ -194,13 +197,6 @@ public class p5jsBuild {
         throw new SketchException("The index.html file is damaged, " +
                                   "please remove or rename it and try again.", false);
       }
-      /*
-      if (stop == -1) {
-        System.err.println("HTML suffix is missing in the index.html file.");
-        throw new SketchException("Somebody broke the index.html file, " +
-                                  "please remove it and try again.", false);
-      }
-      */
       html = html.substring(0, start) +
         HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX +
         html.substring(stop + HTML_SUFFIX.length());
@@ -222,7 +218,7 @@ public class p5jsBuild {
       // unfortunate hack that seems necessary at the moment?
       indexHtmlCode.setDocument(null);
 
-    } else {
+    //} else {
       // TODO when the index.html file has been removed (and now, rewritten),
       //      add its tab to the PDE, and mark it as opened so that we don't
       //      get the message about the file being modified externally.
@@ -235,16 +231,12 @@ public class p5jsBuild {
    */
   static void cleanTempFiles(Sketch sketch) throws IOException {
     // List all files with the TEMP_PREFIX
-    File[] tempList = sketch.getFolder().listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return (!file.isDirectory() &&
-                file.getName().startsWith(TEMP_PREFIX));
-      }
-    });
+    File[] tempList = sketch.getFolder().listFiles(file ->
+      (!file.isDirectory() && file.getName().startsWith(TEMP_PREFIX)));
     // Attempt to remove each of the files in the list
     if (tempList != null) {
       for (File tempItem : tempList) {
+        //noinspection TryWithIdenticalCatches
         try {
           // Move to Recycle Bin or Trash because 1) less destructive, and
           // 2) Windows files sometimes "in use" in spite of our best efforts.

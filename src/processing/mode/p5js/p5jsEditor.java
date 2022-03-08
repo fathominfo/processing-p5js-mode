@@ -1,8 +1,6 @@
 package processing.mode.p5js;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -303,12 +301,7 @@ public class p5jsEditor extends Editor {
     menu.add(item);
 
     item = new JMenuItem("View p5js on Github");
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("https://github.com/processing/p5.js");
-      }
-    });
+    item.addActionListener(e -> Platform.openURL("https://github.com/processing/p5.js"));
     menu.add(item);
 
     return menu;
@@ -554,7 +547,7 @@ public class p5jsEditor extends Editor {
             // no more updates until this is reset by a document change
             nextUpdate = Long.MAX_VALUE;
           }
-        } catch (BadLocationException ble) { }  // ignore for now
+        } catch (BadLocationException ignored) { }  // ignore for now
       }
     } catch (ScriptException e1) {
       e1.printStackTrace();
@@ -747,7 +740,7 @@ public class p5jsEditor extends Editor {
           while (sketch.isSaving()) {  // wait until Save As completes
             try {
               Thread.sleep(5);
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException ignored) { }
           }
           rebuildHtml();
         }
@@ -830,7 +823,6 @@ public class p5jsEditor extends Editor {
   @Override
   public void handleImportLibrary(String name) {
     // unlike the other Modes, this is actually adding the library code
-    //System.out.println("import library " + name);
     Library library = mode.findLibraryByName(name);
     File folder = new File(library.getFolder(), "library");
     try {
