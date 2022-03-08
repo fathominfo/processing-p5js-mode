@@ -1,6 +1,5 @@
 package processing.mode.p5js;
 
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +8,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +114,7 @@ public class p5jsEditor extends Editor {
 
   @Override
   protected JEditTextArea createTextArea() {
-    return new PdeTextArea(new PdeTextAreaDefaults(mode),
+    return new PdeTextArea(new PdeTextAreaDefaults(),
                            new JavaInputHandler(this), this);
   }
 
@@ -187,20 +185,10 @@ public class p5jsEditor extends Editor {
   @Override
   public JMenu buildSketchMenu() {
     JMenuItem runItem = Toolkit.newJMenuItem("Run", 'R');
-    runItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        handleRun();
-      }
-    });
+    runItem.addActionListener(e -> handleRun());
 
     JMenuItem stopItem = new JMenuItem("Stop");
-    stopItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        handleStop();
-      }
-    });
+    stopItem.addActionListener(e -> handleStop());
 
     return buildSketchMenu(new JMenuItem[] { runItem, stopItem });
   }
@@ -215,55 +203,49 @@ public class p5jsEditor extends Editor {
 //    JMenuItem item;
 
     resetPeaFiveItem = new JMenuItem("Replace p5.js library");
-    resetPeaFiveItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        // copy p5.min.js to the libraries folder
-        File sourceFile =
-          new File(mode.getTemplateFolder(), "libraries/p5.min.js");
-        File targetFile =
-          new File(sketch.getFolder(), "libraries/p5.min.js");
-        try {
-          Util.copyFile(sourceFile, targetFile);
-          enableDisableModeMenu();  // disable the menu item
+    resetPeaFiveItem.addActionListener(e -> {
+      // copy p5.min.js to the libraries folder
+      File sourceFile =
+        new File(mode.getTemplateFolder(), "libraries/p5.min.js");
+      File targetFile =
+        new File(sketch.getFolder(), "libraries/p5.min.js");
+      try {
+        Util.copyFile(sourceFile, targetFile);
+        enableDisableModeMenu();  // disable the menu item
 
-        } catch (IOException ioe) {
-          Messages.showTrace("Could not update the p5.js library",
-                             "An error occurred while trying to replace\n" +
-                             targetFile.getAbsolutePath(), ioe, false);
-        }
+      } catch (IOException ioe) {
+        Messages.showTrace("Could not update the p5.js library",
+                           "An error occurred while trying to replace\n" +
+                           targetFile.getAbsolutePath(), ioe, false);
       }
     });
     menu.add(resetPeaFiveItem);
 
     resetIndexItem = new JMenuItem("Re-create index.html");
-    resetIndexItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          // get a fresh index.html from the template
-          File sourceFile =
-            new File(mode.getTemplateFolder(), "index.html");
-          File targetFile =
-            new File(sketch.getFolder(), "index.html");
-          Util.copyFile(sourceFile, targetFile);
+    resetIndexItem.addActionListener(e -> {
+      try {
+        // get a fresh index.html from the template
+        File sourceFile =
+          new File(mode.getTemplateFolder(), "index.html");
+        File targetFile =
+          new File(sketch.getFolder(), "index.html");
+        Util.copyFile(sourceFile, targetFile);
 
-          // swap @@ entries from the template with the sketch name
-          p5jsMode.buildIndex(sketch.getFolder(), sketch.getName());
+        // swap @@ entries from the template with the sketch name
+        p5jsMode.buildIndex(sketch.getFolder(), sketch.getName());
 
-          // load the new one back into the editor
-          SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
+        // load the new one back into the editor
+        SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
 
-          if (indexHtmlCode != null) {
-            indexHtmlCode.load();
-            // unfortunate hack that seems necessary at the moment?
-            indexHtmlCode.setDocument(null);
-            // this gets the editor text area to update
-            setCode(indexHtmlCode);
-          }
-        } catch (Exception ex) {
-          Messages.showTrace("Error", "Could not write index.html.", ex, false);
+        if (indexHtmlCode != null) {
+          indexHtmlCode.load();
+          // unfortunate hack that seems necessary at the moment?
+          indexHtmlCode.setDocument(null);
+          // this gets the editor text area to update
+          setCode(indexHtmlCode);
         }
+      } catch (Exception ex) {
+        Messages.showTrace("Error", "Could not write index.html.", ex, false);
       }
     });
     menu.add(resetIndexItem);
@@ -299,50 +281,25 @@ public class p5jsEditor extends Editor {
     JMenuItem item;
 
     item = new JMenuItem("Getting Started");
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("https://p5js.org/get-started/");
-      }
-    });
+    item.addActionListener(e -> Platform.openURL("https://p5js.org/get-started/"));
     menu.add(item);
 
     item = new JMenuItem("Reference");
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("https://p5js.org/reference/");
-      }
-    });
+    item.addActionListener(e -> Platform.openURL("https://p5js.org/reference/"));
     menu.add(item);
 
     item = Toolkit.newJMenuItemShift("Find in Reference", 'F');
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        handleFindReference();
-      }
-    });
+    item.addActionListener(e -> handleFindReference());
     menu.add(item);
 
     menu.addSeparator();
 
     item = new JMenuItem("Visit p5js.org");
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("https://p5js.org/");
-      }
-    });
+    item.addActionListener(e -> Platform.openURL("https://p5js.org/"));
     menu.add(item);
 
     item = new JMenuItem("Visit the Forum");
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Platform.openURL("https://forum.processing.org/");
-      }
-    });
+    item.addActionListener(e -> Platform.openURL("https://forum.processing.org/"));
     menu.add(item);
 
     item = new JMenuItem("View p5js on Github");
