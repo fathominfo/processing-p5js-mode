@@ -1,5 +1,6 @@
 package processing.mode.p5js.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import processing.core.PApplet;
@@ -19,12 +20,10 @@ public class FavIconHandler extends Handler {
   @Override
   public void handle(String params, CarlOrff ps) {
     // Nah, don't bother: why deal with guessing the mime type?
-    //File file = new File(server.getRoot(), "favicon.ico");
+    //File f = new File(server.getRoot(), "favicon.ico");
 
     final String ICON_PATH = "/icon/icon-32.png";
-    InputStream input = null;
-    try {
-      input = PApplet.class.getResourceAsStream(ICON_PATH);
+    try (InputStream input = PApplet.class.getResourceAsStream(ICON_PATH)) {
       if (input == null) {
         ps.status(HttpServer.HTTP_NOT_FOUND);
         ps.println("Content-Type: text/html");
@@ -35,7 +34,9 @@ public class FavIconHandler extends Handler {
       } else {
         try {
           byte[] b = PApplet.loadBytes(input);
-
+          if (b == null) {
+            throw new IOException("Could not read " + ICON_PATH);
+          }
           ps.status(HttpServer.HTTP_OK);
           ps.println("Content-Type: image/png");
           ps.println("Content-Length: " + b.length);
@@ -51,12 +52,6 @@ public class FavIconHandler extends Handler {
           ps.write(e);
         }
       }
-    } finally {
-      try {
-        if (input != null) {
-          input.close();
-        }
-      } catch (Exception e) { }
-    }
+    } catch (IOException ignored) {  }
   }
 }
