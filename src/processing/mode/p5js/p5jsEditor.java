@@ -431,6 +431,11 @@ public class p5jsEditor extends Editor {
           startServer();
         }
         statusNotice("Server running at " + server.getAddress());
+        String local = server.getLocalAddress();
+        if (local != null) {
+          System.out.println("To connect from another device on the local network, try:");
+          System.out.println(local);
+        }
 
         /*
         if (Desktop.isDesktopSupported()) {

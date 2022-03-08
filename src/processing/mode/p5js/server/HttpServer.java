@@ -2,9 +2,13 @@ package processing.mode.p5js.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,6 +215,33 @@ public class HttpServer {
 
   public String getAddress() {
     return "http://127.0.0.1:" + port + "/";
+  }
+
+
+  /**
+   * Return the first local IPv4 address that is not 127.0.0.1,
+   * or null if there's nothing that matches those criteria.
+   */
+  public String getLocalAddress() {
+    try {
+      Enumeration e = NetworkInterface.getNetworkInterfaces();
+      while (e.hasMoreElements()) {
+        NetworkInterface n = (NetworkInterface) e.nextElement();
+        Enumeration ee = n.getInetAddresses();
+        while (ee.hasMoreElements()) {
+          InetAddress i = (InetAddress) ee.nextElement();
+          if (i instanceof Inet4Address) {
+            String addr = i.getHostAddress();
+            if (!addr.equals("127.0.0.1")) {  // not useful
+              return "http://" + addr + ":" + port + "/";
+            }
+          }
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 

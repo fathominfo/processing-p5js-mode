@@ -2,6 +2,7 @@
 X fixes for how openURL() is handled
 X   https://github.com/fathominfo/processing-p5js-mode/pull/29
 X update outdated URLs, change a few from http to https
+X show local server address in the console
 
 
 _ need to sort out the deleteFile() weirdness in JNA
