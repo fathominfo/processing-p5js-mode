@@ -33,8 +33,6 @@ public class p5jsBuild {
 
 
   static void updateHtml(Sketch sketch) throws SketchException, IOException {
-//    Mode mode = sketch.getMode();
-
     SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
     if (indexHtmlCode != null && indexHtmlCode.isModified()) {
       // TODO can we throw an exception here? how often is this happening?
