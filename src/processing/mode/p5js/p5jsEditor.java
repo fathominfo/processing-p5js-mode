@@ -302,7 +302,7 @@ public class p5jsEditor extends Editor {
     item.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Platform.openURL("http://p5js.org/get-started/#your-first-sketch");
+        Platform.openURL("https://p5js.org/get-started/");
       }
     });
     menu.add(item);
@@ -311,7 +311,7 @@ public class p5jsEditor extends Editor {
     item.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Platform.openURL("http://p5js.org/reference/");
+        Platform.openURL("https://p5js.org/reference/");
       }
     });
     menu.add(item);
@@ -320,7 +320,6 @@ public class p5jsEditor extends Editor {
     item.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        //handleFindReferenceImpl();
         handleFindReference();
       }
     });
@@ -332,7 +331,7 @@ public class p5jsEditor extends Editor {
     item.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Platform.openURL("http://p5js.org/");
+        Platform.openURL("https://p5js.org/");
       }
     });
     menu.add(item);
