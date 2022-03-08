@@ -23,7 +23,7 @@ import processing.mode.p5js.p5jsEditor;
  */
 public class HttpServer {
   // Where worker threads stand idle
-  List<HttpWorker> threads = new ArrayList<>();
+  final List<HttpWorker> threads = new ArrayList<>();
 
   // timeout on client connections
   static final int TIMEOUT = 10000;
@@ -143,40 +143,37 @@ public class HttpServer {
 
   public void start() {
     if (thread == null) {
-      thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-          running = true;
-          try {
-            while (Thread.currentThread() == thread) {
-              @SuppressWarnings("resource")
-              Socket s = socket.accept();
-              synchronized (threads) {
-                if (threads.isEmpty()) {
-                  HttpWorker worker = new HttpWorker(HttpServer.this);
-                  worker.setSocket(s);
-                  (new Thread(worker, "additional worker")).start();
-                } else {
-                  HttpWorker w = threads.remove(0);
-                  w.setSocket(s);
-                }
-              }
-            }
-
-          } catch (IOException e) {
-            e.printStackTrace();
-
-          } finally {
-            if (socket != null) {
-              try {
-                socket.close();
-              } catch (IOException e) {
-                e.printStackTrace();
+      thread = new Thread(() -> {
+        running = true;
+        try {
+          while (Thread.currentThread() == thread) {
+            @SuppressWarnings("resource")
+            Socket s = socket.accept();
+            synchronized (threads) {
+              if (threads.isEmpty()) {
+                HttpWorker worker = new HttpWorker(HttpServer.this);
+                worker.setSocket(s);
+                (new Thread(worker, "additional worker")).start();
+              } else {
+                HttpWorker w = threads.remove(0);
+                w.setSocket(s);
               }
             }
           }
-          running = false;
+
+        } catch (IOException e) {
+          e.printStackTrace();
+
+        } finally {
+          if (socket != null) {
+            try {
+              socket.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
         }
+        running = false;
       });
     }
     thread.start();
@@ -224,12 +221,12 @@ public class HttpServer {
    */
   public String getLocalAddress() {
     try {
-      Enumeration e = NetworkInterface.getNetworkInterfaces();
+      Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
       while (e.hasMoreElements()) {
-        NetworkInterface n = (NetworkInterface) e.nextElement();
-        Enumeration ee = n.getInetAddresses();
+        NetworkInterface n = e.nextElement();
+        Enumeration<InetAddress> ee = n.getInetAddresses();
         while (ee.hasMoreElements()) {
-          InetAddress i = (InetAddress) ee.nextElement();
+          InetAddress i = ee.nextElement();
           if (i instanceof Inet4Address) {
             String addr = i.getHostAddress();
             if (!addr.equals("127.0.0.1")) {  // not useful

@@ -125,12 +125,12 @@ public class HttpWorker implements Runnable {
     // clean up, but ignore any errors along the way
     try {
       reader.close();
-    } catch (Exception e) { }
+    } catch (Exception ignored) { }
     try {
       input.close();
-    } catch (Exception e) { }
+    } catch (Exception ignored) { }
     try {
       output.close();
-    } catch (Exception e) { }
+    } catch (Exception ignored) { }
   }
 }

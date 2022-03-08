@@ -15,22 +15,8 @@ public class GenericHandler extends Handler {
   }
 
 
-//  public GenericHandler(HttpServer server, File root) {
-//    super(server);
-//    this.root = root;
-//  }
-
-
-//  public void setRoot(File root) {
-//    this.root = root;
-//  }
-
-
   @Override
   public void handle(String path, CarlOrff ps) {
-//    System.out.println("root is " + root);
-//    System.out.println("path is " + path);
-    //File target = new File(root, path.substring(1));  // remove leading slash
     File target = new File(server.getRoot(), path);  // leading slash already removed
 
 //    if (page == null || page.trim().length() == 0) {
@@ -65,12 +51,13 @@ public class GenericHandler extends Handler {
           ps.println("</body></html>");
         }
       } else {
-        byte[] b = null;
+        byte[] b;
         try {
           String localPath = target.getAbsolutePath();
-          //InputStream input = new BufferedInputStream(new FileInputStream(target));
-          //b = PApplet.loadBytes(input);
           b = PApplet.loadBytes(target);
+          if (b == null) {
+            throw new IOException("Could not read " + target);
+          }
 
           ps.status(HttpServer.HTTP_OK);
           String contentType = "content/unknown";
