@@ -4,6 +4,7 @@ X   https://github.com/fathominfo/processing-p5js-mode/pull/29
 X update outdated URLs, change a few from http to https
 X show local server address in the console
 X require use of 4.0 beta 5 for PdeTextAreaDefaults constructor deprecation
+X cleaning up some old code, using lambdas, clear up warnings
 
 
 _ need to sort out the deleteFile() weirdness in JNA

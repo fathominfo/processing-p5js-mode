@@ -6,22 +6,15 @@ import processing.core.PApplet;
 
 
 public class GenericHandler extends Handler {
-//  File root;
-
 
   public GenericHandler(HttpServer server) {
     super(server);
-//    root = server.getRoot();
   }
 
 
   @Override
   public void handle(String path, CarlOrff ps) {
     File target = new File(server.getRoot(), path);  // leading slash already removed
-
-//    if (page == null || page.trim().length() == 0) {
-//      ps.status(404);
-//    }
     handleFile(path, ps, target);
   }
 
