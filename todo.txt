@@ -5,20 +5,23 @@ X update outdated URLs, change a few from http to https
 X show local server address in the console
 X require use of 4.0 beta 5 for PdeTextAreaDefaults constructor deprecation
 X cleaning up some old code, using lambdas, clear up warnings
+o need to sort out the deleteFile() weirdness in JNA
+X   should be resolved now
 
-
-_ need to sort out the deleteFile() weirdness in JNA
 
 _ still a lot of temp files left around?
 _   instead of doing temp files, should that be state stored by the server?
-_     i.e. if there's a 'temp' version of a particular file, use that when it's requested
-_     for that matter, maybe just send the contents of the editor tabs when requested?
+_     if there's a 'temp' version of a particular file, use that when requested
+_     or just send the contents of the editor tabs when requested?
 _   write the temp stuff to another folder?
 _   positive part of temp files: not having to save between runs
 _   save the temp stuff to a different folder entirely?
-_ when using p5jsMode, just require that sketches are saved
-_   too many problems with unsaved code not working properly
-_   (instead of doing the weird tricks with temp files)
+o when using p5jsMode, just require that sketches are saved
+o   too many problems with unsaved code not working properly
+o   (instead of doing the weird tricks with temp files)
+X   this is a headache; let's not require it
+
+_ creates own sketch.properties, check on possible conflicts w/ Base.java
 
 _ make it possible for the main class to be something besides the default name
 _   want to use sketch.js (this is a fine restriction)
