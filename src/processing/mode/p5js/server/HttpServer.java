@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import processing.data.StringList;
 import processing.mode.p5js.p5jsEditor;
 
 
@@ -219,7 +220,8 @@ public class HttpServer {
    * Return the first local IPv4 address that is not 127.0.0.1,
    * or null if there's nothing that matches those criteria.
    */
-  public String getLocalAddress() {
+  public StringList getLocalAddresses() {
+    StringList outgoing = new StringList();
     try {
       Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
       while (e.hasMoreElements()) {
@@ -230,7 +232,7 @@ public class HttpServer {
           if (i instanceof Inet4Address) {
             String addr = i.getHostAddress();
             if (!addr.equals("127.0.0.1")) {  // not useful
-              return "http://" + addr + ":" + port + "/";
+              outgoing.append("http://" + addr + ":" + port + "/");
             }
           }
         }
@@ -238,7 +240,7 @@ public class HttpServer {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return null;
+    return outgoing;
   }
 
 

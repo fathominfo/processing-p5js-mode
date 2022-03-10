@@ -38,6 +38,7 @@ import processing.app.ui.EditorState;
 import processing.app.ui.EditorToolbar;
 import processing.app.ui.Toolkit;
 
+import processing.data.StringList;
 import processing.mode.java.AutoFormat;
 import processing.mode.java.JavaInputHandler;
 import processing.mode.p5js.server.HttpServer;
@@ -359,10 +360,12 @@ public class p5jsEditor extends Editor {
           startServer();
         }
         statusNotice("Server running at " + server.getAddress());
-        String local = server.getLocalAddress();
-        if (local != null) {
+        StringList local = server.getLocalAddresses();
+        if (local.size() > 0) {
           System.out.println("To connect from another device on the local network, try:");
-          System.out.println(local);
+          for (String item : local) {
+            System.out.println(item);
+          }
         }
         // in 4.0 beta 5, some fixes to how openURL() works
         Platform.openURL(server.getAddress());
