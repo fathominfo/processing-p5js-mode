@@ -1,12 +1,4 @@
-0014 (1.4.2)
-X fixes for how openURL() is handled
-X   https://github.com/fathominfo/processing-p5js-mode/pull/29
-X update outdated URLs, change a few from http to https
-X show local server address in the console
-X require use of 4.0 beta 5 for PdeTextAreaDefaults constructor deprecation
-X cleaning up some old code, using lambdas, clear up warnings
-o need to sort out the deleteFile() weirdness in JNA
-X   should be resolved now
+0015 (1.5)
 
 
 _ still a lot of temp files left around?
@@ -106,7 +98,7 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.4.1'
+git tag -f -a latest -m 'version 1.4.2'
 # actually update things
 git push -f --tags
 
