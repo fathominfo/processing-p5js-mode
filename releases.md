@@ -1,3 +1,18 @@
+# p5jsMode 1.4.2
+
+A few bug fixes and improvements.
+
+* After hitting Run, the local server address is shown in the console, which helps with cross-device testing.
+
+* Fixes for how openURL() is handled. [#29](https://github.com/fathominfo/processing-p5js-mode/pull/29)
+
+* Fix up outdated URLs, change a few from http to https.
+
+* Require use of 4.0 beta 5 for `PdeTextAreaDefaults` constructor deprecation.
+
+* Cleaning up some old code, using lambdas, clearing up compile warnings.
+
+
 # p5jsMode 1.4.1
 
 All the things from the previous release (1.4) actually work in this one.
