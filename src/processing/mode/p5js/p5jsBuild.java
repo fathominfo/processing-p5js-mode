@@ -29,8 +29,6 @@ public class p5jsBuild {
 
   static final boolean USE_SOUP = false;
 
-  static final String TEMP_PREFIX = "p5js-temp-";
-
 
   static void updateHtml(Sketch sketch) throws SketchException, IOException {
     SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
@@ -46,7 +44,7 @@ public class p5jsBuild {
       insert = new StringList();
     }
 
-    cleanTempFiles(sketch);
+    //cleanTempFiles(sketch);
 
     // load p5.js first
     if (!USE_SOUP) {
@@ -87,6 +85,7 @@ public class p5jsBuild {
         SketchCode code =  sketch.getCode(i);
         String filename = code.getFileName();
         if (filename.endsWith(".js")) {
+          /*
           if (code.isModified()) {
             // write a temporary file instead of the actual one
             String tempPrefix = TEMP_PREFIX + code.getPrettyName();
@@ -94,13 +93,11 @@ public class p5jsBuild {
             Util.saveFile(code.getProgram(), tempFile);
             filename = tempFile.getName();
           }
+          */
           insert.append(scriptPath(filename));
         }
       }
     }
-    // different ways to do this; let's not be presumptuous that it's
-    // sketchName + ".js" and leave ourselves some room for the future.
-    //insert.append(scriptPath(sketch.getCode(0).getFileName()));
 
     File htmlFile = new File(sketchFolder, "index.html");
 
@@ -152,6 +149,7 @@ public class p5jsBuild {
         SketchCode code =  sketch.getCode(i);
         String filename = code.getFileName();
         if (filename.endsWith(".js")) {
+          /*
           if (code.isModified()) {
             // write a temporary file instead of the actual one
             String tempPrefix = TEMP_PREFIX + code.getPrettyName();
@@ -159,6 +157,7 @@ public class p5jsBuild {
             Util.saveFile(code.getProgram(), tempFile);
             filename = tempFile.getName();
           }
+          */
           if (!scriptsInDoc.hasValue(filename)) {
             Element e = htmlDoc.head().appendElement("script").
                 attr("language", "javascript").
@@ -221,7 +220,7 @@ public class p5jsBuild {
 
   /**
    * Remove any temp files from the last run.
-   */
+   *
   static void cleanTempFiles(Sketch sketch) throws IOException {
     // List all files with the TEMP_PREFIX
     File[] tempList = sketch.getFolder().listFiles(file ->
@@ -260,6 +259,7 @@ public class p5jsBuild {
       }
     }
   }
+   */
 
 
   static String scriptPath(String path) {

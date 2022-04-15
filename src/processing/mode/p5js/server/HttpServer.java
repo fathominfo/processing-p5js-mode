@@ -67,7 +67,8 @@ public class HttpServer {
 //    handlerMap.put("libraries", new LibrariesHandler(this));
     //handlerMap.put("libraries", new GenericHandler(this, getLibrariesFolder()));
     handlerMap.put("favicon.ico", new FavIconHandler(this));
-    genericHandler = new GenericHandler(this);
+    //genericHandler = new GenericHandler(this);
+    genericHandler = new EditorHandler(this);
 
     for (int i = 0; i < WORKERS; i++) {
       HttpWorker w = new HttpWorker(this);
@@ -148,7 +149,6 @@ public class HttpServer {
         running = true;
         try {
           while (Thread.currentThread() == thread) {
-            @SuppressWarnings("resource")
             Socket s = socket.accept();
             synchronized (threads) {
               if (threads.isEmpty()) {
@@ -259,6 +259,10 @@ public class HttpServer {
   */
 
 
+  /**
+   * For use when the first entry of a path is a REST API command or something
+   * like that, i.e. /list/blah should go to a 'list' handler.
+   */
   Handler getHandler(String prefix) {
     return handlerMap.get(prefix);
   }

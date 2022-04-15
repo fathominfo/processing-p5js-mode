@@ -2,19 +2,21 @@
 X remove json as a file type to display in editor
 X   otherwise it's not added to the data folder, which is inconsistent
 
-_ turn off lint for using dot syntax?
-
-_ still a lot of temp files left around?
-_   instead of doing temp files, should that be state stored by the server?
-_     if there's a 'temp' version of a particular file, use that when requested
-_     or just send the contents of the editor tabs when requested?
-_   write the temp stuff to another folder?
-_   positive part of temp files: not having to save between runs
-_   save the temp stuff to a different folder entirely?
+temp files
+X still a lot of temp files left around?
+X   instead of doing temp files, should that be state stored by the server?
+X     if there's a 'temp' version of a particular file, use that when requested
+X     or just send the contents of the editor tabs when requested?
+X   write the temp stuff to another folder?
+X   positive part of temp files: not having to save between runs
+X   save the temp stuff to a different folder entirely?
 o when using p5jsMode, just require that sketches are saved
 o   too many problems with unsaved code not working properly
 o   (instead of doing the weird tricks with temp files)
 X   this is a headache; let's not require it
+X change to loading modified files dynamically at the server level
+
+_ turn off lint for using dot syntax?
 
 _ creates own sketch.properties, check on possible conflicts w/ Base.java
 

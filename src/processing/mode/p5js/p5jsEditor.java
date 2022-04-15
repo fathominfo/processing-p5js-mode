@@ -377,11 +377,13 @@ public class p5jsEditor extends Editor {
 
 
   public void handleStop() {
+    /*
     try {
       p5jsBuild.cleanTempFiles(sketch);
     } catch (IOException e) {
       e.printStackTrace();  // TODO ignore?
     }
+    */
     toolbar.deactivateRun();
   }
 
