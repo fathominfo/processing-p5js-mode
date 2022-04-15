@@ -20,16 +20,20 @@ public class EditorHandler extends GenericHandler {
     for (SketchCode code : server.editor.getSketch().getCode()) {
       if (code.getFileName().equals(path)) {
         if (code.isModified()) {
-          String program;
+          String program = null;
           if (code.getDocument() != null) {
             try {
               // if there are changes, update the program text internally
               program = code.getDocumentText();
             } catch (BadLocationException ignored) { }
           }
+          if (program == null) {
+            // fall back to just getting the last code (setProgram() is
+            // called in prepareRun() or whenever switching away from a tab)
+            program = code.getProgram();
+          }
           //code.setProgram(program);
           return program.getBytes(StandardCharsets.UTF_8);
-
         }
       }
     }
