@@ -136,7 +136,7 @@ public class p5jsMode extends Mode {
    */
   @Override
   public String[] getExtensions () {
-    return new String[] { "js", "html", "css", "json" };
+    return new String[] { "js", "html", "css" };
   }
 
 
