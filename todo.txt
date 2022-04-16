@@ -2,6 +2,8 @@
 X remove json as a file type to display in editor
 X   otherwise it's not added to the data folder, which is inconsistent
 X update to JSHint 2.13.4
+X turn off lint for using dot syntax
+X   too confusing, and will be removed in jshint soon too
 
 temp files
 X still a lot of temp files left around?
@@ -17,7 +19,6 @@ o   (instead of doing the weird tricks with temp files)
 X   this is a headache; let's not require it
 X change to loading modified files dynamically at the server level
 
-_ turn off lint for using dot syntax?
 
 _ creates own sketch.properties, check on possible conflicts w/ Base.java
 
