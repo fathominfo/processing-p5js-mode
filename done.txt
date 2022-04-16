@@ -1,3 +1,31 @@
+0015 (1.5)
+X remove json as a file type to display in editor
+X   otherwise it's not added to the data folder, which is inconsistent
+
+linting changes
+X update to JSHint 2.13.4
+X turn off lint for using dot syntax
+X   too confusing, and will be removed in jshint soon too
+X add DOCTYPE declaration to template index.html
+X   https://github.com/processing/processing4/issues/465
+X allow users to skip semicolons
+X   https://github.com/fathominfo/processing-p5js-mode/issues/25
+
+temp files
+X still a lot of temp files left around?
+X   instead of doing temp files, should that be state stored by the server?
+X     if there's a 'temp' version of a particular file, use that when requested
+X     or just send the contents of the editor tabs when requested?
+X   write the temp stuff to another folder?
+X   positive part of temp files: not having to save between runs
+X   save the temp stuff to a different folder entirely?
+o when using p5jsMode, just require that sketches are saved
+o   too many problems with unsaved code not working properly
+o   (instead of doing the weird tricks with temp files)
+X   this is a headache; let's not require it
+X change to loading modified files dynamically at the server level
+
+
 0014 (1.4.2)
 X fixes for how openURL() is handled
 X   https://github.com/fathominfo/processing-p5js-mode/pull/29
