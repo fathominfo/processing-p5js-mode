@@ -1,6 +1,7 @@
 0015 (1.5)
 X remove json as a file type to display in editor
 X   otherwise it's not added to the data folder, which is inconsistent
+X update to JSHint 2.13.4
 
 temp files
 X still a lot of temp files left around?
