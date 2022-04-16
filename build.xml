@@ -108,9 +108,11 @@ ${line.separator}sketchbook.dir=/path/to/your/sketchbook" />
     <delete dir="${install.dir}" />
     <delete dir="bin" />
     <delete file="${jar.path}" />
-    <!--<delete dir="mode" />-->
     <delete file="${me}.zip" />
     <delete file="${me}.txt" />
+  </target>
+
+  <target name="clean-examples">
     <delete dir="examples" />
   </target>
 
