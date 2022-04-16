@@ -41,7 +41,7 @@ public class Linter {
 
       // https://jshint.com/docs/options/#asi
       // https://github.com/fathominfo/processing-p5js-mode/issues/25
-      "asi: false" +  // allow no semicolons
+      "asi: true" +  // allow no semicolons
   "}";
 
 
