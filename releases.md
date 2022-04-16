@@ -1,3 +1,24 @@
+# p5jsMode 1.5
+
+Goodbye temporary files!
+
+* This includes a major change that gets rid of the “temporary” files (prefixed `p5js-temp`) that were used to incorporate unsaved changes into a sketch. These were problematic, especially on Windows.
+
+Linting changes:
+
+* Updated to JSHint 2.13.4
+
+* Turned off warnings about “better to use dot syntax”
+
+* Also turned off the warning about skipping semicolons. [#25](https://github.com/fathominfo/processing-p5js-mode/issues/25)
+
+Other changes:
+
+* No longer showing `.json` files in the PDE, because 1) it's inconsistent with how all other data files are handled, and 2) it's confusing when dragging and dropping a `.json` file to the PDE window immediately shows it as part of the sketch.
+
+* Added `DOCTYPE` declaration to the `index.html` template. [#465](https://github.com/processing/processing4/issues/465)
+
+
 # p5jsMode 1.4.2
 
 A few bug fixes and improvements.
