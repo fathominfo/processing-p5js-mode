@@ -37,7 +37,11 @@ public class Linter {
       "sub: true," +  // don't complain about person['name'] vs. person.name
 
       // https://jshint.com/docs/options/#trailingcomma
-      "trailingcomma: false" +  // too confusing for users
+      "trailingcomma: false," +  // too confusing for users
+
+      // https://jshint.com/docs/options/#asi
+      // https://github.com/fathominfo/processing-p5js-mode/issues/25
+      "asi: false" +  // allow no semicolons
   "}";
 
 

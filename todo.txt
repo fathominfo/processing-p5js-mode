@@ -1,11 +1,15 @@
 0015 (1.5)
 X remove json as a file type to display in editor
 X   otherwise it's not added to the data folder, which is inconsistent
+
+linting changes
 X update to JSHint 2.13.4
 X turn off lint for using dot syntax
 X   too confusing, and will be removed in jshint soon too
 X add DOCTYPE declaration to template index.html
 X   https://github.com/processing/processing4/issues/465
+X allow users to skip semicolons
+X   https://github.com/fathominfo/processing-p5js-mode/issues/25
 
 temp files
 X still a lot of temp files left around?
