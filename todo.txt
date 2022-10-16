@@ -1,7 +1,18 @@
 0016 (1.5.1)
+X updated from p5.js 1.4.0 to 1.4.2
 
+
+_ preload() should be highlighted like setup, draw, mousePressed, etc
+
+_ warn users when files have a capitalization problem
+_   since the server is running locally, should be able to detect
+_   i.e. if there's a GET for a file and the capitalization is different
+
+_ also warn if files are large?
 
 _ creates own sketch.properties, check on possible conflicts w/ Base.java
+
+_ add menu option to hold the port fixed (necessary?)
 
 _ make it possible for the main class to be something besides the default name
 _   want to use sketch.js (this is a fine restriction)
