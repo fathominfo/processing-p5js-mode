@@ -152,7 +152,8 @@ public class p5jsMode extends Mode {
 
 
   /**
-   * Override handles rewriting index.html with the sketch name.
+   * Calls the superclass implementation, then calls buildIndex()
+   * to rewrite index.html with the sketch name.
    */
   @Override
   public File addTemplateFiles(File sketchFolder,
