@@ -25,12 +25,12 @@ public class p5jsBuild {
     "<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->";
 
 
-  static void updateHtml(Sketch sketch) throws SketchException, IOException {
+  static void updateHtml(Sketch sketch) throws SketchException {
     File sketchFolder = sketch.getFolder();
     SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
     if (indexHtmlCode == null) {
       System.err.println("Re-creating the missing index.html file.");
-      // if the template has been removed, rewrite it (simplest fix)
+      // If the index.html file has been removed,
       // replace with a fresh copy from the template
       File templateFolder = sketch.getMode().getTemplateFolder();
       File htmlTemplate = new File(templateFolder, "index.html");
@@ -141,12 +141,16 @@ public class p5jsBuild {
 
     if (start == -1 || stop == -1) {
       System.out.println("p5jsMode uses a specially crafted index.html to work properly.");
-      System.out.println("Use Sketch > Show Sketch Folder and rename index.html to something else.");
-      System.out.println("The index.html file will be re-created to work with p5jsMode,");
-      System.out.println("and if necessary, copy parts of your old index.html to the new one.");
+      System.out.println("Use Sketch → Show Sketch Folder and rename index.html to something else.");
+      System.out.println("The index.html file will be automatically re-created.");
+      System.out.println("If there are edits you need from the renamed file,");
+      System.out.println("copy and paste those parts into the new index.html.");
       throw new SketchException("The index.html file is damaged, " +
                                 "please remove or rename it and try again.", false);
     }
+
+    // stop point is after the suffix, but need it to be -1 up top there
+    stop += HTML_SUFFIX.length();
 
     final String newInsert =
       HTML_PREFIX + "\n" + insert.join("\n") + "\n  " + HTML_SUFFIX;
@@ -168,8 +172,8 @@ public class p5jsBuild {
     } else {
       // Tab has not been visited, so no Document object available yet.
       // Use setProgram() to set the text without doing a save.
-      String newHtml = html.substring(0, start) + newInsert +
-        html.substring(stop + HTML_SUFFIX.length());
+      String newHtml =
+        html.substring(0, start) + newInsert + html.substring(stop);
       if (!newHtml.equals(html)) {
         indexHtmlCode.setProgram(newHtml);
         indexHtmlCode.setModified(true);

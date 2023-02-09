@@ -216,6 +216,34 @@ public class p5jsEditor extends Editor {
         // get a fresh index.html from the template
         File sourceFile =
           new File(mode.getTemplateFolder(), "index.html");
+
+        // Should not be possible for this to return null, because the watcher
+        // will have detected removal and rewritten the file. Uh, right?
+        SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
+        if (indexHtmlCode != null) {
+          /*
+          Document doc = indexHtmlCode.getDocument();
+          if (doc != null) {
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, template, null);
+          } else {
+            indexHtmlCode.setProgram(template);
+          }
+          */
+          // Grab the template. It will have @@sketch@@, but
+          String template = Util.loadFile(sourceFile);
+
+          // Instead of juggling program and doc, force it
+          // via setProgram() and reset the Document object.
+          indexHtmlCode.setProgram(template);
+          indexHtmlCode.setDocument(null);
+          setCode(indexHtmlCode);
+
+          // Now insert all the tabs and libraries for this sketch.
+          p5jsBuild.updateHtml(sketch);
+        }
+
+        /*
         File targetFile =
           new File(sketch.getFolder(), "index.html");
         Util.copyFile(sourceFile, targetFile);
@@ -233,6 +261,8 @@ public class p5jsEditor extends Editor {
           // this gets the editor text area to update
           setCode(indexHtmlCode);
         }
+        */
+
       } catch (Exception ex) {
         Messages.showTrace("Error", "Could not write index.html.", ex, false);
       }

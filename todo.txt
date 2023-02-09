@@ -1,5 +1,6 @@
 0016 (1.6)
 X updated from p5.js 1.4.0 to 1.4.2, and then 1.5.0
+_ preload() should be highlighted like setup, draw, mousePressed, etc
 
 index.html re-generation
 o silly to replace @@sketch@@ in p5jsMode.addTemplate()
@@ -12,11 +13,10 @@ o when doing new tab/rename tab/delete tab, it's not possible to rewrite index.h
 o   although it is: just need to reach in and make the changes in the live document
 X index.html being overwritten even after save in p5jsMode
 X   trying to replace "data/fonts" with "fonts" in the yule project index.html
+X re-create index.html option doesn't take new tabs into account
+X   rewrote the code and should behave better
 
-_ re-create index.html option doesn't take new tabs into account
 
-
-_ preload() should be highlighted like setup, draw, mousePressed, etc
 
 _ warn users when files have a capitalization problem
 _   since the server is running locally, should be able to detect
