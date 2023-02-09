@@ -1,6 +1,8 @@
 # additional keywords for JavaScript mode
 # https://developer.mozilla.org/en/JavaScript/Reference/Reserved_Words
 
+preload	FUNCTION4
+
 debugger	KEYWORD1
 var	KEYWORD1
 function	KEYWORD1
