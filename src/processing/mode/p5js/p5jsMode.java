@@ -159,7 +159,7 @@ public class p5jsMode extends Mode {
   public File addTemplateFiles(File sketchFolder,
                                String sketchName) throws IOException {
     File mainFile = super.addTemplateFiles(sketchFolder, sketchName);
-    buildIndex(sketchFolder, sketchName);
+    indexFromTemplate(sketchFolder, sketchName);
     return mainFile;
   }
 
@@ -167,8 +167,8 @@ public class p5jsMode extends Mode {
   /**
    * Write the index.html file. Broken out for ImportExamples.
    */
-  static public void buildIndex(File sketchFolder,
-                                String sketchName) throws IOException {
+  static public void indexFromTemplate(File sketchFolder,
+                                       String sketchName) throws IOException {
     File indexFile = new File(sketchFolder, "index.html");
     String[] lines = PApplet.loadStrings(indexFile);
     if (lines == null) {

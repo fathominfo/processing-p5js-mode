@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import processing.app.Platform;
 import processing.app.Sketch;
 import processing.app.SketchCode;
 import processing.app.SketchException;

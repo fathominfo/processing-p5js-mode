@@ -221,7 +221,7 @@ public class p5jsEditor extends Editor {
         Util.copyFile(sourceFile, targetFile);
 
         // swap @@ entries from the template with the sketch name
-        p5jsMode.buildIndex(sketch.getFolder(), sketch.getName());
+        p5jsMode.indexFromTemplate(sketch.getFolder(), sketch.getName());
 
         // load the new one back into the editor
         SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
@@ -350,7 +350,7 @@ public class p5jsEditor extends Editor {
       // are updated to include any text changes from the Editor.
       prepareRun();
       // write the HTML here in case we need temp files
-      p5jsBuild.updateHtml(sketch);
+      //p5jsBuild.updateHtml(sketch);  // disabling [fry 230208]
 
       if (checkErrors()) {
         toolbar.deactivateRun();
