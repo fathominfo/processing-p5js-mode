@@ -221,7 +221,7 @@ public class p5jsEditor extends Editor {
         Util.copyFile(sourceFile, targetFile);
 
         // swap @@ entries from the template with the sketch name
-        p5jsMode.indexFromTemplate(sketch.getFolder(), sketch.getName());
+        p5jsMode.insertSketchName(sketch.getFolder(), sketch.getName());
 
         // load the new one back into the editor
         SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
@@ -499,17 +499,21 @@ public class p5jsEditor extends Editor {
   private void checkLint() {
     try {
       if (linter != null) {
-        //String code = sketch.getMainProgram();
-        try {
-          // grab the code from the current tab (the one that changed)
-          String code = sketch.getCurrentCode().getDocumentText();
-          JSONArray result = linter.lint(code);
-          if (result != null) {
-            parseErrors(result);
-            // no more updates until this is reset by a document change
-            nextUpdate = Long.MAX_VALUE;
-          }
-        } catch (BadLocationException ignored) { }  // ignore for now
+        // Grab the code from the current tab. This should be the one that
+        // changed, but just in case, we'll double-check that it's a JS tab.
+        // (Removing/auto-replacing index.html can cause this.)
+        SketchCode code = sketch.getCurrentCode();
+        if (code.isExtension("js")) {
+          try {
+            JSONArray result = linter.lint(code.getDocumentText());
+            if (result != null) {
+              parseErrors(result);
+              // no more updates until this is reset by a document change
+              nextUpdate = Long.MAX_VALUE;
+            }
+          } catch (BadLocationException ignored) {
+          }  // ignore for now
+        }
       }
     } catch (ScriptException e1) {
       e1.printStackTrace();
@@ -619,7 +623,8 @@ public class p5jsEditor extends Editor {
 
 
   private void checkDocumentListener(SketchCode sketchCode) {
-    if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
+    //if (sketchCode.isExtension("js") || sketchCode.isExtension("json")) {
+    if (sketchCode.isExtension("js")) {
       Document doc = sketchCode.getDocument();
       if (doc != null) {
         if (!hasListener(doc)) {

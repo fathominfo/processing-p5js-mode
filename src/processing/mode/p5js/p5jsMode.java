@@ -159,16 +159,18 @@ public class p5jsMode extends Mode {
   public File addTemplateFiles(File sketchFolder,
                                String sketchName) throws IOException {
     File mainFile = super.addTemplateFiles(sketchFolder, sketchName);
-    indexFromTemplate(sketchFolder, sketchName);
+    insertSketchName(sketchFolder, sketchName);
     return mainFile;
   }
 
 
   /**
    * Write the index.html file. Broken out for ImportExamples.
+   * Only handles cases where the sketch has no libraries and only
+   * a single tab: 1) ImportExamples and 2) an Untitled sketch.
    */
-  static public void indexFromTemplate(File sketchFolder,
-                                       String sketchName) throws IOException {
+  static public void insertSketchName(File sketchFolder,
+                                      String sketchName) throws IOException {
     File indexFile = new File(sketchFolder, "index.html");
     String[] lines = PApplet.loadStrings(indexFile);
     if (lines == null) {

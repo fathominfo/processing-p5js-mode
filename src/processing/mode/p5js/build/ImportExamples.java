@@ -150,7 +150,7 @@ public class ImportExamples extends PApplet {
             }
             // won't be needing this one
             new File(exampleFolder, "sketch.js").delete();
-            p5jsMode.indexFromTemplate(exampleFolder, name);
+            p5jsMode.insertSketchName(exampleFolder, name);
           }
         } else {
           throw new RuntimeException("Couldn't make dir " + exampleFolder);

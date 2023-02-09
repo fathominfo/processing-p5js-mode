@@ -23,7 +23,7 @@ public class EditorHandler extends GenericHandler {
           String program = null;
           if (code.getDocument() != null) {
             try {
-              // if there are changes, update the program text internally
+              // if actively editing, use the text from the Document object
               program = code.getDocumentText();
             } catch (BadLocationException ignored) { }
           }
