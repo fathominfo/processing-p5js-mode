@@ -237,10 +237,18 @@ public class p5jsEditor extends Editor {
           // via setProgram() and reset the Document object.
           indexHtmlCode.setProgram(template);
           indexHtmlCode.setDocument(null);
-          setCode(indexHtmlCode);
+          //setCode(indexHtmlCode);
 
           // Now insert all the tabs and libraries for this sketch.
           p5jsBuild.updateHtml(sketch);
+          // ...and save the new tab to disk (otherwise it will look correct
+          // in the PDE, but the @@sketch@@ version is still on disk).
+          indexHtmlCode.save();
+
+          // Now update the code in the editor window.
+          // This will set index.html as the current tab.
+          // If already current, it will reset the Document object.
+          setCode(indexHtmlCode);
         }
 
         /*
@@ -706,7 +714,17 @@ public class p5jsEditor extends Editor {
             Thread.sleep(5);
           } catch (InterruptedException ignored) { }
         }
+        // This will rebuild the index.html code in the Editor
         rebuildHtml();
+        // …but we still need to manually save index.html with the change.
+        SketchCode indexHtmlCode = p5jsMode.findIndexHtml(sketch);
+        if (indexHtmlCode != null) {
+          try {
+            indexHtmlCode.save();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
       });
       return true;  // kind of a farce
     }

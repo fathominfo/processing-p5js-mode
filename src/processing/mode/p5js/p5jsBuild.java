@@ -169,15 +169,15 @@ public class p5jsBuild {
         ble.printStackTrace();
         throw new SketchException("Error while updating index.html");
       }
-    } else {
-      // Tab has not been visited, so no Document object available yet.
-      // Use setProgram() to set the text without doing a save.
-      String newHtml =
-        html.substring(0, start) + newInsert + html.substring(stop);
-      if (!newHtml.equals(html)) {
-        indexHtmlCode.setProgram(newHtml);
-        indexHtmlCode.setModified(true);
-      }
+    }
+    // XX Tab has not been visited, so no Document object available yet.
+    // XX Use setProgram() to set the text without doing a save.
+    // Need to call setProgram() regardless, so that Save As will work.
+    String newHtml =
+      html.substring(0, start) + newInsert + html.substring(stop);
+    if (!newHtml.equals(html)) {
+      indexHtmlCode.setProgram(newHtml);
+      indexHtmlCode.setModified(true);
     }
 
     /*

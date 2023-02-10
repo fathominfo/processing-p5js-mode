@@ -15,6 +15,7 @@ X index.html being overwritten even after save in p5jsMode
 X   trying to replace "data/fonts" with "fonts" in the yule project index.html
 X re-create index.html option doesn't take new tabs into account
 X   rewrote the code and should behave better
+X Save As not updating the sketch name in index.html
 
 
 _ warn users when files have a capitalization problem
