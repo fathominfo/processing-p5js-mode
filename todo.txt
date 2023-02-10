@@ -109,6 +109,7 @@ git push -f --tags
 
 ant dist
 then upload dist/p5jsMode.zip and dist/p5jsMode.txt to the 'latest' tag
+the *old version* will already be there; need to manually delete and then upload the new one
 (can also upload them to the most recent tag for anyone installing manually)
 and name/put some info about the release into the tag
 https://github.com/fathominfo/processing-p5js-mode/releases
