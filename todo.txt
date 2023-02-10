@@ -4,6 +4,7 @@ X preload() should be highlighted like setup, draw, mousePressed, etc
 X warn users when files have a capitalization problem
 X   since the server is running locally, should be able to detect
 X   i.e. if there's a GET for a file and the capitalization is different
+X removed unused jsoup code
 
 index.html re-generation
 o silly to replace @@sketch@@ in p5jsMode.addTemplate()

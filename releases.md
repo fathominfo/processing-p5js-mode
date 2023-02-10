@@ -1,3 +1,18 @@
+# p5jsMode 1.6
+
+* Updated from p5.js 1.4.0 to 1.4.2, and then 1.5.0.
+
+* `preload()` now highlighted like `setup()` and `draw()`
+
+* Major rewrite for how `index.html` is generated. In some cases, the `index.html` file was not updated properly, or in some cases, could even override changes made by users. These problems should now be ironed out. (Because this involved major changes, the release was bumped to 1.6 instead of 1.5.1).
+
+* Warn users when files have a capitalization problem. When using `loadImage("amazing.png")` you should now see a warning if the file is actually called `Amazing.png` on disk. In most cases, the case change is not a problem on macOS or Windows, but if moved to a server with a case sensitive file system (i.e. Linux), this can cause confusing errors.
+
+* Removed unused jsoup library and code.
+
+* More cleanup of the temporary file handling that was removed in 1.5.
+
+
 # p5jsMode 1.5
 
 Goodbye temporary files!
