@@ -1,3 +1,27 @@
+0016 (1.6)
+X updated from p5.js 1.4.0 to 1.4.2, and then 1.5.0
+X preload() should be highlighted like setup, draw, mousePressed, etc
+X warn users when files have a capitalization problem
+X   since the server is running locally, should be able to detect
+X   i.e. if there's a GET for a file and the capitalization is different
+X removed unused jsoup code
+
+index.html re-generation
+o silly to replace @@sketch@@ in p5jsMode.addTemplate()
+X   p5jsBuild.updateHtml() will rewrite it anyway, and include the other tabs
+X   just making this clearer in the code
+X make updateHtml() operate on the live text area
+X   and remove the 'could not update' message
+X   or if the index.html is broken, make sure the user gets a 'please reset' message
+o when doing new tab/rename tab/delete tab, it's not possible to rewrite index.html
+o   although it is: just need to reach in and make the changes in the live document
+X index.html being overwritten even after save in p5jsMode
+X   trying to replace "data/fonts" with "fonts" in the yule project index.html
+X re-create index.html option doesn't take new tabs into account
+X   rewrote the code and should behave better
+X Save As not updating the sketch name in index.html
+
+
 0015 (1.5)
 X remove json as a file type to display in editor
 X   otherwise it's not added to the data folder, which is inconsistent

@@ -1,28 +1,7 @@
-0016 (1.6)
-X updated from p5.js 1.4.0 to 1.4.2, and then 1.5.0
-X preload() should be highlighted like setup, draw, mousePressed, etc
-X warn users when files have a capitalization problem
-X   since the server is running locally, should be able to detect
-X   i.e. if there's a GET for a file and the capitalization is different
-X removed unused jsoup code
-
-index.html re-generation
-o silly to replace @@sketch@@ in p5jsMode.addTemplate()
-X   p5jsBuild.updateHtml() will rewrite it anyway, and include the other tabs
-X   just making this clearer in the code
-X make updateHtml() operate on the live text area
-X   and remove the 'could not update' message
-X   or if the index.html is broken, make sure the user gets a 'please reset' message
-o when doing new tab/rename tab/delete tab, it's not possible to rewrite index.html
-o   although it is: just need to reach in and make the changes in the live document
-X index.html being overwritten even after save in p5jsMode
-X   trying to replace "data/fonts" with "fonts" in the yule project index.html
-X re-create index.html option doesn't take new tabs into account
-X   rewrote the code and should behave better
-X Save As not updating the sketch name in index.html
+0017 (1.6.1)
 
 
-_ also warn if files are large?
+_ warn if files are especially large
 
 _ lots of keywords (foreach, async, await) not in keywords.txt
 
@@ -116,6 +95,7 @@ git tag -a v1.4 -m 'version 1.4'
 git tag -a v1.4.1 -m 'version 1.4.1'
 git tag -a v1.4.2 -m 'version 1.4.2'
 git tag -a v1.5 -m 'version 1.5'
+git tag -a v1.6 -m 'version 1.6'
 git push origin --tags
 
 # delete the previous 'latest'
@@ -123,12 +103,12 @@ git tag -d latest
 git push origin :refs/tags/latest
 
 # create new 'latest' tag with the current state of the repo
-git tag -f -a latest -m 'version 1.5'
+git tag -f -a latest -m 'version 1.6'
 # actually update things
 git push -f --tags
 
 ant dist
 then upload dist/p5jsMode.zip and dist/p5jsMode.txt to the 'latest' tag
-(can also upload them to the v1.3 tag for anyone installing manually)
+(can also upload them to the most recent tag for anyone installing manually)
 and name/put some info about the release into the tag
 https://github.com/fathominfo/processing-p5js-mode/releases
