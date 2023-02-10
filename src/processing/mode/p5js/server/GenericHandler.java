@@ -50,6 +50,19 @@ public class GenericHandler extends Handler {
         }
       } else {
         try {
+          String canonicalPath = target.getCanonicalPath();
+          if (!canonicalPath.endsWith(path)) {
+            if (canonicalPath.length() > path.length()) {  // just to make sure
+              String canonicalPiece =
+                canonicalPath.substring(canonicalPath.length() - path.length());
+              if (path.equalsIgnoreCase(canonicalPiece)) {
+                System.err.println("Mismatched text found: " +
+                  path + " was requested, but the file is " + canonicalPiece);
+                System.err.println("Fix the capitalization to avoid " +
+                  "problems when running this code on a server.");
+              }
+            }
+          }
           byte[] b = loadBytes(path, target);
 
           ps.status(HttpServer.HTTP_OK);
